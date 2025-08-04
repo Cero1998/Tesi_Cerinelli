@@ -1,0 +1,13 @@
+numpy
+scikit-learn
+hdbscan
+matplotlib
+pandas
+networkx
+scipy
+NaiveDE
+SpatialDE
+scanpy
+patsy
+squidpy
+scikit-misc
