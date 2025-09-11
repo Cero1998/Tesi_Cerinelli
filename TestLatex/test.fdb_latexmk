@@ -1,7 +1,7 @@
 # Fdb version 4
-["pdflatex"] 1752524630.3875 "/home/cero/Desktop/Uni/Tesi/spatial_cogenes/TestLatex/test.tex" "test.pdf" "test" 1752524630.89716 0
+["pdflatex"] 1757591292.84303 "/home/cero/Desktop/Uni/Tesi_Cerinelli/TestLatex/test.tex" "test.pdf" "test" 1757591293.29669 0
   "/etc/texmf/web2c/texmf.cnf" 1752061880.62123 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/cero/Desktop/Uni/Tesi/spatial_cogenes/TestLatex/test.tex" 1752523970.1977 2528 d9e2bffd5b58c07c8d49c673a773ebb1 ""
+  "/home/cero/Desktop/Uni/Tesi_Cerinelli/TestLatex/test.tex" 1752523970.1977 2528 d9e2bffd5b58c07c8d49c673a773ebb1 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/tcrm1000.tfm" 1136768653 1536 e07581a4bb3136ece9eeb4c3ffab8233 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
@@ -59,12 +59,12 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1707919699 40399 f2c302f7d2af602abb742093540a5834 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1752061901.74069 5472669 54eaf61a88b6b7896ebd0dac973cb29c ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1752061931 8212907 61b3aca08b760c0b318d779ee8e14caa ""
-  "Chapters/Abstract.aux" 1752524630.84395 499 e360472ebf4f77b441adbed5cf163437 "pdflatex"
-  "Chapters/Abstract.tex" 1752524629.76094 1014 adaa71562a544a0e400810b9bdeab712 ""
+  "Chapters/Abstract.aux" 1757591293.2406 499 e360472ebf4f77b441adbed5cf163437 "pdflatex"
+  "Chapters/Abstract.tex" 1752524640.35604 1014 adaa71562a544a0e400810b9bdeab712 ""
   "Pictures/ComeDovrebbeEssere.png" 1752148082.87649 15234 5273434a68ce6d352c3643fe64482b67 ""
   "Pictures/Cozzano.png" 1752148441.73005 17176 12216becb45db7092da1ba34b368d451 ""
   "Pictures/EsempioDataset.png" 1752147191.67346 22428 e2f3a3d5ec16da62f00c82f914a586fb ""
-  "test.aux" 1752524630.84495 399 6cc8265e6fc7512d268ee6ea5f1e5897 "pdflatex"
+  "test.aux" 1757591293.2406 399 6cc8265e6fc7512d268ee6ea5f1e5897 "pdflatex"
   "test.tex" 1752523970.1977 2528 d9e2bffd5b58c07c8d49c673a773ebb1 ""
   (generated)
   "Chapters/Abstract.aux"
