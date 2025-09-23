@@ -38,6 +38,9 @@ INPUT test.aux
 INPUT ./Chapters/Abstract.aux
 INPUT ./Chapters/Abstract.aux
 INPUT Chapters/Abstract.aux
+INPUT ./Chapters/far_andare_bar_hist.aux
+INPUT ./Chapters/far_andare_bar_hist.aux
+INPUT Chapters/far_andare_bar_hist.aux
 OUTPUT test.aux
 INPUT /usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 INPUT /usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
@@ -113,10 +116,14 @@ INPUT ./Chapters/Abstract.tex
 INPUT Chapters/Abstract.tex
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmr17.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmbx12.tfm
+OUTPUT Chapters/far_andare_bar_hist.aux
 INPUT test.aux
 INPUT ./Chapters/Abstract.aux
 INPUT ./Chapters/Abstract.aux
 INPUT Chapters/Abstract.aux
+INPUT ./Chapters/far_andare_bar_hist.aux
+INPUT ./Chapters/far_andare_bar_hist.aux
+INPUT Chapters/far_andare_bar_hist.aux
 INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb
 INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb
