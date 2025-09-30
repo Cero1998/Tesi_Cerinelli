@@ -4,7 +4,7 @@
 
 % Defaults to two-side, but passing 'oneside' should set everything up for that
 \LoadClass[12pt, a4paper, twoside]{book}
-
+%\raggedbottom togliere commento se si vuole levare il doppio a capo
 % Some useful packages
 \usepackage[utf8]{inputenc} 					        % accented letters
 \usepackage{graphicx}       					        % images

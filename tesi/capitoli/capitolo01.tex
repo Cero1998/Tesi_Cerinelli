@@ -1,4 +1,4 @@
-\chapter{Introduzione alla trascrittomica spaziale}\label{chapter:cap_one}
+\chapter{Introduzione alla bioinformatica}\label{chapter:cap_one}
 Dall'alba dei tempi tutto cio che circonda l'uomo è stato fonte di curiosità e studio.
 Partendo dall'interesse di tutti i vari aspetti riguardanti l’essere umano e gli organismi viventi,
 con cui ci relazioniamo quotidianamente, si è sviluppata la branca della biologia
@@ -13,25 +13,33 @@ Lo sviluppo di entrambe queste discipline col passare degli anni ha portato ad u
 La bioinformatica nasce dalla combinazione delle due materie prima elencate in quanto gli scienziati avevano
 sempre più l'esigenza di gestire i dati rilevati dalla biologia
 molecolare, spesso file di testo che superano le decine di gigabyte, in modo da poter interpretare più facilmente i campioni raccolti.
-\section{Bioinformatica}\label{sec:cap_one_bioinfo}
-La branca della bioinformatica è molto ampia, per questo, noi ci interesseremo
-principalmente del genoma. Quest'ultimo contiene tutte le informazioni necessarie allo sviluppo e al
-funzionamento di un organismo vivente ed è
-generalmente costituito da \textit{DNA}: molecola che contiene
-le informazioni genetiche di un individuo.
-Possiamo quindi deﬁnire che il DNA è la molecola
-chimica che contiene le informazioni e si sviluppa
-partendo dalla combinazione delle quattro basi azotate
-(adenina, citosina, guanina e timina); mentre il genoma è
-l'insieme del materiale genetico contenuto nel soggetto in
-esame
-Tutte le cellule di un organismo hanno sostanzialmente lo stesso genoma
-ma possono avere epigenomi e trascrittomi molto diversi.
+\section{Gene}\label{sec:cap_one_bioinfo}
+Ogni organismo eucariote o procariote pluricellulare o unicellulare che sia presenta una molecola
+fondamentale che contiene tutte le informazioni necessarie per costituire l'organismo, tale molecola
+è il DNA (acido desossiribonucleico).
+Il DNA è composto da subunità, chiamate nucleotidi\footnote{Il nucleotide è l'unità di base che forma DNA e RNA}, contenenti: un gruppo fosfato, uno zucchero
+pentoso e una base azotata.
+Una specifica sequenza di DNA forma un gene e, l'insieme di tutti i geni, genera il genoma che, oltre
+a racchiudere le informazioni genetiche, presenta anche le parti del DNA che non codificano proteine\footnote{Le proteine sono macromolecole che si formano
+partendo dal DNA e che vanno a costituire i tessuti.}.
+Circa il 30\% del DNA nel genoma umano si trova negli esoni e negli introni. I primi, gli esoni, sono
+sequenze che codificano gli aminoacidi, i quali, vengono espressi in proteine, i secondi, gli introni,
+invece non codificano nessuna proteina. Al giorno d'oggi sappiamo che il genoma umano presenta
+circa 20000 geni che codificano proteine.
+Con il passare degli anni sono stati sequenziati molti genomi, sia di microrganismi che di animali,
+questo perché, l'interesse degli scienziati è quello di andare definire i processi evolutivi degli esseri
+viventi, ma, per ottenere dei risultati, è indispensabile andare a comparare numerosi genomi di
+organismi differenti.
 
-La Bioinformatica ha un ruolo
-fondamentale negli studi della struttura del genoma, per esempio, nell’assemblaggio
+La branca della bioinformatica è molto ampia, per questo, noi ci interesseremo
+principalmente del genoma.
+La bioinformatica ha un ruolo
+fondamentale negli studi della struttura del genoma, per esempio, nell'assemblaggio 
 e annotazione di genomi, o nella caratterizzazione del profilo di espressione genica,
 generando informazioni cruciali per orientare i successivi studi di genomica funzionale che si avvalgono di una grande varietà di tecniche sperimentali\cite{fondamentiBioinformatica}
+
+Tutte le cellule di un organismo hanno sostanzialmente lo stesso genoma
+ma possono avere epigenomi e trascrittomi molto diversi.
 \subsection{Epigenoma}\label{subsec:epigenomi}
 L'\textit{epigenoma} è una moltitudine di composti chimici che che regolano il genoma su cosa fare senza cambiare la sequenza del DNA.
 Esso ha le varie istruzioni per poter costuire le proteine che servono per svolgere le diverse funzioni della cellula.
@@ -63,220 +71,19 @@ Questo insieme di trascrizioni geniche costituisce il trascrittoma, e varia note
 e da tessuto a tessuto. Ad esempio, le cellule muscolari esprimono geni che producono proteine contrattili, 
 mentre le cellule nervose attivano geni che permettono la trasmissione dei segnali elettrici.
 
-Il trascrittoma quindi è lo specchio dinamico dell'attività del genoma: mostra quali geni sono effettivamente 
+Il trascrittoma quindi è lo specchio dell'attività del genoma: mostra quali geni sono effettivamente 
 in funzione in un determinato momento e fornisce informazioni preziose sull'identità, 
-lo stato e la salute delle cellule.
+lo stato e la salute delle cellule.\cite{genomeGov}
 
-\section{Esempi di immagini}\label{sec:images}
-Di seguito alcuni esempi di immagini.
+\section{Trascrittomica spaziale}\label{sec:cap_one_bioinfo}
+Come detto in precendenza, il trascrittoma rappresenta l'insieme di tutte le molecole di RNA presenti in una cellula in un dato momento.
+La trascrittomica a singola cellula (scRNA-seq) è diventata essenziale per la ricerca biomedica nell'ultimo decennio, 
+in particolare nello sviluppo della biologia, cancro, immunologia e neuroscienze. 
 
-Figura~\ref{fig:one} presenta una singola immagine con ancoraggio ``\textbf{ht}" che chiede al altex di lasciare la figura dove si trova, se possibile, e altrimenti di metterla in alto alla pagina.
-Figura~\ref{fig:two} presenta una singola immagine con due sotto-figure con ancoraggio ``\textbf{ht}".
-Figura~\ref{fig:three} presenta una singola immagine con tre sotto-figure con ancoraggio ``\textbf{H}" che forza l'immagine nel posto scelto dall'utente, questa opzione è sconsigliata a meno di necessità particolari.
-Ogni volta che un'immagine è inserita è buona norma citarla nel testo, altrimenti l'immagine non avrebbe un chiaro significato.
-Nel caso delle sotto-immagini si possono citare anche loro, ad esempio Figura~\ref{fig:lev1} è composta da altre due sotto-figure.
-\begin{figure}[ht]
-	\centering
-	\includegraphics[width=0.3\textwidth]{immagini/block_on_grid.png}
-	\caption{Figura con singola immagine}
-	\label{fig:one}
-\end{figure}
+La maggior parte dei protocolli scRNA-seq disponibili in commercio richiede che le cellule siano recuperate intatte e vitali dai tessuti. 
+Ciò ha precluso lo studio di molti tipi cellulari e ha in gran parte distrutto il contesto spaziale che altrimenti avrebbe potuto 
+informare le analisi dell'identità e della funzione cellulare. 
+Oggi, un numero crescente di piattaforme disponibili in commercio facilita la valutazione altamente dimensionale e spazialmente 
+risolta della trascrizione genica, nota come \textit{trascrittomica spaziale (TS)}.\cite{trascrittomicaSpazialeIntroduzione}
 
-\begin{figure}[ht]
-	\centering
-	\begin{subfigure}{0.3\textwidth}
-		\includegraphics[width=1.0\textwidth]{immagini/disoposizione_blocchi_fisica.png}
-		\caption{Disposizione fisica dei blocchi}
-	\end{subfigure}%
-	\begin{subfigure}{0.3\textwidth}
-		\includegraphics[width=1.0\textwidth]{immagini/disoposizione_blocchi_logica.png}
-		\caption{Disposizione logica dei blocchi}
-	\end{subfigure}
-	\caption{Figura con due immagini}
-	\label{fig:two}
-\end{figure}
-
-
-\begin{figure}[H]
-	\centering
-	\begin{subfigure}{0.5\textwidth}
-		\centering
-		\includegraphics[width=0.7\linewidth]{immagini/lev_less1.png}
-		\caption{\textit{lev} = -1\newline}
-		\label{fig:test1}
-	\end{subfigure}%
-	\begin{subfigure}{0.5\textwidth}
-		\centering
-		\includegraphics[width=0.7\linewidth]{immagini/lev0.png}
-		\caption{\textit{lev} = 0\newline}
-		\label{fig:test2}
-	\end{subfigure}
-	\begin{subfigure}{0.7\textwidth}
-		\centering
-		\begin{subfigure}{0.5\textwidth}
-			\centering
-			\includegraphics[width=0.5\linewidth]{immagini/bloccomaggiore1.png}
-		\end{subfigure}%
-		\begin{subfigure}{0.5\textwidth}
-			\centering
-			\includegraphics[width=0.5\linewidth]{immagini/bloccomaggiore2.png}
-		\end{subfigure}
-		\caption{\textit{lev} = 1}
-				\label{fig:lev1}
-	\end{subfigure}
-	\caption{Figura con tre immagini (di cui una composta da due sotto-immagini)}
-		\label{fig:three}
-\end{figure}
-
-\section{Esempi di Codice e Misc.}\label{sec:code}
-Alcuni esempi di codice, definizioni, tabelle e altro.
-
-\begin{algorithm}[ht]
-	\caption{Esempio di pseudo-codice}
-	\label{alg:Prim_Mst}
-	\begin{algorithmic}[1]
-		\Statex
-		\Function{MST-Prim}{grafo G, funzione\_peso $\omega$, nodo\_radice r}\\
-		\State{\textit{Q}: coda di priorita contenente tutti i vertici in \textit{V}}
-		\For{ogni \textit{u} $\in$ V(G)}
-		\Let{\textit{u.key}}{$\infty$}
-		\Let{\textit{u.}$\pi$}{\textit{NIL}} 
-		\EndFor
-		\Let{\textit{r.key}}{0}
-		\Let{\textit{Q}}{\textit{V(G)}}
-		\While{\textit{Q} $\neq$ 0}
-		\Let{\textit{u}}{EXTRACT-MIN(\textit{Q})}
-		\For{ogni \textit{v} $\in$ \textit{G.Adj[u]}}
-		\If{$v \in Q$ and $\omega(u,v) < v.key$}
-		\Let{\textit{v.key}}{$\omega(u,v)$}
-		\Let{\textit{v.}$\pi$}{\textit{v}}
-		\EndIf
-		\EndFor
-		\EndWhile
-		\State \Return{}
-		\EndFunction
-	\end{algorithmic}
-\end{algorithm}
-
-
-\begin{lstlisting}[caption={Esempio di definizione struttura dati C++, ma non algoritmo},
-	label={lst:block_struct}]
-	struct Block
-	{
-		int id_block;
-		char resolution;
-		int id_subdomain;
-		int key;
-		bool in_other_subdomain;
-		struct neigh_t neighbors[4];
-	};
-\end{lstlisting}
-
-
-
-\begin{algorithm}[ht]
-	\caption{Esempio di codice imperativo}
-	\label{alg:my_prim_multi}
-	\begin{algorithmic}[1]
-		\Statex
-		\Function{PRIM\_MULTI-MST}{roots\_list \textit{roots}, array\_Block \textit{adjacency\_list}}
-		
-		\State{\color{blue}{//Inizializzazione di tutti i vertici}}
-		\For{ogni \textit{u} $\in$ \textit{adjacency\_list}}
-		\Let{\textit{u.key}}{$\infty$}
-		\Let{\textit{u.id\_subdomains}}{\textit{NIL}}
-		\Let{\textit{u.in\_other\_subdomain}}{FALSE} 
-		\EndFor
-		
-		\State{\color{blue}{//Inizializzazione di tutte le radici}}
-		\Let{\textit{i}}{0}
-		\For{ogni \textit{r} $\in$ \textit{roots}}
-		\Let{\textit{r.key}}{0}
-		\Let{\textit{r.id\_subdomains}}{\textit{i}}
-		\Let{\textit{i}}{$i+1$}
-		\EndFor
-		\State{\textit{Q}: coda di priorita ordinata in base al campo 
-			\textit{key}}
-		\Let{\textit{Q}}{\textit{roots}}
-		\Let{\textit{count}}{0}
-		
-		\While{count $<$ \textit{adjacency\_list.size}}
-		\Let{\textit{u}}{EXTRACT-MIN(\textit{Q})}
-		
-		\If{!(\textit{u.in\_other\_subdomain})}
-		\State{\color{blue}{//Essendo il minimo viene aggiunto definitivamente}}
-		\Let{\textit{u.in\_other\_subdomain}}{TRUE}
-		\State{\color{blue}{//Si analizzano i vicini}}
-		\For{ogni \textit{v} $\in$ \textit{u.neighbors}}
-		\State{\color{blue}{//In questo caso specifico il peso di ogni arco vale 1}}
-		\If{$v \in adjacency\_list$ and ($u.key+1) < v.key$}
-		\Let{\textit{v.key}}{$u.key+1$}
-		\Let{\textit{v.subdomains}}{\textit{u.subdomains}}
-		\Let{\textit{count}}{\textit{count} + 1}
-		\EndIf
-		\EndFor
-		\EndIf
-		\EndWhile
-		\State \Return{}
-		\EndFunction
-	\end{algorithmic}
-\end{algorithm}
-
-\begin{algorithm}[ht]
-		\caption{esempio di algoritmo in C++}
-		\label{lst:genic_mpi}
-\begin{lstlisting}[style=custom, language=C]
-	#include "mpi.h"
-	
-	
-	
-	main(int argc, char** argv){
-		
-		
-		
-		//Nessuna chiamata a funzioni MPI prima di questa
-		MPI_Init(&argc, &argv);
-		
-		
-		MPI_Finalize();
-		//Nessuna chiamata a funzioni MPI dopo questa
-		
-	}	
-\end{lstlisting}
-\end{algorithm}
-	
-\begin{defn}[Esempio di Definizione]
-Un piccolo esempio di definizione
-\end{defn}
-
-\begin{table}[ht]
-	\centering
-	\resizebox{0.99\linewidth}{!}{
-		\begin{tabular}{||c||c|c|c|c|c|c|c|c|c|c||}
-			\hhline{|t:=:t:==========:t|}
-			CT scan &\phantom{00}01\phantom{00}&\phantom{00}02\phantom{00}&\phantom{00}03\phantom{00}&\phantom{00}04\phantom{00}&\phantom{00}05&\phantom{00}06\phantom{00}&\phantom{00}07\phantom{00}&\phantom{00}08\phantom{00}&\phantom{00}09\phantom{00}&\phantom{00}10\phantom{00} \\
-			\hhline{|:=::==========:|}
-			Input arteries (n.) &66&175&76&134&198&172&154&108&91&65 \\
-			\hhline{||-||----------||}
-			Labeling time (s)&19.13&87.38&26.11&47.08&90.89&356.95&303.77&91.95&16.01&21.88 \\
-			\hhline{||-||----------||}
-			Grounding time (s)&9.76&52.45&9.57&22.88&70.34&47.52&37.44&17.98&10.61&8.04 \\
-			\hhline{||-||----------||}
-			Optimum time (s)&6.66&31.05&14.67&20.63&15.2&29.17&54.71&61.03&4.28&7.24 \\
-			\hhline{|b:=:b:==========:b|}
-		\end{tabular}
-	}
-	\vspace*{2mm}
-	\caption{Esempio di tabella}
-	\label{tab:perf}
-\end{table}
-
-
-\section{Citazioni}
-Durante la scrittura della Tesi è necessario fornire i riferimenti bibliografici che hanno permesso la stesura della tesi stessa.
-Questo si ottiene semplicemente tramite l'utilizzo del comando ``cite'' che prende come argomento la label di una delle entry nel file .bib.
-Quindi per citare una qualunque fonte, ad esempio ``Artificial Intelligence - A Modern Approach", si può fare \cite{modernApproach} ($\backslash\text{cite}\{\text{modernApproach}\}$).
-Questo leggerà la referenza nel file .bib che ha come label ``cormen".
-Per citare più riferimenti contemporaneamente basta sperare le varie labels con una virgola come segue \cite{gelfond1998action,modernApproach,durfee1999distributed,de2003resource,allen2009complexity,bernstein2002complexity}.
-Le reference non citate non appariranno in bibliografia.
-Google scholar e dblp sono siti nei quali estrarre la reference per bibtex per un lavoro di cui si conosce solo il titolo, ad esempio.
+Una sfida fondamentale nella TS è l'identificazione degli \textit{Spatially Variable Genes (SVGs)}, e degli \textit{Highly Variable Genes (HVGs)}.
