@@ -55,7 +55,7 @@
 \fancyhead{}
 \fancyhead[LE, RO]{\leftmark}
 \renewcommand{\headrulewidth}{0.4pt}
-\renewcommand{\footrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
 
 \setlength{\headheight}{15pt}
 
