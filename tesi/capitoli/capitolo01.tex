@@ -1,4 +1,4 @@
-\chapter{Introduzione alla bioinformatica}\label{chapter:cap_one}
+\chapter{Nozioni di base}\label{chapter:cap_one}
 Dall'alba dei tempi tutto ciò che circonda l'uomo è stato fonte di curiosità e studio.
 Partendo dall'interesse di tutti i vari aspetti riguardanti l’essere umano e gli organismi viventi,
 con cui ci relazioniamo quotidianamente, si è sviluppata la branca della biologia
@@ -102,3 +102,26 @@ Analizzando lo spazio è possibile scovare pattern non casuali di espressione ge
 Identificarli è cruciale nelle analisi di TS perché rivela domini tissutali, nicchie cellulari e transizioni, riducendo anche la dimensionalità per clustering e annotazione.\cite{SVGs}
 Oltre agli SVGs esistono anche gli \textit{Highly Variable Genes (HVGs)}, geni che, mostrano una variabilità di espressione molto superiore a quanto atteso, tuttavia
 non sono in grado di fornire informazioni spaziali rilevanti.
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=1\textwidth]{immagini/HVG_AND_SVG.png}
+	\caption{HVGs e SVGs a confronto}
+	\label{fig:one}
+\end{figure}
+
+La figura~\ref{fig:one} presenta un confronto tra HVGs e SVGs dato lo stesso Dataset. Si noti come gli HVGs non hanno nessuna informazione spaziale, in quanto non presentano alcun tipo di pattern,
+mentre gli SVGs mostrano una chiara suddivisione in cluster. 
+
+\subsection{Dati e metodi}\label{subsec:datiEMetodi}
+Dato un tessuto qualsiasi, esso viene poi sezionato e diviso in celle più piccole, dette \textit{spot}.
+Uno spot quindi non è altro che una posizione pre-definita su una griglia, con un \textit{barcode} che lo identifica.
+Possiamo definire l'insieme dei nostri spot nel seguente modo:  $\mathcal{S}=\{\mathcal{S}_1,\mathcal{S}_2,...,\mathcal{S}_n\}$ dove ogni $\mathcal{S}_i$ è uno spot.
+
+Ogni spot al suo interno contiene più cellule, per questo motivo, ogni spot viene associato ad un vettore di espressione genica.
+Questo da vita ad una matrice di espressione genica $X\in \mathbb{R}^{n\times m}$ dove $n$ è il numero di spot e $m$ il numero di geni.
+Possiamo definire l'insieme dei nostri geni nel seguente modo: $\mathcal{G}=\{g_1,g_2,...,g_m\}$ dove ogni $g_i$ è un gene.
+
+Di conseguenza si può definire $\mathcal{S}_i \in \mathcal{G}^{m}$ come $\mathcal{S}_i =\{g_1,g_2,...,g_m\}$
+
+
+
