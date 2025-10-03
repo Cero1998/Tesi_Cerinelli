@@ -16,7 +16,7 @@ molecolare, questo perchè, spesso, i dati superano le decine di gigabyte e serv
 Oggi la gran parte delle informazioni bioinformatiche possono essere reperite sul \textit{National
 Center of Biotechnology Information (NCBI)} che fornisce banche dati gratuite e strumenti per la ricerca in biologia molecolare e bioinformatica.\cite{ncbi}
 \section{Gene}\label{sec:cap_one_bioinfo}
-Ogni organismo eucariote o procariote pluricellulare o unicellulare che sia presenta una molecola
+Ogni organismo, eucariote o procariote, pluricellulare o unicellulare che sia, presenta una molecola
 fondamentale che contiene tutte le informazioni necessarie per costituire l'organismo, tale molecola
 è il DNA (acido desossiribonucleico).
 Il DNA è composto da subunità, chiamate nucleotidi\footnote{Il nucleotide è l'unità di base che forma DNA e RNA}, contenenti: un gruppo fosfato, uno zucchero
@@ -120,8 +120,34 @@ Possiamo definire l'insieme dei nostri spot nel seguente modo:  $\mathcal{S}=\{\
 Ogni spot al suo interno contiene più cellule, per questo motivo, ogni spot viene associato ad un vettore di espressione genica.
 Questo da vita ad una matrice di espressione genica $X\in \mathbb{R}^{n\times m}$ dove $n$ è il numero di spot e $m$ il numero di geni.
 Possiamo definire l'insieme dei nostri geni nel seguente modo: $\mathcal{G}=\{g_1,g_2,...,g_m\}$ dove ogni $g_i$ è un gene.
-
 Di conseguenza si può definire $\mathcal{S}_i \in \mathcal{G}^{m}$ come $\mathcal{S}_i =\{g_1,g_2,...,g_m\}$
 
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=1\textwidth]{immagini/spot_cubo.png}
+	\caption{Rappresentazione spots e geni}
+	\label{fig:two}
+\end{figure}
 
+La figura ~\ref{fig:two} mostra una rappresentazione grafica degli spot e dei geni all'interno di un tessuto. Ogni cella rappresenta uno spot, mentre ogni colore rappresenta un gene diverso\footnote{Si noti che il colore non è rappresentativo della presenza o meno di quel gene in quello spot}.
+Si può notare che ogni spot $\mathcal{S}_i$ ha più geni al suo interno.
+Inoltre nel nostro esempio abbiamo 36 spot diversi e 4 geni, nella realtà i dati sono ben diversi, con spot che arrivano a quasi 3000 celle, e geni che superano i 30,000.
 
+L'immagine \ref{fig:two} presentata tuttavia una inesattezza, in quanto, gli spot non sono disposti su una matrice $nxn$, besì hanno una rappresentazione esagonale.
+Questo significa che, dato uno spot $\mathcal{S}_i$, esso avrà 6 spot adiacenti, tranne per gli spot quelli che si trovano ai bordi del tessuto.
+
+Per poter trovare spazialmente uno spot $\mathcal{S}_i$ quindi occorre assegnare una coordinata $x$ e una coordinata $y$ ad ogni spot, e,creata poi una matrice \\$[\mathcal{S}_i, <x_i, y_i>]$,
+dove $<x, y>$ indicano le coordinate dello spot, è possibile trovare i 6 vicini attraverso un semplice calcolo.
+Per sopperire ad eventuali spazi vuoti nel tessuto inoltre, viene calcolata la distanza euclidea tra gli spot, in modo da poter scartare i vicini che si trovano troppo lontani.
+
+La figura~\ref{fig:three} mostra una rappresentazione grafica degli spot in un tessuto, con le loro coordinate $x$ e $y$.
+Lo spot preso in esempio come riferimento è lo spot con coordinate $x = 2, y = 3$.
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=1\textwidth]{immagini/spotRappresentazioneEsagonale.png}
+	\caption{Rappresentazione spaziale spots}
+	\label{fig:three}
+\end{figure}
+
+\section{Algoritmi per la trascrittomica spaziale}\label{sec:cap_three_bioinfo}
+Esistono già diversi algoritmi per la trascrittomica spaziale, tra cui Seurat \cite{Seurat}, GraphST \cite{GraphST} e Giotto \cite{Giotto}.
