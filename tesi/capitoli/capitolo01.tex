@@ -27,7 +27,7 @@ partendo dal DNA e che vanno a costituire i tessuti.}.
 Circa il 30\% del DNA nel genoma umano si trova negli esoni e negli introni. I primi, gli esoni, sono
 sequenze che codificano gli aminoacidi, i quali, vengono espressi in proteine, i secondi, gli introni,
 invece non codificano nessuna proteina. Al giorno d'oggi sappiamo che il genoma umano presenta
-circa 20000 geni che codificano proteine.
+circa 20000 geni che codificano proteine.\cite{principiBiochimica}
 Con il passare degli anni sono stati sequenziati molti genomi, sia di microrganismi che di animali,
 questo perché, l'interesse degli scienziati è quello di andare definire i processi evolutivi degli esseri
 viventi, ma, per ottenere dei risultati, è indispensabile andare a comparare numerosi genomi di
@@ -85,7 +85,7 @@ Il trascrittoma quindi è lo specchio dell'attività del genoma: mostra quali ge
 in funzione in un determinato momento e fornisce informazioni preziose sull'identità, 
 lo stato e la salute delle cellule.\cite{genomeGov}
 
-\section{Trascrittomica spaziale}\label{sec:cap_one_bioinfo}
+\section{Trascrittomica spaziale}\label{sec:cap_two_bioinfo}
 Come detto in precendenza, il trascrittoma rappresenta l'insieme di tutte le molecole di RNA presenti in una cellula in un dato momento.
 La trascrittomica a singola cellula (scRNA-seq) è diventata essenziale per la ricerca biomedica nell'ultimo decennio, 
 in particolare nello sviluppo della biologia, cancro, immunologia e neuroscienze. 
@@ -96,7 +96,8 @@ informare le analisi dell'identità e della funzione cellulare.
 Oggi, un numero crescente di piattaforme disponibili in commercio, 
 consente di mappare l'espressione dell'RNA direttamente sulla struttura del tessuto, 
 mantenendo l'informazione di posizione di ciascun segnale: 
-questo approccio, noto come \textit{trascrittomica spaziale (ST)}, produce dati ad alta dimensionalità utili a descrivere l'organizzazione cellulare e i processi biologici direttamente nel tessuto, preservandone la posizione.\cite{trascrittomicaSpazialeIntroduzione}
+questo approccio è noto come \textit{trascrittomica spaziale (TS)}.
+La TS produce dati ad alta dimensionalità utili a descrivere l'organizzazione cellulare e i processi biologici direttamente nel tessuto, preservandone la posizione.\cite{trascrittomicaSpazialeIntroduzione}
 
 Una sfida fondamentale nella TS è l'identificazione degli \textit{Spatially Variable Genes (SVGs)}.
 Questi ultimi sono geni la cui espressione varia in modo dipendente dalla posizione nello spazio del tessuto.
@@ -139,7 +140,7 @@ Inoltre, nella figura d'esempio, si hanno 36 spot diversi e 4 geni, ma ma nella 
 sono differenti: gli spot possono arrivare a oltre 3000
 celle e i geni possono superare i 30,000.
 
-L'immagine \ref{fig:two}, tuttavia, presentata una inesattezza in quanto gli spot non sono disposti su una matrice $n*n$, bensì hanno una rappresentazione esagonale.
+L'immagine \ref{fig:two}, tuttavia, presentata una inesattezza in quanto gli spot non sono disposti su una matrice $n \times n$, bensì hanno una rappresentazione esagonale.
 Questo significa che, dato uno spot $\mathcal{S}_i$, questo presenterà sei spot
 adiacenti, tranne nei casi in cui gli spot sono localizzati ai bordi del tessuto.
 
@@ -160,26 +161,40 @@ Lo spot preso in esempio, come riferimento, è lo spot con coordinate $x = 2, y 
 Esistono già diversi algoritmi per la trascrittomica spaziale, tra cui \textit{Seurat}\cite{Seurat}, \textit{GraphST}\cite{GraphST} e \textit{Giotto}\cite{Giotto}.
 
 \subsection{Seurat}\label{subsec:seurat}
-Seurat originariamente era un tool per l'analisi di dati di scRNA-seq, ma ha da recenti aggiornamenti ha strumenti l'analisi di dati spaziali.
+Seurat originariamente era un tool per l'analisi di dati di scRNA-seq, ma da recenti aggiornamenti possiede strumenti utili all'analisi di dati spaziali.
 Permette funzioni di normalizzazione, identificazione di HVGs e di SVGs, analisi multisezione ed altro.
-Offre anche unzioni per visualizzare sull'immagine tissutale l'espressione dei geni, cluster, l'integrazione fra slices, anche con opzioni che visualizzano contorni cellulari o centroidi.
+Offre anche funzioni per visualizzare sull'immagine tissutale l'espressione dei geni, cluster e l'integrazione fra slices, anche con opzioni per evidenziare contorni cellulari o centroidi.
 
 In sintesi, Seurat, è un tool ben consolidato e ampiamente usato, con buone interfacce e integrazione con l'ecosistema scRNA-seq,
-Tuttavia, non essendo nato per questo scopo, ma essendo stato adattato, può risultare meno potente di pipeline specializzate per evidenziare domini spaziali o interazioni locali.
+Tuttavia, non essendo nato per questo scopo, ma essendo stato adattato in seguito, può risultare meno potente di pipeline specializzate.
 
 \subsection{GraphST}\label{subsec:graphst}
-GraphST è un metodo più recente, progettato specificamente per dati di trascrittomica spaziale, 
+GraphST è un pacchetto più recente, progettato specificamente per dati di trascrittomica spaziale, 
 che sfrutta reti neurali e addestramento self-supervised per integrare informazione spaziale ed espressione genica.
-Lavora attraverso l'utlizzo di grafi non diretti, in cui ogni nodo è uno spot diverso, e gli archi collegano gli spot vicini tra loro (in base alle coordinate spaziali).
-Utilizza poi la rete neurale (Graph Neural Network) per apprendere rappresentazioni informative e discriminative negli spot e minimizzandone la distanza dove sono spazialmente adiacenti e viceversa.
+Lavora attraverso l'utlizzo di grafi non diretti, in cui ogni nodo è uno spot diverso, e gli archi collegano gli spot vicini tra loro in base alle coordinate spaziali.
+Utilizza poi una rete neurale (Graph Neural Network) per apprendere rappresentazioni informative e discriminative negli spot e minimizzandone la distanza dove sono spazialmente adiacenti e viceversa.
 
 Al contrario di Seurat, quindi, GraphST è stato progettato specificamente per dati spaziali, riuscendo ad offrire buone prestazioni rispetto ai competitor.
-Tuttavia richiede diversa attenzione per la costruzione del grafo, ed avendo una rete neurale richiede più risorse computazionali e tempo per l'addestramento.
+Tuttavia richiede diversa attenzione per la costruzione del grafo, ed avendo una rete neurale richiede più risorse computazionali e tempo per l'addestramento rispetto ad altre soluzioni.
 
 \subsection{Giotto}\label{subsec:giotto}
 Giotto è un toolkit open-source scritto in R pensato per l'analisi integrata di dati spaziali, con una serie di moduli per clustering spaziale, rilevamento di domini e interazioni tra cellule.
 Costruisce internamente una “spatial neighborhood network” che connette spot vicini in base alle coordinate fisiche. Il grafo così ottenuto viene poi utilizzato per tutte le analisi spaziali.
-Offre vari metodi di clustering: sia metodi classici basati su espressione (k-means, gerarchico) e sia metodi che integrano la struttura spaziale, in particolare un modello basato su Hidden Markov Random Fields (HMRF) che incoraggia cluster spazialmente coerenti.
+Offre vari metodi di clustering: sia metodi classici basati su espressione, come l'algoritmo k-means, e sia metodi che integrano la struttura spaziale, in particolare un modello basato su Hidden Markov Random Fields (HMRF) che da vita a cluster spazialmente coerenti.
 
-In sostanza Giotto è un toolkit abbastanza completo con molti moduli, incluso ll modello HMRF che dà una componente spaziale ben fondata per il clustering.
+In sostanza Giotto è un toolkit abbastanza completo con molti moduli, incluso il modello HMRF che dà una componente spaziale ben fondata per il clustering.
 Tuttavia non avendo una rete neurale, al contrario di GraphST, potrebbe non cogliere pattern spaziali complessi.
+
+\section{Limiti}\label{sec:cap_four_bioinfo}
+Nonostante i grandi progressi, la trascrittomica spaziale presenta ancora vari colli di bottiglia che ne frenano l'adozione su larga scala, tra cui: costi elevati, 
+bassa risoluzione spaziale, lunghi tempi di risposta e aree di cattura ridotte.
+Inoltre, come detto precedentemente,  idealmente gli identificatori molecolari univoci (UMI) in uno spot misurano l'espressione specifica dello spot, 
+ma spesso questo non avviene nella pratica a causa del sanguinamento dagli spot vicini. Questo fenomento genera un artefatto chiamato spot swapping.
+Ignorare tale problematica può portare a risultati fuorvianti, come l'identificazione errata di SVGs o la sovrastima dell'espressione genica in regioni specifiche del tessuto.
+
+Nonostante ci siano strumenti specializzati per la risoluzione delle problematiche sopracitate, come SpotClean\cite{SpotClean} per rimuovere lo spot swapping, e iSCALE\cite{iSCALE} per poter utilizzare tessuti di grosse dimensioni,
+non esiste ad oggi un algoritmo unico che possa risolvere tutti i problemi della TS.
+Vari benchmark e review scientifiche portano hanno portato alla stessa conclusione: occorre una pipeline modulare, che si possa adattare alle esigenze specifiche di ciascun tessuto.
+
+\medskip
+La TS resta comunque un campo molto recente e nuovi metodi, software e analisi vengono pubblicati ogni mese, perciò non sono da escludere eventuali sviluppi futuri che miglioreranno tale problematica.\cite{limitiTS}
