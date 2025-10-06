@@ -10,7 +10,7 @@ Di conseguenza si può definire $\mathcal{S}_i \in \mathcal{G}^{m}$ come $\mathc
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=0.5\textwidth]{immagini/spot_cubo.png}
+	\includegraphics[width=0.575\textwidth]{immagini/spot_cubo.png}
 	\caption{Rappresentazione spots e geni}
 	\label{fig:four}
 \end{figure}
@@ -85,7 +85,7 @@ Prima si devono calcolare i pesi non normalizzati usando un Kernel Gaussiano:
 \label{eq:gaussianKernel}
 \end{equation}
 dove $\sigma$ controlla la portata spaziale di smoothing.
-Dopodichè applichiamo una normalizzazione\footnote{Rendere i pesi comparabili imponendo somma per riga uguale a 1} per ottenere i pesi finali:
+Dopodichè applichiamo una normalizzazione\footnote{Dividere tutti i termini di un'espressione per uno stesso fattore in modo che l'espressione risultante abbia una certa norma uguale a 1.} per ottenere i pesi finali:
 \begin{equation}
 	w_{jk} = \frac{\widetilde{w}_{jk}}{\sum_h \widetilde{w}_{jh}}
 \label{eq:gaussianKernelNormalization}
@@ -95,7 +95,7 @@ garantendo che $\sum_k w_{jk} = 1$ per ogni spot $s_j$.
 \medskip
 \noindent
 \paragraph{Smoothing Spaziale a due fattori}
-Una alternativa allo smoothing visto sopra è lo \textit{smoothing a due fattori}, ovvero combina i vicini spaziali e la loro somiglianza trascrizionale.
+Una alternativa allo smoothing visto sopra è lo \textit{smoothing a due fattori}, ovvero combina i vicini spaziali e la loro somiglianza trascrizionale, ovvero i pattern.
 Usando lo smoothing a due fattori, i dati smussati risultano essere più accurati nelle loro partizioni e interpretazioni biologiche rispetto all'utilizzo di operazioni a un fattore.\cite{smoothingTwoFactors}
 
 Dato $\mathcal{X}_i$ un vettore di espressione genica per uno spot $i$, 
@@ -110,4 +110,9 @@ la sua versione smussata $\mathcal{X}_i'$ può essere calcolata come segue:
 \right).
 \label{eq:smoothingTwoFactors}
 \end{equation}
-Nella equazione \ref{eq:smoothingTwoFactors} ci sono due parametri, $\alpha$ e $\beta$ 
+Nella equazione \ref{eq:smoothingTwoFactors} ci sono due parametri, $\alpha$ e $\beta$.
+La prima  regolarizza il rapporto tra l'espressione originale e quella corretta, 
+evitando che l'espressione dello spot in esame risulti eccessivamente smussata.
+$\beta$ invece modula il peso relativo dello smussamento basato sulla vicinanza spaziale rispetto a quello basato sui pattern.
+$N_s(i)$ e $N_p(i)$ indicano, rispettivamente, i vicini spaziali e i pattern nello spot $i$.
+$c^{p}_{ji}$ e $c^{s}_{ji}$ indicano, rispettivamente, il contributo spaziale e quello di pattern dello spot $j$ vicino allo spot in oggetto $i$.
