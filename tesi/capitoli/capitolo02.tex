@@ -1,12 +1,26 @@
-\chapter{Nozioni di base}\label{chapter:cap_two}
+\chapter{Nozioni di base}\label{chapter:cap_one_notions}
 Prendendo in esame un tessuto qualsiasi, questo viene sezionato e diviso in celle più piccole, dette \textit{spot}.
 Uno spot, quindi, non è altro che una posizione pre-definita su una griglia, con un \textit{barcode}\footnote{Una breve sequenza di DNA univoca per ogni spot} che lo identifica.
-Possiamo definire l'insieme dei nostri spots nel seguente modo:  $\mathcal{S}=\{\mathcal{S}_1,\mathcal{S}_2,...,\mathcal{S}_n\}$ dove ogni $\mathcal{S}_i$ è uno spot.
+In genere ogni spot ha un diametro di circa $\qty{55}{\micro\meter}$ e con una distanza da spot a spot di circa $\qty{100}{\micro\meter}$.\cite{spotDiameter}
+
+Possiamo definire l'insieme dei nostri spots nel seguente modo:  
+\begin{equation}
+	\mathcal{S}=\{\mathcal{S}_1,\mathcal{S}_2,...,\mathcal{S}_n\}
+\label{eq:spots}
+\end{equation}
+dove ogni $\mathcal{S}_i$ è uno spot.
 
 Ogni spot, al suo interno, contiene più cellule. Per questo motivo, ogni spot viene associato ad un vettore di espressione genica che 
 da vita alla matrice $X\in \mathbb{R}^{n\times m}$ dove $n$ è il numero di spot e $m$ il numero di geni.
-Possiamo definire l'insieme dei nostri geni nel seguente modo: $\mathcal{G}=\{g_1,g_2,...,g_m\}$ dove ogni $g_i$ è un gene.
-Di conseguenza si può definire $\mathcal{S}_i \in \mathcal{G}^{m}$ come $\mathcal{S}_i =\{g_1,g_2,...,g_m\}$.
+Possiamo definire l'insieme dei nostri geni nel seguente modo: 
+\begin{equation}
+	\mathcal{G}=\{g_1,g_2,...,g_m\}
+\end{equation}
+dove ogni $g_i$ è un gene.
+Di conseguenza si può definire $\mathcal{S}_i \in \mathcal{G}^{m}$ come: 
+\begin{equation}
+	\mathcal{S}_i =\{g_1,g_2,...,g_m\}
+\end{equation}
 
 \begin{figure}[ht]
 	\centering
@@ -38,12 +52,13 @@ Lo spot preso in esempio, come riferimento, è lo spot con coordinate $x = 2, y 
 	\label{fig:five}
 \end{figure}
 
+\section{Smoothing spaziale}\label{sec:cap_two_notions}
 Quando si entra in possesso di una library, contenente i barcode degli spot, le coordinate spaziali e i relativi metadati, non è consigliato
 avviare l'analisi dei dati fin da subito, 
 questo perchè i dati di TS contengono anche rumore tecnico e biologico che può mascherare dei pattern in realtà utili, come ad esempio dei geni con profili irregolari.
 Occorre quindi prima di tutto ripulire e ridurre la complessità dei dati prima di poterli analizzare.
 
-\paragraph{Smoothing Spaziale}
+\medskip
 Uno dei primi step per poter poter minimizzare il rumore è applicare un \textit{filtro di media} (Mean Filter),
 ovvero una tecnica per poter sostituire ogni elemento, con la media dei valori dei suoi vicini dato un raggio prestabilito.\cite{Giotto}
 Questo serve per poter ridurre il rumore locale ed evitare variazioni importanti.
@@ -116,3 +131,46 @@ evitando che l'espressione dello spot in esame risulti eccessivamente smussata.
 $\beta$ invece modula il peso relativo dello smussamento basato sulla vicinanza spaziale rispetto a quello basato sui pattern.
 $N_s(i)$ e $N_p(i)$ indicano, rispettivamente, i vicini spaziali e i pattern nello spot $i$.
 $c^{p}_{ji}$ e $c^{s}_{ji}$ indicano, rispettivamente, il contributo spaziale e quello di pattern dello spot $j$ vicino allo spot in oggetto $i$.
+\section{Formato dei dati}\label{sec:cap_three_notions}
+I dati del campione di tessuto fornitoci sono in formato \textit{10x Visium}, una piattaforma 
+di trascrittomica spaziale che misura l'espressione genica 
+su sezioni di tessuto, mantenendo per ogni misura la posizione spaziale. 
+La cattura avviene su spot barcodati stampati su una slide. Il programma che processa i dati in modo da mappare i barcode con la loro 
+posizione spaziale viene chiamato \textit{Space Ranger} e produce la matrice \textit{Features}$\times$\textit{Barcodes}, dove con Features si intendono i geni, 
+e con Barcodes i vari spot; 
+Ogni spot raccoglie RNA da più cellule e i conteggi vengono poi mappati sull'immagine.
+
+
+I file 10x Visium sono in formato \texttt{.h5}, un file specifico pronto per essere elaborato da \texttt{ScanPy} una libreria Python 
+open-source\footnote{Codice sorgente libero} progettata per l'analisi di dati di trascrittomica.
+Scanpy infatti offre la funzione \texttt{read\_visium()} per importare direttamente le cartelle di output di Space Ranger.
+
+Prendendo il file \texttt{.h5} e traducendolo in un file \texttt{.tsv} (Tab-Separated Values) si può osservare una struttura di questo tipo:
+\begin{table}[H]
+\centering
+\caption{Estratto metadati spot (dataset \texttt{1.DLPFC}).}
+\label{tab:tsvTable}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lcccc}
+\hline
+\textbf{Barcode} & \textbf{Row} & \textbf{Col} & \textbf{Cluster} & \textbf{sum\_Gene} \\
+\hline
+AAACAAGTATCTCCCA-1 & 1 & 3 & 7 & 3586 \\
+AAACAATCTACTAGCA-1 & 1 & 27  & 4 & 1150 \\
+AAACACCAATAACTGC-1 & 1 & 59 & 8 & 1960 \\
+\hline
+\end{tabular}%
+}
+\end{table}
+\begin{minipage}{\textwidth}
+\centering
+\label{tab:legendTsvTable}
+\footnotesize
+\texttt{barcode}: identificatore dello spot;\;
+\texttt{sample\_name}: nome del campione;\;\\
+\texttt{row}, \texttt{col}: coordinate dello spot nella griglia;\;\\
+\texttt{Cluster}: cluster di appartenenza;\;
+\texttt{sum\_gene}: numero totale di geni rilevati.
+\end{minipage}
+
+La tabella \ref{tab:tsvTable} è solo una sezione di cosa contiene davvero il file \texttt{.h5}, nella realtà sono presenti molti più dati.
