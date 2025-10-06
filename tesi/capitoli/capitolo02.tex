@@ -1,207 +1,113 @@
-% !TeX spellcheck = it_IT
+\chapter{Nozioni di base}\label{chapter:cap_two}
+Prendendo in esame un tessuto qualsiasi, questo viene sezionato e diviso in celle più piccole, dette \textit{spot}.
+Uno spot, quindi, non è altro che una posizione pre-definita su una griglia, con un \textit{barcode}\footnote{Una breve sequenza di DNA univoca per ogni spot} che lo identifica.
+Possiamo definire l'insieme dei nostri spots nel seguente modo:  $\mathcal{S}=\{\mathcal{S}_1,\mathcal{S}_2,...,\mathcal{S}_n\}$ dove ogni $\mathcal{S}_i$ è uno spot.
 
-\chapter{MPI}\label{sec:second_mpi}
-\emph{MPI} cioè, Message Passing Interface, è uno \textit{standard per l'interfaccia di una libreria per lo scambio di messaggi} \cite{mpi_standard}.\\
-Questo standard \textit{de facto} è nato grazie al lavoro svolto su \textit{MPI Forum}, un forum nel quale aziende che si occupano di \textquotedblleft Parallel Computing\textquotedblright, ricercatori nell'ambito informatico, sviluppatori di librerie e di applicazioni hanno collaborato per raggiungere questo risultato.\\
-Come detto \textit{MPI} è una specifica e non una libreria e si propone quindi di imporre regole e di dare istruzioni su quello che una libreria per lo scambio di messaggi deve fare. Inoltre, non essendo \textit{MPI} un linguaggio di programmazione tutte le operazioni sono espresse come funzioni, subroutine, o metodi a seconda del \textit{binding} con i linguaggi che fanno parte dello standard.\\
-L'obbiettivo di \textit{MPI}, quindi, è quello di stabilire uno standard per il \textit{message-passing} \emph{portabile}, \emph{flessibile}, \emph{pratico} ed \emph{efficiente}.\\
-\textit{MPI} è rivolto principalmente al modello di \textit{message-passing} nella \textit{programmazione parallela}, in cui i dati vengono spostati dallo spazio di indirizzi di un processo a quello di un altro tramite operazioni cooperative su ciascun processo.\\
-In particolare in un ambiente di comunicazione a memoria distribuita, in cui le astrazioni di livello superiore sono costruite sulla base del livello inferiore, ovvero sulle routine di \textit{message-passing}, i benefici della standardizzazione sono particolarmente evidenti.\\
-Inoltre, la definizione di uno standard \textit{message-passing}, come quella proposta da MPI, fornisce un insieme di funzioni base ben definito, efficientemente implementabili dai vendor interessati al \textquotedblleft Parallel Computing\textquotedblright, o per le quali sia possibile fornire supporto hardware, rafforzando in tal modo la scalabilità.\\
-L'obiettivo di \textit{MPI} è quindi quello di sviluppare uno standard ampiamente utilizzato per la scrittura di programmi di \textit{message-passing}.
+Ogni spot, al suo interno, contiene più cellule. Per questo motivo, ogni spot viene associato ad un vettore di espressione genica che 
+da vita alla matrice $X\in \mathbb{R}^{n\times m}$ dove $n$ è il numero di spot e $m$ il numero di geni.
+Possiamo definire l'insieme dei nostri geni nel seguente modo: $\mathcal{G}=\{g_1,g_2,...,g_m\}$ dove ogni $g_i$ è un gene.
+Di conseguenza si può definire $\mathcal{S}_i \in \mathcal{G}^{m}$ come $\mathcal{S}_i =\{g_1,g_2,...,g_m\}$.
 
-\subsection{La struttura di un programma MPI}
-Un programma \textit{MPI} è un programma che, seguendo le procedure introdotte dallo standard, esegue operazioni di \textit{message-passing} su architetture di calcolo parallelo.\\
-D'ora in avanti si affronteranno programmi \textit{MPI} in \textit{C/C++} che utilizzano la libreria \emph{OpenMPI} \cite{open_mpi} per l'implementazione delle funzioni, ma le considerazioni fatte sono comunque valide per le relative funzioni legate al \textit{Fortran} e per implementazioni di altre librerie.\\
-Ogni programma \textit{MPI} deve utilizzare la direttiva del preprocessore: \lstinline{#include "mpi.h"}\\
-\textit{mpi.h} infatti contiene le definizioni, le macro e i prototipi delle funzioni necessari per compilare un programma \textit{MPI}.\\
-Prima di ogni altra funzione \textit{MPI} bisogna invocare la funzione \textit{MPI\_Init()}; questa funzione deve essere chiamata una sola volta. La \textit{MPI\_Init()} prende come argomenti i puntatori ai parametri del \textit{main} e permette al sistema di preparare l'ambiente per l'esecuzione delle varie routine \textit{MPI} che possono essere usate.\\
-Una volta che il programma ha finito di utilizzare le funzioni \textit{MPI} deve chiamare la \textit{MPI\_Finalize()} che permette di \textquotedblleft pulire\textquotedblright~ogni lavoro non terminato dalle varie funzioni \textit{MPI} invocate precedentemente.\\
-Nel listato \ref{lst:genic_mpi} è mostrata la generica struttura di un programma \textit{MPI} \cite{mpi_general}.\\
-\begin{lstlisting}[label={lst:genic_mpi},
-caption={Programma MPI generico}]
-
-(*@~ ~ ~ ~\raisebox{-1pt}[0pt][0pt]{$\vdots$}@*)
-
-#include (*@\textquotedblleft@*)mpi.h"
-
-(*@~ ~ ~ ~\raisebox{-1pt}[0pt][0pt]{$\vdots$}@*)
-
-main(int argc, char** argv){
-
-(*@~ ~ ~ ~ ~ ~ ~ ~ ~ ~{\raisebox{-1pt}[0pt][0pt]{$\vdots$}}@*)
-
-    //Nessuna chiamata a funzioni MPI prima di questa
-    MPI_Init(&argc, &argv);
-
-(*@~ ~ ~ ~ ~ ~ ~ ~ ~ ~{\raisebox{-1pt}[0pt][0pt]{$\vdots$}}@*)
-
-    MPI_Finalize();
-    //Nessuna chiamata a funzioni MPI dopo questa
-
-(*@~ ~ ~ ~ ~ ~ ~ ~ ~ ~{\raisebox{-1pt}[0pt][0pt]{$\vdots$}}@*)
-}
-
-\end{lstlisting}
-\subsection{Le principali componenti}\label{subsec:comm_mpi}
-In MPI la comunicazione fra i processi si basa sullo scambio di messaggi.\\
-MPI quindi definisce le strutture e le informazioni che servono per realizzare uno scambio di messaggi tra processi.\\
-In particolare lo standard descrive:
-\begin{itemize}
-	\item In che modo rappresentare il dato, da inviare nel messaggio, durante la comunicazione;
-	\item Come specificare i processi protagonisti dello scambio del messaggio;
-	\item I vari modi in cui può essere implementata la comunicazione.
-\end{itemize}  
-\subsubsection{Definizione dei dati in MPI}\label{subsec:def_dati_mpi}
-Per poter inviare un dato attraverso un messaggio, che poi verrà scambiato tra i processi, occorre definire alcune informazioni fondamentali legate al dato stesso; in particolare è necessario definire:
-\begin{itemize}
-	\item \textbf{Il buffer}, ovvero l'indirizzo di memoria che contiene i dati da inviare;
-	\item \textbf{Il numero di elementi} da inviare nel messaggio;
-	\item \textbf{Il tipo di dato} degli elementi.
-\end{itemize}
-Il tipo di dato può rispecchiare uno dei tipi di dato più comuni del linguaggio \textit{C} (figura \ref{fig:mpi_data_types}) oppure può essere un tipo di dato definito da utente in quanto MPI fornisce le primitive per costruire strutture dati partendo da altre già esistenti.
-\begin{figure}[H]
+\begin{figure}[ht]
 	\centering
-	\includegraphics[width=0.6\textwidth]{immagini/block_on_grid.png}
-	\caption{Tipi di dato in C e in MPI}
-	\label{fig:mpi_data_types}
+	\includegraphics[width=0.5\textwidth]{immagini/spot_cubo.png}
+	\caption{Rappresentazione spots e geni}
+	\label{fig:four}
 \end{figure}
-\subsubsection{Specificazione dei processi coinvolti nella comunicazione}\label{subsec:comm_rank_tag}
-Durante l'invio di un messaggio è necessario specificare il destinatario e garantire che le informazioni che lo identificano siano univoche per non compromettere la comunicazione.\\
-A questo scopo durante l'invio di un messaggio MPI bisogna sempre indicare:
-\begin{itemize}
-	\item \textbf{Il communicator} che rappresenta uno specifico contesto a cui appartiene un gruppo di processi (il \textit{communicator} di default si chiama \textit{MPI\_COMM\_WORLD} e racchiude tutti i processi disponibili).
-	\begin{figure}[H]
-		\centering
-		\includegraphics[width=0.5\textwidth]{immagini/block_on_grid.png}
-		\caption{Il \textit{communicator MPI\_COMM\_WORLD} e due sottogruppi}
-		\label{fig:mpi_communicator}
-	\end{figure}
-	\item \textbf{Il rank}, che è un identificativo univoco assegnato ad ogni processo, del processo destinatario;
-	\item \textbf{Il tag} che permette, grazie ad un intero definito da utente, di differenziare ulteriormente il messaggio.
-\end{itemize}
 
-\subsubsection{Le implementazioni delle comunicazioni punto a punto}
-MPI prevede diverse modalità per gestire la comunicazione tra i processi.
-\paragraph{La comunicazione standard}~\newline~\newline
-La modalità standard è \emph{bloccante e asincrona} si effettua utilizzando la funzioni \textit{MPI\_Send} per l'invio e \textit{MPI\_Recv} per la ricezione.\\
-\begin{lstlisting}[label={lst:mpi_send_recv},
-caption={Intestazioni delle primitive di comunicazione MPI}]
-MPI_Send(void *buf, int count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm)
-         
-MPI_Recv(void *buf, int count, MPI_Datatype datatype, int source, int tag, MPI_Comm comm, MPI_Status *status)
-\end{lstlisting}
+La figura ~\ref{fig:four} mostra una rappresentazione grafica degli spot e dei geni all'interno di un tessuto. Ogni cella rappresenta uno spot, mentre ogni colore rappresenta un gene diverso\footnote{Si noti che il colore non è rappresentativo della presenza o meno di quel gene in quello spot}.
+Si può notare che ogni spot $\mathcal{S}_i$, al suo interno, può contenere più geni.
+Inoltre, nella figura d'esempio, si hanno 36 spot diversi e 4 geni, ma ma nella realtà i dati
+sono differenti: gli spot possono arrivare a oltre 3000
+celle e i geni possono superare i 30,000.
 
-In entrambe le funzioni i parametri \textit{buf}, \textit{count} e \textit{datatype} servono per fornire le informazioni sul contenuto nel messaggio come spiegato nel paragrafo \ref{subsec:def_dati_mpi}.\\
-Il parametro \textit{dest} nella funzione di invio e il parametro \textit{source} in quella di ricezione indicano rispettivamente il \textit{rank} del processo che deve ricevere e di quello che deve inviare i dati. Oltre al \textit{rank} dei processi coinvolti, queste funzioni prendono in argomento anche le altre informazioni illustrate nel paragrafo \ref{subsec:comm_rank_tag} relative al destinatario; in particolare richiedono: il \textit{tag} del messaggio e il \textit{communicator(comm)} nel quale si svolge la comunicazione.\\
-La funzione \textit{MPI\_Recv} grazie a \textit{status} può ottenere informazioni aggiuntive sul messaggio.\\
-Essendo la \textit{MPI\_Send} bloccante, ritorna solo quando i dati sono stati copiati nel buffer di sistema del destinatario e quindi, per esempio, se il buffer è pieno, la funzione resta bloccata in attesa che si liberi. Una volta che la funzione è ritornata, non c’è alcuna garanzia che il processo destinatario abbia ricevuto il messaggio.\\
-A sua volta la \textit{MPI\_Recv}, essendo bloccante ritorna solamente quando i dati sono stati copiati dal buffer di sistema all’indirizzo di memoria specificato.\\
-Lo schema di una comunicazione bloccante è mostrato in figura \ref{fig:mpi_block_com}.
-\begin{figure}[H]
+La figura \ref{fig:four}, tuttavia, presenta una inesattezza in quanto gli spot non sono disposti su una matrice $n \times n$, bensì hanno una rappresentazione esagonale.
+Questo significa che, dato uno spot $\mathcal{S}_i$, questo presenterà sei spot
+adiacenti, tranne nei casi in cui gli spot sono localizzati ai bordi del tessuto.
+
+Per poter trovare spazialmente uno spot $\mathcal{S}_i$, quindi, occorre assegnare una coordinata $x$ e una coordinata $y$ ad ogni spot, e, una volta creata una matrice \\$[\mathcal{S}_i, <x_i, y_i>]$,
+dove $<x, y>$ indicano le coordinate dello spot, è possibile trovare i 6 vicini attraverso un semplice calcolo.
+Inoltre, per sopperire ad eventuali spazi vuoti nel tessuto, viene calcolata la distanza euclidea tra gli spot, in modo da poter scartare gli spot che altrimenti verrebbero erronamente segnati come vicini.
+
+La figura~\ref{fig:five} mostra una rappresentazione grafica degli spot in un tessuto, con le loro coordinate $x$ e $y$.
+Lo spot preso in esempio, come riferimento, è lo spot con coordinate $x = 2, y = 3$.
+\begin{figure}[ht]
 	\centering
-	\includegraphics[width=0.7\textwidth]{immagini/block_on_grid.png}
-	\caption{Schema di una comunicazione bloccante}
-	\label{fig:mpi_block_com}
+	\includegraphics[width=0.5\textwidth]{immagini/spotRappresentazioneEsagonale.png}
+	\caption{Rappresentazione spaziale spots}
+	\label{fig:five}
 \end{figure}
-\paragraph{Altri tipi di comunicazione punto a punto}~\newline~\newline
-Oltre alla modalità standard (asincrona) MPI definisce altre modalità, \textit{bloccanti e non}, di comunicazione per l’invio di un messaggio.\\
-Le seguenti modalità di invio sono \emph{bloccanti} e richiedono come parametri gli stessi richiesti dalla funzione primitiva MPI\_Send:
-\begin{itemize}
-	\item MPI\_Ssend ($\cdots$): questa funzione ritorna solo quando il destinatario ha iniziato a ricevere;
-	\item MPI\_Bsend ($\cdots$): questa funzione ritorna quando i dati sono copiati in un buffer specifico;
-	\item MPI\_Rsend ($\cdots$): da utilizzare solo quando si è certi che il destinatario sia in ascolto.
-\end{itemize}
-Esistono anche modalità di comunicazione \emph{non bloccanti} (di cui viene mostrato lo schema in figura \ref{fig:mpi_non_block_comm}) che vengono descritte dalle seguenti funzioni nel codice \ref{lst:mpi_send_recv_non_blocc}.\\
-\begin{lstlisting}[ 
-label={lst:mpi_send_recv_non_blocc},
-caption={Intestazioni delle comunicazioni non bloccanti MPI}]
-MPI_Isend(void* buf, int count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm, MPI_Request &request)
 
-MPI_Irecv(void* buf, int count, MPI_Datatype datatype, int source, int tag, MPI_Comm comm, MPI_Request &request)
-\end{lstlisting}
-Le funzioni sopracitate ritornano immediatamente, ma la memoria all’indirizzo \textit{buf} non può essere scritta o letta finché non si è certi della conclusione dell’operazione.\\
-Il campo \textit{request} delle due funzioni è un \textit{handle} che permette di verificare e interagire con lo status della richiesta grazie ad opportune funzioni (MPI\_Test e MPI\_Wait).
-\begin{figure}[H]
+Quando si entra in possesso di una library, contenente i barcode degli spot, le coordinate spaziali e i relativi metadati, non è consigliato
+avviare l'analisi dei dati fin da subito, 
+questo perchè i dati di TS contengono anche rumore tecnico e biologico che può mascherare dei pattern in realtà utili, come ad esempio dei geni con profili irregolari.
+Occorre quindi prima di tutto ripulire e ridurre la complessità dei dati prima di poterli analizzare.
+
+\paragraph{Smoothing Spaziale}
+Uno dei primi step per poter poter minimizzare il rumore è applicare un \textit{filtro di media} (Mean Filter),
+ovvero una tecnica per poter sostituire ogni elemento, con la media dei valori dei suoi vicini dato un raggio prestabilito.\cite{Giotto}
+Questo serve per poter ridurre il rumore locale ed evitare variazioni importanti.
+
+Consideriamo un tessuto a due dimensioni, contenente $\mathcal{S}$ spots e $\mathcal{G}$ geni.
+Possiamo denotare con $y_{ij} \in \mathbb{R}$ il livello di espressione genica di un determinato gene $g_i$ nello spot $\mathcal{S}_i$.
+Dalla definizione di matrice di espressione genica $X$ definita precedentemente, possiamo ora definire $\hat{X}$ la matrice ottenuta come output 
+dopo aver applicato la seguente operazione:
+\begin{equation}
+\hat y_{ij} = \sum_{s_k \in \mathcal{N}_r(s_j)} w_{jk} \cdot y_{ik}
+\label{eq:smoothing}
+\end{equation}
+dove $N_r(s_j) = \{ s_k \mid \| s_k - s_j \| \le r,\; s_k \in \mathcal{S} \}$ con raggio $r \in \mathbb{R}$ denota i vicini dello spot $s_j$, e $w_{jk}$ sono i pesi spaziali 
+che soddisfano $\sum_k w_{jk} = 1$.
+
+Per trovare i pesi spaziali poi, viene applicato il filtro di media:
+\begin{equation}
+	w_{jk} = \frac{1}{\mid \mathcal{N}_r(s_j)\mid}
+\label{eq:filtroDiMedia}
+\end{equation}
+dove $\mathcal{N}_r(s_j)$ denota i vicini dello spot $s_j$ entro il raggio $r$, e tutti i vicini contribuiscono in modo equivalente.
+
+\begin{figure}[ht]
 	\centering
-	\includegraphics[width=0.7\textwidth]{immagini/block_on_grid.png}
-	\caption{Schema di una comunicazione non bloccante}
-	\label{fig:mpi_non_block_comm}
-\end{figure}
-\subsubsection{Le comunicazioni collettive}\label{subsubsec:coll_comm}
-Un ultimo tipo di comunicazione messo a disposizione da MPI è la comunicazione collettiva. Una comunicazione collettiva è una comunicazione che riguarda tutti i processi presenti all'interno di uno stesso \textit{communicator} che non interferisce con le comunicazioni \emph{punto-punto} e che non può essere bloccante.\\
-MPI mette a disposizione diverse funzioni per gestire vari tipi di comunicazione collettiva (figura \ref{fig:mpi_collect_comm}):
-\begin{itemize}
-\item \textbf{MPI\_Bcast} per permettere ad un processo di inviare lo stesso messaggio a tutti gli altri;
-\item \textbf{MPI\_Reduce} per permettere ad un processo di suddividere un messaggio tra tutti gli altri;
-\item \textbf{MPI\_Scatter} per far si che tutti i processi inviino un messaggio ad uno stesso nodo;
-\item \textbf{MPI\_Gather} per far si che tutti i processi cooperino per calcolare un risultato da inviare ad uno stesso processo.
-\end{itemize}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.55\textwidth]{immagini/block_on_grid.png}
-\caption{Rappresentazione di alcune comunicazioni collettive}
-\label{fig:mpi_collect_comm}
+	\includegraphics[width=0.8\textwidth]{immagini/spatialSmoothing.png}
+	\caption{Dimostrazione di Smoothing Spaziale}
+	\label{fig:six}
 \end{figure}
 
-\subsection{Il modello hardware per un ambiente MPI}\label{subsubsec:mpi_hw_model}
-Come detto MPI è un'interfaccia per le librerie che si devono occupare di message-passing.\\
-Questo scambio di informazioni è dunque legato ad un ambiente di calcolo parallelo e a una relativa architettura hardware che consente di eseguire uno stesso programma parallelamente su più processori o addirittura su più nodi.\\
-Le varie configurazioni che può avere un ambiente di calcolo parallelo, secondo la tassonomia di Flynn (1986), derivano dalla configurazione hardware e software di due componenti principali del sistema: il \emph{flusso di istruzioni (processi)} e il \emph{flusso di dati}. Le varie configurazioni previste da questa suddivisione sono:
-\begin{itemize}
-	\item \textbf{SISD} (\textit{Single Instruction Single Data}): Architetture dei sistemi seriali, senza quindi, nessun grado di parallelismo (schema in figura \ref{fig:sisd});
-	\item \textbf{SIMD} (\textit{Single Instruction Multiple Data}): Architetture composte da molte unità di elaborazione che eseguono contemporaneamente la stessa istruzione ma lavorano su insiemi di dati diversi (schema in figura \ref{fig:simd});
-	\item \textbf{MISD} (\textit{Multiple Instruction Single Data}): Architetture in cui più flussi di istruzioni lavorano contemporaneamente su un unico flusso di dati (schema in figura \ref{fig:misd}). Questa tipologia di architettura non è stata praticamente mai adottata;
-	\item \textbf{MIMD} (\textit{Multiple Instruction Multiple Data}): Architetture in cui più istruzioni vengono eseguite contemporaneamente su più dati diversi (schema in figura \ref{fig:mimd}). Sotto questa classificazione ricadono i \textit{cluster} di computer e di conseguenza l'ambiente sul quale è stato basato lo sviluppo di questa tesi.
-\end{itemize}
+La figura \ref{fig:six} dimostra come filtro di media attenua le variazioni locali, riducendo i valori e producendo una mappa più omogenea dove i picchi isolati di rumore risultano smussati.
 
-\begin{figure}[H]
-	\centering
-	\begin{subfigure}{.5\textwidth}
-		\centering
-		\includegraphics[width=0.45\linewidth]{immagini/block_on_grid.png}
-		\caption{Architettura SISD\newline}
-		\label{fig:sisd}
-	\end{subfigure}%
-	\begin{subfigure}{.5\textwidth}
-		\centering
-		\includegraphics[width=0.45\linewidth]{immagini/block_on_grid.png}
-		\caption{Architettura MISD\newline}
-		\label{fig:misd}
-	\end{subfigure}
-	\label{fig:test}
-	\begin{subfigure}{.5\textwidth}
-		\centering
-		\includegraphics[width=0.45\linewidth]{immagini/block_on_grid.png}
-		\caption{Architettura SIMD\newline}
-		\label{fig:simd}
-	\end{subfigure}%
-	\begin{subfigure}{.5\textwidth}
-		\centering
-		\includegraphics[width=0.45\linewidth]{immagini/block_on_grid.png}
-		\caption{Architettura MIMD\newline}
-		\label{fig:mimd}
-	\end{subfigure}
-	\caption{Le varie architetture della Tassonomia di Flynn}
-\end{figure}
+\medskip
+\noindent
+In alternativa al filtro di media è possibile utilizzare la \textit{Gaussian Kernel Smoothing}\cite{GaussianKernelSmoothing} per calcololare i pesi spaziali.
+Prima si devono calcolare i pesi non normalizzati usando un Kernel Gaussiano:
+\begin{equation}
+	\widetilde w_{jk} = \frac{1}{\sigma\sqrt{2\pi}}\,
+\exp\!\left(-\,\frac{\lVert s_k - s_j\rVert^{2}}{2\sigma^{2}}\right)
+\label{eq:gaussianKernel}
+\end{equation}
+dove $\sigma$ controlla la portata spaziale di smoothing.
+Dopodichè applichiamo una normalizzazione\footnote{Rendere i pesi comparabili imponendo somma per riga uguale a 1} per ottenere i pesi finali:
+\begin{equation}
+	w_{jk} = \frac{\widetilde{w}_{jk}}{\sum_h \widetilde{w}_{jh}}
+\label{eq:gaussianKernelNormalization}
+\end{equation}
+garantendo che $\sum_k w_{jk} = 1$ per ogni spot $s_j$.
 
-In particolare tra i sistemi MIMD possono distinguersi le architetture a \emph{memoria condivisa} (figura \ref{fig:mem_dist}) o quelle a \emph{memoria distribuita} (figura \ref{fig:mem_cond}).\\
-Nella prima configurazione la memoria è condivisa fisicamente (UMA) o solo logicamente assegnando indirizzi globali alle vari memorie locali (NUMA), permettendo ai vari nodi di lavorare sugli stessi spazi di memoria, evitando quindi di dover gestire le comunicazioni.\\
-Nell'architettura a memoria distribuita, ogni nodo possiede una propria memoria locale che non fa parte dello spazio di indirizzamento degli altri processori e, per regolare l'accesso di un nodo alle risorse che non sono locali, bisogna utilizzare protocolli di comunicazione e scambio dati come, per esempio, quelli descritti da MPI.
-\begin{figure}[H]
-	\centering
-	\begin{subfigure}{0.5\textwidth}
-		\centering
-		\includegraphics[width=0.9\linewidth]{immagini/block_on_grid.png}
-		\caption{Memoria condivisa}
-		\label{fig:mem_cond}
-	\end{subfigure}%
-	\begin{subfigure}{0.5\textwidth}
-		\centering
-		\includegraphics[width=1.0\linewidth]{immagini/block_on_grid.png}
-		\caption{Memoria distribuita}
-		\label{fig:mem_dist}
-	\end{subfigure}
-	\label{fig:mem_cond_dist}
-	\caption{Le due diverse architetture MIMD}
-\end{figure}
+\medskip
+\noindent
+\paragraph{Smoothing Spaziale a due fattori}
+Una alternativa allo smoothing visto sopra è lo \textit{smoothing a due fattori}, ovvero combina i vicini spaziali e la loro somiglianza trascrizionale.
+Usando lo smoothing a due fattori, i dati smussati risultano essere più accurati nelle loro partizioni e interpretazioni biologiche rispetto all'utilizzo di operazioni a un fattore.\cite{smoothingTwoFactors}
+
+Dato $\mathcal{X}_i$ un vettore di espressione genica per uno spot $i$, 
+la sua versione smussata $\mathcal{X}_i'$ può essere calcolata come segue:
+
+\begin{equation}
+\mathcal{X}_{i}' = (1-\alpha)\,\mathcal{X}_{i} + \alpha \left(
+    \beta \frac{\sum_{j \in {N}_s(i)} c^{s}_{ji}\,\mathcal{X}_{j}}
+               {\sum_{k \in {N}_s(i)}\, c_{ki}^s}
+    + (1-\beta) \frac{\sum_{j \in {N}_p(i)} c^{p}_{ji}\,\mathcal{X}_{j}}
+                      {\sum_{k \in {N}_p(i)}\, c_{ki}^p}
+\right).
+\label{eq:smoothingTwoFactors}
+\end{equation}
+Nella equazione \ref{eq:smoothingTwoFactors} ci sono due parametri, $\alpha$ e $\beta$ 

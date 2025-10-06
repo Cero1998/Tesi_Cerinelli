@@ -1,0 +1,200 @@
+\chapter{Nozioni di base}\label{chapter:cap_one}
+Dall'alba dei tempi tutto ciò che circonda l'uomo è stato fonte di curiosità e studio.
+Partendo dall'interesse di tutti i vari aspetti riguardanti l’essere umano e gli organismi viventi,
+con cui ci relazioniamo quotidianamente, si è sviluppata la branca della biologia
+
+L'informatica, invece, la branca della scienza che si occupa dello studio e dell'elaborazione delle informazioni,
+è stata fin da sempre utilizzata come strumento per migliorare la qualità della vita dell'uomo\cite{treccaniInformatica}.
+Dalla prima calcolatrice meccanica, la \textit{Pascalina}, inventata da Blaise Pascal nel 1644\cite{pascal1995pensieri}, 
+alla \textit{Macchina di Turing}, ideata da Alan Turing nel 1943\cite{singh1999codici}, 
+fino ai moderni computer quantistici, l'informatica ha sempre avuto un ruolo fondamentale nell'evoluzione della società umana.
+
+Lo sviluppo di entrambe queste discipline col passare degli anni ha portato ad un'innovazione: la \textit{bioinformatica}.
+La bioinformatica nasce dalla combinazione delle due materie prima elencate in quanto gli scienziati manifestavano
+sempre più l'esigenza di gestire i dati rilevati dalla biologia
+molecolare, questo perchè, spesso, i dati superano le decine di gigabyte e serviva un modo per poter interpretare più facilmente i campioni raccolti.
+Oggi la gran parte delle informazioni bioinformatiche possono essere reperite sul \textit{National
+Center of Biotechnology Information (NCBI)} che fornisce banche dati gratuite e strumenti per la ricerca in biologia molecolare e bioinformatica.\cite{ncbi}
+\section{Gene}\label{sec:cap_one_bioinfo}
+Ogni organismo, eucariote o procariote, pluricellulare o unicellulare che sia, presenta una molecola
+fondamentale che contiene tutte le informazioni necessarie per costituire l'organismo, tale molecola
+è il DNA (acido desossiribonucleico).
+Il DNA è composto da subunità, chiamate nucleotidi\footnote{Il nucleotide è l'unità di base che forma DNA e RNA}, contenenti: un gruppo fosfato, uno zucchero
+pentoso e una base azotata.
+Una specifica sequenza di DNA forma un gene e, l'insieme di tutti i geni, genera il genoma che, oltre
+a racchiudere le informazioni genetiche, presenta anche le parti del DNA che non codificano proteine\footnote{Le proteine sono macromolecole che si formano
+partendo dal DNA e che vanno a costituire i tessuti.}.
+Circa il 30\% del DNA nel genoma umano si trova negli esoni e negli introni. I primi, gli esoni, sono
+sequenze che codificano gli aminoacidi, i quali, vengono espressi in proteine, i secondi, gli introni,
+invece non codificano nessuna proteina. Al giorno d'oggi sappiamo che il genoma umano presenta
+circa 20000 geni che codificano proteine.\cite{principiBiochimica}
+Con il passare degli anni sono stati sequenziati molti genomi, sia di microrganismi che di animali,
+questo perché, l'interesse degli scienziati è quello di andare definire i processi evolutivi degli esseri
+viventi, ma, per ottenere dei risultati, è indispensabile andare a comparare numerosi genomi di
+organismi differenti.
+
+La branca della bioinformatica è molto ampia, per questo, noi ci interesseremo
+principalmente del genoma.
+La bioinformatica ha un ruolo
+fondamentale negli studi della struttura del genoma, per esempio, nell'assemblaggio 
+e annotazione di genomi, o nella caratterizzazione del profilo di espressione genica,
+generando informazioni cruciali per orientare i successivi studi di genomica funzionale, i quali, si avvalgono di una grande varietà di tecniche sperimentali\cite{fondamentiBioinformatica}
+
+Possiamo quindi dire che tutte le
+cellule di un organismo hanno lo stesso genoma, ma
+possono presentare epigenomi e trascrittomi molto
+diversi.
+\subsection{Epigenoma}\label{subsec:epigenomi}
+L'\textit{epigenoma} è una moltitudine di composti chimici e preoteine che regolano il genoma su cosa fare senza cambiare la sequenza del DNA.
+Esso contiene le varie istruzioni per poter costruire le proteine necessarie per svolgere le diverse funzioni della cellula.
+L'epigenoma, poi, può attaccarsi al DNA e impartire diversi comandi, tra cui l'attivazione o la disattivazione di geni, o il controllo della produzione di
+determinate proteine all'interno della cellula stessa.
+
+Un essere umano possiede trilioni
+di cellule distribuite nei tessuti: muscolare, nervoso e
+osseo e, ciascuna delle cellule che compongono i tessuti,
+presenta essenzialmente lo stesso genoma all'interno del
+nucleo\footnote{il nucleo è una struttura subcellulare, presente negli
+eucarioti, che contiene il DNA.}.
+Le differenze tra le cellule sono determinate da come e quando diversi gruppi di geni vengono attivati 
+o disattivati in vari tipi di cellule. Se prendiamo, ad esempio, in
+esame le cellule specializzate nell'occhio, queste attivano
+speciﬁci geni che producono 
+proteine in grado di rilevare la luce, mentre le cellule specializzate nei 
+globuli rossi producono proteine che trasportano l'ossigeno dall'aria al resto del corpo. 
+L'epigenoma quindi controlla molti di questi cambiamenti nel genoma.\cite{genomeGov}
+
+\subsection{Trascrittoma}\label{subsec:trascrittomi}
+Il DNA, non viene utilizzato direttamente per costruire le proteine: prima deve essere trascritto in RNA. 
+Questo processo prende il nome di trascrizione e produce diversi tipi di RNA.
+Il \textit{trascrittoma} rappresenta l'insieme di tutte le molecole di RNA presenti in una cellula in un dato momento.
+
+L'RNA principale è l'RNA messaggero (mRNA) il quale trasporta le istruzioni dai
+geni ai ribosomi dove verranno generate le proteine
+mediante l'attività di sintesi proteica. Nei ribosomi, 
+la sequenza di basi dell'mRNA viene letta e tradotta in catene di amminoacidi.
+Accanto all'mRNA, esistono anche altri tipi di RNA che non codificano proteine ma che svolgono funzioni regolatorie 
+o strutturali, contribuendo a controllare l'attività dei geni e l'organizzazione della cellula.
+Poiché ogni cellula del corpo umano possiede lo stesso patrimonio genetico, 
+ciò che la distingue dalle altre non è il genoma ma l'insieme dei geni che vengono attivati o silenziati. 
+Questo insieme di trascrizioni geniche costituisce il trascrittoma, e varia notevolmente da cellula a cellula 
+e da tessuto a tessuto. Ad esempio, le cellule muscolari esprimono geni che producono proteine contrattili, 
+mentre le cellule nervose attivano geni che permettono la trasmissione dei segnali elettrici.
+
+Il trascrittoma quindi è lo specchio dell'attività del genoma: mostra quali geni sono effettivamente 
+in funzione in un determinato momento e fornisce informazioni preziose sull'identità, 
+lo stato e la salute delle cellule.\cite{genomeGov}
+
+\section{Trascrittomica spaziale}\label{sec:cap_two_bioinfo}
+Come detto in precendenza, il trascrittoma rappresenta l'insieme di tutte le molecole di RNA presenti in una cellula in un dato momento.
+La trascrittomica a singola cellula (scRNA-seq) è diventata essenziale per la ricerca biomedica nell'ultimo decennio, 
+in particolare nello sviluppo della biologia, cancro, immunologia e neuroscienze. 
+
+La maggior parte dei protocolli scRNA-seq disponibili in commercio richiedono che le cellule siano recuperate intatte e vitali dai tessuti. 
+Ciò ha precluso lo studio di molti tipi cellulari e ha in gran parte distrutto il contesto spaziale che altrimenti avrebbe potuto 
+informare le analisi dell'identità e della funzione cellulare. 
+Oggi, un numero crescente di piattaforme disponibili in commercio, 
+consente di mappare l'espressione dell'RNA direttamente sulla struttura del tessuto, 
+mantenendo l'informazione di posizione di ciascun segnale: 
+questo approccio è noto come \textit{trascrittomica spaziale (TS)}.
+La TS produce dati ad alta dimensionalità utili a descrivere l'organizzazione cellulare e i processi biologici direttamente nel tessuto, preservandone la posizione.\cite{trascrittomicaSpazialeIntroduzione}
+
+Una sfida fondamentale nella TS è l'identificazione degli \textit{Spatially Variable Genes (SVGs)}.
+Questi ultimi sono geni la cui espressione varia in modo dipendente dalla posizione nello spazio del tessuto.
+Analizzando lo spazio è possibile scovare pattern non casuali di espressione genica.
+Identificarli è cruciale nelle analisi di TS perché rivela domini tissutali, le quali sono nicchie cellulari e transizioni; 
+In più facilita l'annotazione\footnote{L'assegnazione di etichette biologiche a cluster o spot} e quindi il clustering.\cite{SVGs}
+Oltre agli SVGs esistono anche gli \textit{Highly Variable Genes (HVGs)}, geni, che presentano una variabilità 
+di espressione molto superiore a quanto atteso, nonostante ciò non sono in grado di fornire informazioni spaziali rilevanti.
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=1\textwidth]{immagini/HVG_AND_SVG.png}
+	\caption{HVGs e SVGs a confronto}
+	\label{fig:one}
+\end{figure}
+
+La figura~\ref{fig:one} presenta un confronto tra HVGs e SVp alcuna iGs dato lo stesso Dataset. Si noti come gli HVGs non possiedono alcuna informazione 
+spaziale, in quanto, non presentano alcun tipo di pattern;
+Gli SVGs, al contrario, mostrano una chiara suddivisione in cluster. 
+
+\subsection{Dati e metodi}\label{subsec:datiEMetodi}
+Prendendo in esame un tessuto qualsiasi, questo viene sezionato e diviso in celle più piccole, dette \textit{spot}.
+Uno spot, quindi, non è altro che una posizione pre-definita su una griglia, con un \textit{barcode}\footnote{Una breve sequenza di DNA univoca per ogni spot} che lo identifica.
+Possiamo definire l'insieme dei nostri spots nel seguente modo:  $\mathcal{S}=\{\mathcal{S}_1,\mathcal{S}_2,...,\mathcal{S}_n\}$ dove ogni $\mathcal{S}_i$ è uno spot.
+
+Ogni spot, al suo interno, contiene più cellule. Per questo motivo, ogni spot viene associato ad un vettore di espressione genica che 
+da vita alla matrice $X\in \mathbb{R}^{n\times m}$ dove $n$ è il numero di spot e $m$ il numero di geni.
+Possiamo definire l'insieme dei nostri geni nel seguente modo: $\mathcal{G}=\{g_1,g_2,...,g_m\}$ dove ogni $g_i$ è un gene.
+Di conseguenza si può definire $\mathcal{S}_i \in \mathcal{G}^{m}$ come $\mathcal{S}_i =\{g_1,g_2,...,g_m\}$
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.7\textwidth]{immagini/spot_cubo.png}
+	\caption{Rappresentazione spots e geni}
+	\label{fig:two}
+\end{figure}
+
+La figura ~\ref{fig:two} mostra una rappresentazione grafica degli spot e dei geni all'interno di un tessuto. Ogni cella rappresenta uno spot, mentre ogni colore rappresenta un gene diverso\footnote{Si noti che il colore non è rappresentativo della presenza o meno di quel gene in quello spot}.
+Si può notare che ogni spot $\mathcal{S}_i$, al suo interno, può contenere più geni.
+Inoltre, nella figura d'esempio, si hanno 36 spot diversi e 4 geni, ma ma nella realtà i dati
+sono differenti: gli spot possono arrivare a oltre 3000
+celle e i geni possono superare i 30,000.
+
+L'immagine \ref{fig:two}, tuttavia, presentata una ine sattezza in quanto gli spot non sono disposti su una matrice $n \times n$, bensì hanno una rappresentazione esagonale.
+Questo significa che, dato uno spot $\mathcal{S}_i$, questo presenterà sei spot
+adiacenti, tranne nei casi in cui gli spot sono localizzati ai bordi del tessuto.
+
+Per poter trovare spazialmente uno spot $\mathcal{S}_i$, quindi, occorre assegnare una coordinata $x$ e una coordinata $y$ ad ogni spot, e, una volta creata una matrice \\$[\mathcal{S}_i, <x_i, y_i>]$,
+dove $<x, y>$ indicano le coordinate dello spot, è possibile trovare i 6 vicini attraverso un semplice calcolo.
+Inoltre, per sopperire ad eventuali spazi vuoti nel tessuto, viene calcolata la distanza euclidea tra gli spot, in modo da poter scartare gli spot che altrimenti verrebbero erronamente segnati come vicini.
+
+La figura~\ref{fig:three} mostra una rappresentazione grafica degli spot in un tessuto, con le loro coordinate $x$ e $y$.
+Lo spot preso in esempio, come riferimento, è lo spot con coordinate $x = 2, y = 3$.
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.5\textwidth]{immagini/spotRappresentazioneEsagonale.png}
+	\caption{Rappresentazione spaziale spots}
+	\label{fig:three}
+\end{figure}
+
+\section{Algoritmi per la trascrittomica spaziale}\label{sec:cap_three_bioinfo}
+Esistono già diversi algoritmi per la trascrittomica spaziale, tra cui \textit{Seurat}\cite{Seurat}, \textit{GraphST}\cite{GraphST} e \textit{Giotto}\cite{Giotto}.
+
+\subsection{Seurat}\label{subsec:seurat}
+Seurat originariamente era un tool per l'analisi di dati di scRNA-seq, ma da recenti aggiornamenti possiede strumenti utili all'analisi di dati spaziali.
+Permette funzioni di normalizzazione, identificazione di HVGs e di SVGs, analisi multisezione ed altro.
+Offre anche funzioni per visualizzare sull'immagine tissutale l'espressione dei geni, cluster e l'integrazione fra slices, anche con opzioni per evidenziare contorni cellulari o centroidi.
+
+In sintesi, Seurat, è un tool ben consolidato e ampiamente usato, con buone interfacce e integrazione con l'ecosistema scRNA-seq,
+Tuttavia, non essendo nato per questo scopo, ma essendo stato adattato in seguito, può risultare meno potente di pipeline specializzate.
+
+\subsection{GraphST}\label{subsec:graphst}
+GraphST è un pacchetto più recente, progettato specificamente per dati di trascrittomica spaziale, 
+che sfrutta reti neurali e addestramento self-supervised per integrare informazione spaziale ed espressione genica.
+Lavora attraverso l'utlizzo di grafi non diretti, in cui ogni nodo è uno spot diverso, e gli archi collegano gli spot vicini tra loro in base alle coordinate spaziali.
+Utilizza poi una rete neurale (Graph Neural Network) per apprendere rappresentazioni informative e discriminative negli spot e minimizzandone la distanza dove sono spazialmente adiacenti e viceversa.
+
+Al contrario di Seurat, quindi, GraphST è stato progettato specificamente per dati spaziali, riuscendo ad offrire buone prestazioni rispetto ai competitor.
+Tuttavia richiede diversa attenzione per la costruzione del grafo, ed avendo una rete neurale richiede più risorse computazionali e tempo per l'addestramento rispetto ad altre soluzioni.
+
+\subsection{Giotto}\label{subsec:giotto}
+Giotto è un toolkit open-source scritto in R pensato per l'analisi integrata di dati spaziali, con una serie di moduli per clustering spaziale, rilevamento di domini e interazioni tra cellule.
+Costruisce internamente una “spatial neighborhood network” che connette spot vicini in base alle coordinate fisiche. Il grafo così ottenuto viene poi utilizzato per tutte le analisi spaziali.
+Offre vari metodi di clustering: sia metodi classici basati su espressione, come l'algoritmo k-means, e sia metodi che integrano la struttura spaziale, in particolare un modello basato su Hidden Markov Random Fields (HMRF) che da vita a cluster spazialmente coerenti.
+
+In sostanza Giotto è un toolkit abbastanza completo con molti moduli, incluso il modello HMRF che dà una componente spaziale ben fondata per il clustering.
+Tuttavia non avendo una rete neurale, al contrario di GraphST, potrebbe non cogliere pattern spaziali complessi.
+
+\section{Limiti}\label{sec:cap_four_bioinfo}
+Nonostante i grandi progressi, la trascrittomica spaziale presenta ancora vari colli di bottiglia che ne frenano l'adozione su larga scala, tra cui: costi elevati, 
+bassa risoluzione spaziale, lunghi tempi di risposta e aree di cattura ridotte.
+Inoltre, come detto precedentemente,  idealmente gli identificatori molecolari univoci (UMI) in uno spot misurano l'espressione specifica dello spot, 
+ma spesso questo non avviene nella pratica a causa del sanguinamento dagli spot vicini. Questo fenomento genera un artefatto chiamato spot swapping.
+Ignorare tale problematica può portare a risultati fuorvianti, come l'identificazione errata di SVGs o la sovrastima dell'espressione genica in regioni specifiche del tessuto.
+
+Nonostante ci siano strumenti specializzati per la risoluzione delle problematiche sopracitate, come SpotClean\cite{SpotClean} per rimuovere lo spot swapping, e iSCALE\cite{iSCALE} per poter utilizzare tessuti di grosse dimensioni,
+non esiste ad oggi un algoritmo unico che possa risolvere tutti i problemi della TS.
+Vari benchmark e review scientifiche portano hanno portato alla stessa conclusione: occorre una pipeline modulare, che si possa adattare alle esigenze specifiche di ciascun tessuto.
+
+\medskip
+La TS resta comunque un campo molto recente e nuovi metodi, software e analisi vengono pubblicati ogni mese, perciò non sono da escludere eventuali sviluppi futuri che miglioreranno tale problematica.\cite{limitiTS}

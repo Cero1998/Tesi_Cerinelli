@@ -1,4 +1,4 @@
-\chapter{Nozioni di base}\label{chapter:cap_one}
+\chapter{Concetti generali}\label{chapter:cap_one}
 Dall'alba dei tempi tutto ciò che circonda l'uomo è stato fonte di curiosità e studio.
 Partendo dall'interesse di tutti i vari aspetti riguardanti l’essere umano e gli organismi viventi,
 con cui ci relazioniamo quotidianamente, si è sviluppata la branca della biologia
@@ -117,48 +117,114 @@ La figura~\ref{fig:one} presenta un confronto tra HVGs e SVp alcuna iGs dato lo 
 spaziale, in quanto, non presentano alcun tipo di pattern;
 Gli SVGs, al contrario, mostrano una chiara suddivisione in cluster. 
 
-\subsection{Dati e metodi}\label{subsec:datiEMetodi}
-Prendendo in esame un tessuto qualsiasi, questo viene sezionato e diviso in celle più piccole, dette \textit{spot}.
-Uno spot, quindi, non è altro che una posizione pre-definita su una griglia, con un \textit{barcode}\footnote{Una breve sequenza di DNA univoca per ogni spot} che lo identifica.
-Possiamo definire l'insieme dei nostri spots nel seguente modo:  $\mathcal{S}=\{\mathcal{S}_1,\mathcal{S}_2,...,\mathcal{S}_n\}$ dove ogni $\mathcal{S}_i$ è uno spot.
+\subsection{Casi d'uso}\label{subsec:datiEMetodi}
+Il cancro rimane una sfida significativa per la salute globale. 
+Nonostante i notevoli progressi compiuti negli ultimi decenni, 
+il trattamento del cancro incontra ancora numerosi ostacoli, 
+come la resistenza ai farmaci, la recidiva tumorale e le metastasi.
+Utilizzando tecniche di sequenziamento trascrittomico ad alto rendimento, le RNA-seq, 
+i ricercatori hanno scoperto numerose alterazioni dell'espressione genica specifiche del cancro in diversi tumori. 
+Tuttavia, il sequenziamento dell'RNA in massa non può ottenere informazioni sull'ambiente tumorale e sull'eterogeneità cellulare.\cite{casiUsoTS1}
 
-Ogni spot, al suo interno, contiene più cellule. Per questo motivo, ogni spot viene associato ad un vettore di espressione genica che 
-da vita alla matrice $X\in \mathbb{R}^{n\times m}$ dove $n$ è il numero di spot e $m$ il numero di geni.
-Possiamo definire l'insieme dei nostri geni nel seguente modo: $\mathcal{G}=\{g_1,g_2,...,g_m\}$ dove ogni $g_i$ è un gene.
-Di conseguenza si può definire $\mathcal{S}_i \in \mathcal{G}^{m}$ come $\mathcal{S}_i =\{g_1,g_2,...,g_m\}$
+La successiva comparsa del sequenziamento dell'RNA a singola cellula, la scRNA-seq, 
+ha inaugurato una nuova era che consente lo studio dei trascrittomi a livello di singole cellule, 
+facilitando analisi approfondite dell'eterogeneità cellulare e l'identificazione di diversi tipi cellulari. 
+Tuttavia, come detto in precedenza, l'esecuzione del sequenziamento a singola cellula richiede che le cellule siano dissociate dal tessuto, 
+causando una perdita di informazioni sulla loro posizione spaziale. 
+Poiché la posizione spaziale delle cellule può effettivamente riflettere l'interazione 
+tra le cellule ed è strettamente correlata alle funzioni fisiologiche e patologiche, 
+una nuova tecnologia che collega l'espressione genica alle informazioni sulla posizione spaziale era molto attesa.
+La trascrittomica spaziale rappresenta questa nuova tecnologia, 
+e attraverso il suo utilizzo, 
+è stata ottenuta una comprensione più completa dei meccanismi di inizio 
+e progressione del tumore, offrendo nuove prospettive e opportunità per la diagnosi del cancro e il suo trattamento.
+
+Ad esempio \textit{Beyondcell} è una metodologia progettata per identificare le vulnerabilità ai farmaci 
+utilizzando dati di trascrittomica spaziale. 
+Viene assegnato un punteggio Beyondcell per ogni spot e coppia di farmaci, 
+che va da 0 a 1, che indica la suscettibilità al farmaco. 
+Gli spot vengono quindi classificati in cluster e i punteggi vengono visualizzati 
+per comprendere l'efficacia terapeutica del campione.\cite{Beyondcell} 
+
+\medskip
+Per poter recuperare le varie informazioni riguardati l'espressione genica da un tessuto esistono diversi tipi di approcci.\cite{CasiUsoTS2}
+\paragraph{Approcci basati sulla microdissezione mediante cattura laser}
+La microdissezione a cattura laser (\textit{Laser capture microdissection , LCM}) 
+consente la dissezione accurata di singole cellule da sezioni di tessuto 
+con accurata precisione, fornendo informazioni spaziali.
+
+Come illustrato nella figura \ref{fig:two} il principio di base di questa tecnica è quello di fissare le 
+sezioni di tessuto su vetrini, isolare le aree di interesse dal tessuto 
+utilizzando LCM e mettendole in soluzioni acquose\footnote{Per permettere la reazione enzimatica di ligazione, amplificazione e altre manipolazioni molecolari necessarie nella preparazione della library}, e quindi catturare l'espressione dei geni nel tessuto isolato 
+tramite sequenziamento\footnote{Determinare l'ordine dei nucleotidi in molecole di DNA per identificare e quantificare l'RNA in un campione biologico}.
+Questa insieme di molecole di DNA preparate appositamente prendono il nome di \textit{library}.
+
+Analizzando le informazioni sull'espressione genica da ciascuna cellula o 
+regione separata, è possibile ricostruire la distribuzione spaziale 
+e i profili di espressione genica di singole cellule o regioni 
+all'interno del tessuto.
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=0.7\textwidth]{immagini/spot_cubo.png}
-	\caption{Rappresentazione spots e geni}
+	\includegraphics[width=0.6\textwidth]{immagini/microdissezione.png}
+	\caption{Tecniche di trascrittomica spaziale basate sulla microdissezione a cattura laser}
 	\label{fig:two}
 \end{figure}
 
-La figura ~\ref{fig:two} mostra una rappresentazione grafica degli spot e dei geni all'interno di un tessuto. Ogni cella rappresenta uno spot, mentre ogni colore rappresenta un gene diverso\footnote{Si noti che il colore non è rappresentativo della presenza o meno di quel gene in quello spot}.
-Si può notare che ogni spot $\mathcal{S}_i$, al suo interno, può contenere più geni.
-Inoltre, nella figura d'esempio, si hanno 36 spot diversi e 4 geni, ma ma nella realtà i dati
-sono differenti: gli spot possono arrivare a oltre 3000
-celle e i geni possono superare i 30,000.
+\paragraph{Approcci basati sull'osservazione in situ}
+Gli approcci basati sull'osservazione in situ\footnote{Dal latino: "nel luogo". Significa analizzare direttamente nel tessuto originale} 
+rappresentano tecniche che permettono di osservare direttamente la distribuzione di RNA nel tessuto, 
+senza necessità di estrazione preventiva, mantenendo il contesto spaziale originale. 
+I due metodi più comunemente utilizzati sono l'ibridazione in situ (ISH) e il sequenziamento in situ (ISS).
 
-L'immagine \ref{fig:two}, tuttavia, presentata una inesattezza in quanto gli spot non sono disposti su una matrice $n \times n$, bensì hanno una rappresentazione esagonale.
-Questo significa che, dato uno spot $\mathcal{S}_i$, questo presenterà sei spot
-adiacenti, tranne nei casi in cui gli spot sono localizzati ai bordi del tessuto.
+Con l'ISH, si preparano molecole, chiamate sonde, di RNA che sono complementari agli RNA bersaglio: queste sonde 
+si legano agli RNA nelle cellule o nel tessuto. 
+Le sonde sono marcate con molecole fluorescenti, così da poter essere visualizzate al microscopio. 
+Questo permette di vedere dove e quanto è espresso un certo RNA.
+Tuttavia, queste tecniche richiedono molteplici cicli di ibridazione e osservazione, 
+e possono essere soggette rumore.
 
-Per poter trovare spazialmente uno spot $\mathcal{S}_i$, quindi, occorre assegnare una coordinata $x$ e una coordinata $y$ ad ogni spot, e, una volta creata una matrice \\$[\mathcal{S}_i, <x_i, y_i>]$,
-dove $<x, y>$ indicano le coordinate dello spot, è possibile trovare i 6 vicini attraverso un semplice calcolo.
-Inoltre, per sopperire ad eventuali spazi vuoti nel tessuto, viene calcolata la distanza euclidea tra gli spot, in modo da poter scartare gli spot che altrimenti verrebbero erronamente segnati come vicini.
+Con l'ISS si aggiunge un livello in più: oltre a localizzare l'RNA, se ne legge la sequenza direttamente nel tessuto.
 
-La figura~\ref{fig:three} mostra una rappresentazione grafica degli spot in un tessuto, con le loro coordinate $x$ e $y$.
-Lo spot preso in esempio, come riferimento, è lo spot con coordinate $x = 2, y = 3$.
+\medskip
+\medskip
+\medskip
+\medskip
+\medskip
+\medskip
+\medskip
+\medskip
+\medskip
+\medskip
+\noindent
+Come già detto in precendenza la TS si è rivelata uno strumento rivoluzionario per quanto rigurada la ricerca sul cancro.
+I tumori, non essendo masse uniformi, sono composti da diverse famiglie cellulari con ruoli ben distinti.
+Comprendere spazialmente dove ogni cellula si trova e come interagisce con le cellule vicine è stato fondamentale per rivelare i meccanismi di crescita, progressione e resistenza terapeutica del tumore.
+L'utilizzo di questa tecnologia può facilitare la comprensione dei tipi e degli stati delle 
+cellule che circondano il tumore, nonché delle loro interazioni con le cellule tumorali, 
+rivelando così la complessità del microambiente tumorale (Tumor Microenvironment, TME). 
+Infatti, alcuni studi esistenti hanno mappato i paesaggi di trascrittomica spaziale di vari tumori 
+e hanno confermato il ruolo cruciale del TME nella diagnosi clinica, 
+nella progressione della malattia e nella risposta al trattamento, inclusa l'insorgenza di 
+resistenza al trattamento nei tumori.\cite{CasiUsoTS2}
+
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=0.5\textwidth]{immagini/spotRappresentazioneEsagonale.png}
-	\caption{Rappresentazione spaziale spots}
+	\includegraphics[width=0.8\textwidth]{immagini/tsSulCancro.png}
+	\caption{Applicazione della trascrittomica spaziale nella ricerca sul cancro}
 	\label{fig:three}
 \end{figure}
 
+Il cancro al polmone, ad esempio, è una delle principali cause di morte per cancro a livello globale 
+ed è una malattia complessa con numerosi sottotipi, ognuno dei quali presenta esiti clinici diversi.
+Studi su masse tumorali polmonari, hanno rivelato che i macrofagi\footnote{Cellule immunitarie che uccidono batteri, detriti e cellule danneggiate} non si distribuiscono uniformemente: 
+la loro composizione e posizione cambiano, influenzando il comportamento della malattia e la risposta alle terapie
+Inoltre, l'integrazione tra TS e scRNA-seq ha permesso di identificare cellule rare, transizioni cellulari e 
+sottopopolazioni spazialmente specifiche che altrimenti sarebbero rimaste inosservate.
+
 \section{Algoritmi per la trascrittomica spaziale}\label{sec:cap_three_bioinfo}
-Esistono già diversi algoritmi per la trascrittomica spaziale, tra cui \textit{Seurat}\cite{Seurat}, \textit{GraphST}\cite{GraphST} e \textit{Giotto}\cite{Giotto}.
+Una volta creata la library dei geni, i dati ottenuti vengono elaborati con algoritmi di analisi spaziale.
+Tra i più famosi figurano \textit{Seurat}\cite{Seurat}, \textit{GraphST}\cite{GraphST} e \textit{Giotto}\cite{Giotto}.
 
 \subsection{Seurat}\label{subsec:seurat}
 Seurat originariamente era un tool per l'analisi di dati di scRNA-seq, ma da recenti aggiornamenti possiede strumenti utili all'analisi di dati spaziali.
