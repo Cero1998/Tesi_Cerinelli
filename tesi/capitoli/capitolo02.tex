@@ -195,6 +195,12 @@ Scanpy fornisce inoltre funzioni con velocità elevate che rendono l'analisi di
 data set con più di un milione di cellule e interrogazioni real time nell'ordine di secondi per data set con circa 100,000 cellule.
 Questa moltitudine di funzioni, assieme ad velocità non indifferente, ne hanno favorito l'adozione in molti ambiti di ricerca.\cite{scanPyUsage}
 
+Dal punto di vista della manutenibilità invece, Scanpy è sviluppato nell'mbito del progetto \textit{scverse}, 
+che coordina strumenti fondamentali per l'analisi omica in Python. 
+Questo garantisce linee guida comuni, interoperabilità tra pacchetti e una documentazione unificata, 
+elementi cruciali in contesti accademici e clinici dove la tracciabilità delle analisi è essenziale.\cite{scverse}
+
+\medskip
 \noindent
 Le funzioni della libreria sono organizzate per famiglie:
 \begin{itemize}
@@ -209,18 +215,23 @@ Scanpy offre un'integrazione naturale con i dati 10x Visium tramite
 \texttt{scanpy.read\_visium()}, che carica non solo la matrice di espressione ma anche immagini e coordinate degli spot. 
 la funzione ha la seguente firma:
 
+\begin{center}
+\begin{minipage}{8cm}
 \begin{verbatim}
 scanpy.read_visium(
     path,
-    genome=None,
-    count_file='filtered_feature_bc_matrix.h5',
-    library_id=None,
-    load_images=True,
-    source_image_path=None
+    genome = None,
+    count_file = 'filtered_feature_bc_matrix.h5',
+    library_id = None,
+    load_images = True,
+    source_image_path = None
 	)
 \end{verbatim}
+\end{minipage}
+\end{center}
+
 \noindent
-I vari argomenti della funzione sono i seguenti:
+Gli argomenti della funzione sono i seguenti:
 \begin{itemize}
   \item \texttt{path}: Percorso alla cartella radice che contiene l'output Visium, ovvero il file \texttt{.h5} e la sottocartella \texttt{spatial/}.
   \item \texttt{genome}: Opzionale, è lidentificatore del genoma che si vuole filtrare, se presente nei metadati 10x.
@@ -229,3 +240,32 @@ I vari argomenti della funzione sono i seguenti:
   \item \texttt{load\_images}: Se \texttt{True}, carica le immagini del tessuto.
   \item \texttt{source\_image\_path}: Opzionale, è il percorso alternativo da cui leggere le immagini se non si trovano in \texttt{spatial/}.
 \end{itemize}
+
+\noindent
+La funzione restituisce un oggetto \texttt{AnnData}, una struttura dati che accoppia in modo coerente la matrice di espressione con annotazioni su spot 
+e geni, oltre che a campi dedicati per grafi e metadati.
+\texttt{anndata.X} contiene la matrice \textit{Features}$\times$\textit{Barcodes}, \texttt{anndata.obs} da \textit{Observations} contiene tutti e solo i barcodes degli spot, mentre 
+\texttt{anndata.vars} da \textit{Variables} contiene tutti e solo i geni misurati, con nome, id e tipo.
+Gli oggetti \texttt{AnnData} si possono salvare tramite la funzione \texttt{anndata.write\_h5ad()} e i file così creati hanno estensione \texttt{.h5ad}.
+
+\medskip
+\noindent
+La funzione sopracitata ha la seguente firma:
+\begin{center}
+\begin{minipage}{8cm}
+\begin{verbatim}
+anndata.write_h5ad(
+		filename,
+		compression = hdf5plugin.FILTERS["zstd"]
+	)
+\end{verbatim}
+\end{minipage}
+\end{center}
+
+\noindent
+Con come argomenti: 
+\begin{itemize}
+  \item \texttt{filename}: Il nome del file che si vuole salvare con estensione \texttt{.h5ad}.
+  \item \texttt{compression}: Opzionale, metodi alternativi di compressione del file.
+ \end{itemize}
+
