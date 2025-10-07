@@ -142,9 +142,9 @@ e con Barcodes i vari spot;
 Ogni spot raccoglie RNA da più cellule e i conteggi vengono poi mappati sull'immagine.
 
 
-I file 10x Visium sono in formato \texttt{.h5}, un file specifico pronto per essere elaborato da \texttt{ScanPy} una libreria Python 
+I file 10x Visium sono in formato \texttt{.h5}, un file specifico pronto per essere elaborato da \texttt{ScanPy} una libreria Python\footnote{Linguaggio di programmazione di alto livello, interpretato e open source}
 open-source\footnote{Codice sorgente libero} progettata per l'analisi di dati di trascrittomica.
-Scanpy infatti offre la funzione \texttt{read\_visium()} per importare direttamente le cartelle di output di Space Ranger.
+Scanpy infatti offre la funzione \texttt{sc.read\_visium()} per importare direttamente le cartelle di output di Space Ranger.
 
 Prendendo il file \texttt{.h5} e traducendolo in un file \texttt{.tsv} (Tab-Separated Values) si può osservare una struttura di questo tipo:
 \begin{table}[H]
@@ -174,4 +174,58 @@ AAACACCAATAACTGC-1 & 1 & 59 & 8 & 1960 \\
 \texttt{sum\_gene}: numero totale di geni rilevati.
 \end{minipage}
 
-La tabella \ref{tab:tsvTable} è solo una sezione di cosa contiene davvero il file \texttt{.h5}, nella realtà sono presenti molti più dati.
+La tabella \ref{tab:tsvTable} è solo una sezione di cosa contiene davvero il file \texttt{.h5}, nella realtà sono presenti svariagi gigabyte di dati.
+
+Oltre ai file sopracitati viene fornita anche una cartella chiama \texttt{spatial} contenente immagini ad alta e bassa definizione 
+del tessuto, e il file delle posizioni degli spot chiamato \texttt{tissue\_positions.csv}
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.8\textwidth]{immagini/tissue_hires_image.png}
+	\caption{File che contiene la foto del tessuto: \texttt{tissue\_hires\_image.png}}
+	\label{fig:seven}
+\end{figure}
+
+\section{Scanpy}\label{sec:cap_four_notions}
+Scanpy è un toolkit in Python per l'analisi di dati di espressione genica a singola cellula, 
+progettato per lavorare anche con dataset molto estesi e per integrarsi con l'ecosistema Python. 
+Include metodi per il pre-processing, come filtri su cellule e geni, normalizzazione, identificazione degli HVGs e clustering. 
+
+Scanpy fornisce inoltre funzioni con velocità elevate che rendono l'analisi di 
+data set con più di un milione di cellule e interrogazioni real time nell'ordine di secondi per data set con circa 100,000 cellule.
+Questa moltitudine di funzioni, assieme ad velocità non indifferente, ne hanno favorito l'adozione in molti ambiti di ricerca.\cite{scanPyUsage}
+
+\noindent
+Le funzioni della libreria sono organizzate per famiglie:
+\begin{itemize}
+	\item \texttt{sc.pp.*} rigurda le varie funzioni per il pre-processing.
+	\item \texttt{sc.tl.*} serve per gli strumenti analitici, come clustering o creazione di grafi.
+	\item \texttt{sc.pl.*} infine riguarda le varie funzioni usate per la visualizzazione, con cui è possibile stampare a video delle immagini.
+\end{itemize}
+
+\noindent
+Per la trascrittomica spaziale, 
+Scanpy offre un'integrazione naturale con i dati 10x Visium tramite 
+\texttt{scanpy.read\_visium()}, che carica non solo la matrice di espressione ma anche immagini e coordinate degli spot. 
+la funzione ha la seguente firma:
+
+\begin{verbatim}
+scanpy.read_visium(
+    path,
+    genome=None,
+    count_file='filtered_feature_bc_matrix.h5',
+    library_id=None,
+    load_images=True,
+    source_image_path=None
+	)
+\end{verbatim}
+\noindent
+I vari argomenti della funzione sono i seguenti:
+\begin{itemize}
+  \item \texttt{path}: Percorso alla cartella radice che contiene l'output Visium, ovvero il file \texttt{.h5} e la sottocartella \texttt{spatial/}.
+  \item \texttt{genome}: Opzionale, è lidentificatore del genoma che si vuole filtrare, se presente nei metadati 10x.
+  \item \texttt{count\_file}: Nome del file di 10x Visium contenente i vari dati. Deve essere presente nella cartella inserita in \texttt{path}. Di default ha come nome (\texttt{filtered\_feature\_bc\_matrix.h5} per default.
+  \item \texttt{library\_id}: Opzionale, e l'dentificativo della libreria Visium. Risulta utile quando occorre concatenare più librerie.
+  \item \texttt{load\_images}: Se \texttt{True}, carica le immagini del tessuto.
+  \item \texttt{source\_image\_path}: Opzionale, è il percorso alternativo da cui leggere le immagini se non si trovano in \texttt{spatial/}.
+\end{itemize}
