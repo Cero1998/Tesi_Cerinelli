@@ -1,7 +1,7 @@
 \chapter{Nozioni di base}\label{chapter:cap_one_notions}
 Prendendo in esame un tessuto qualsiasi, questo viene sezionato e diviso in celle più piccole, dette \textit{spot}.
 Uno spot, quindi, non è altro che una posizione pre-definita su una griglia, con un \textit{barcode}\footnote{Una breve sequenza di DNA univoca per ogni spot} che lo identifica.
-In genere ogni spot ha un diametro di circa $\qty{55}{\micro\meter}$ e con una distanza da spot a spot di circa $\qty{100}{\micro\meter}$.\cite{spotDiameter}
+In genere ogni spot ha un diametro di circa $\qty{55}{\micro\meter}$ e con una distanza da spot a spot di circa $\qty{100}{\micro\meter}$\cite{spotDiameter}.
 
 Possiamo definire l'insieme dei nostri spots nel seguente modo:  
 \begin{equation}
@@ -60,10 +60,10 @@ Occorre quindi prima di tutto ripulire e ridurre la complessità dei dati prima 
 
 \medskip
 Uno dei primi step per poter poter minimizzare il rumore è applicare un \textit{filtro di media} (Mean Filter),
-ovvero una tecnica per poter sostituire ogni elemento, con la media dei valori dei suoi vicini dato un raggio prestabilito.\cite{Giotto}
+ovvero una tecnica per poter sostituire ogni elemento, con la media dei valori dei suoi vicini dato un raggio prestabilito\cite{Giotto}.
 Questo serve per poter ridurre il rumore locale ed evitare variazioni importanti.
 
-Consideriamo un tessuto a due dimensioni, contenente $\mathcal{S}$ spots e $\mathcal{G}$ geni.
+Considerando un tessuto a due dimensioni, contenente $\mathcal{S}$ spots e $\mathcal{G}$ geni.
 Possiamo denotare con $y_{ij} \in \mathbb{R}$ il livello di espressione genica di un determinato gene $g_i$ nello spot $\mathcal{S}_i$.
 Dalla definizione di matrice di espressione genica $X$ definita precedentemente, possiamo ora definire $\hat{X}$ la matrice ottenuta come output 
 dopo aver applicato la seguente operazione:
@@ -81,15 +81,6 @@ Per trovare i pesi spaziali poi, viene applicato il filtro di media:
 \end{equation}
 dove $\mathcal{N}_r(s_j)$ denota i vicini dello spot $s_j$ entro il raggio $r$, e tutti i vicini contribuiscono in modo equivalente.
 
-\begin{figure}[ht]
-	\centering
-	\includegraphics[width=0.8\textwidth]{immagini/spatialSmoothing.png}
-	\caption{Dimostrazione di Smoothing Spaziale}
-	\label{fig:six}
-\end{figure}
-
-La figura \ref{fig:six} dimostra come filtro di media attenua le variazioni locali, riducendo i valori e producendo una mappa più omogenea dove i picchi isolati di rumore risultano smussati.
-
 \medskip
 \noindent
 In alternativa al filtro di media è possibile utilizzare la \textit{Gaussian Kernel Smoothing}\cite{GaussianKernelSmoothing} per calcololare i pesi spaziali.
@@ -100,18 +91,28 @@ Prima si devono calcolare i pesi non normalizzati usando un Kernel Gaussiano:
 \label{eq:gaussianKernel}
 \end{equation}
 dove $\sigma$ controlla la portata spaziale di smoothing.
-Dopodichè applichiamo una normalizzazione\footnote{Dividere tutti i termini di un'espressione per uno stesso fattore in modo che l'espressione risultante abbia una certa norma uguale a 1.} per ottenere i pesi finali:
+Dopodichè andremo ad applicare una normalizzazione\footnote{Dividere tutti i termini di un'espressione per uno stesso fattore in modo che l'espressione risultante abbia una certa norma uguale a 1.} per ottenere i pesi finali:
 \begin{equation}
 	w_{jk} = \frac{\widetilde{w}_{jk}}{\sum_h \widetilde{w}_{jh}}
 \label{eq:gaussianKernelNormalization}
 \end{equation}
 garantendo che $\sum_k w_{jk} = 1$ per ogni spot $s_j$.
 
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.8\textwidth]{immagini/spatialSmoothing.png}
+	\caption{Dimostrazione di Smoothing Spaziale}
+	\label{fig:six}
+\end{figure}
+
+La figura \ref{fig:six} dimostra come filtro di media attenua le variazioni locali, riducendo i valori e producendo una mappa più omogenea dove i picchi isolati di rumore risultano smussati.
+
+
 \medskip
 \noindent
 \paragraph{Smoothing Spaziale a due fattori}
-Una alternativa allo smoothing visto sopra è lo \textit{smoothing a due fattori}, ovvero combina i vicini spaziali e la loro somiglianza trascrizionale, ovvero i pattern.
-Usando lo smoothing a due fattori, i dati smussati risultano essere più accurati nelle loro partizioni e interpretazioni biologiche rispetto all'utilizzo di operazioni a un fattore.\cite{smoothingTwoFactors}
+Un'altra variante allo smoothing visto sopra è lo \textit{smoothing a due fattori}, che combina i vicini spaziali e la loro somiglianza trascrizionale, ovvero i pattern.
+Usando lo smoothing a due fattori, i dati smussati risultano essere più accurati nelle loro partizioni e interpretazioni biologiche rispetto all'utilizzo di operazioni a un fattore\cite{smoothingTwoFactors}.
 
 Dato $\mathcal{X}_i$ un vettore di espressione genica per uno spot $i$, 
 la sua versione smussata $\mathcal{X}_i'$ può essere calcolata come segue:
