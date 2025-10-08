@@ -14,8 +14,24 @@
 \usepackage{footmisc}
 \usepackage{xcolor}
 \usepackage{siunitx}
-\usepackage{minted} % evidenziazione via Pygments
-\usemintedstyle{friendly}
+\usepackage{listings}
+\usepackage{xcolor}
+
+% Stile Python
+\lstdefinestyle{mypython}{
+  language=Python,
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue},
+  commentstyle=\itshape\color{gray},
+  stringstyle=\color{teal},
+  showstringspaces=false,
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  stepnumber=1,
+  breaklines=true,
+  frame=single,
+  tabsize=4
+}
 
 %%%%% THESIS / TITLE PAGE INFORMATION
 % Everybody needs to complete the following:

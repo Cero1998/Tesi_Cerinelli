@@ -269,3 +269,19 @@ Con come argomenti:
   \item \texttt{compression}: Opzionale, metodi alternativi di compressione del file.
  \end{itemize}
 
+Un esempio completo di un programma scritto in linguaggio Python con lettura dei dati 10x Visium attraverso Scanpy e 
+relativo salvataggio di AnnData in formato \texttt{.h5ad} è il seguente:
+
+\begin{lstlisting}[style=mypython]
+import scanpy as sc
+
+def load_data():
+    
+    adata_gene_expression = sc.read_visium("1.DLPFC/151673", count_file="filtered_feature_bc_matrix.h5", load_images=True)
+    
+    return adata_gene_expression
+
+annData = load_data()
+
+annData.write_h5ad(filename="processed_adata")
+\end{lstlisting}
