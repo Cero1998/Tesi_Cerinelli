@@ -1,5 +1,5 @@
 \chapter{Concetti generali}\label{chapter:cap_one}
-Dall'alba dei tempi tutto ciò che circonda l'uomo è stato fonte di curiosità e studio.
+Da sempre tutto ciò che circonda l'uomo è stato fonte di curiosità e studio.
 Partendo dall'interesse di tutti i vari aspetti riguardanti l’essere umano e gli organismi viventi,
 con cui ci relazioniamo quotidianamente, si è sviluppata la branca della biologia
 
@@ -117,34 +117,6 @@ La figura~\ref{fig:one} presenta un confronto tra HVGs e SVp alcuna iGs dato lo 
 spaziale, in quanto, non presentano alcun tipo di pattern;
 Gli SVGs, al contrario, mostrano una chiara suddivisione in cluster. 
 
-\subsection{Casi d'uso}\label{subsec:datiEMetodi}
-Il cancro rimane una sfida significativa per la salute globale. 
-Nonostante i notevoli progressi compiuti negli ultimi decenni, 
-il trattamento del cancro incontra ancora numerosi ostacoli, 
-come la resistenza ai farmaci, la recidiva tumorale e le metastasi.
-Utilizzando tecniche di sequenziamento trascrittomico ad alto rendimento, le RNA-seq, 
-i ricercatori hanno scoperto numerose alterazioni dell'espressione genica specifiche del cancro in diversi tumori. 
-Tuttavia, il sequenziamento dell'RNA in massa non può ottenere informazioni sull'ambiente tumorale e sull'eterogeneità cellulare\cite{casiUsoTS1}.
-
-La successiva comparsa del sequenziamento dell'RNA a singola cellula, la scRNA-seq, 
-ha inaugurato una nuova era che consente lo studio dei trascrittomi a livello di singole cellule, 
-facilitando analisi approfondite dell'eterogeneità cellulare e l'identificazione di diversi tipi cellulari. 
-Tuttavia, come detto in precedenza, l'esecuzione del sequenziamento a singola cellula richiede che le cellule siano dissociate dal tessuto, 
-causando una perdita di informazioni sulla loro posizione spaziale. 
-Poiché la posizione spaziale delle cellule può effettivamente riflettere l'interazione 
-tra le cellule, ed è strettamente correlata alle funzioni fisiologiche e patologiche, 
-una nuova tecnologia che collega l'espressione genica alle informazioni sulla posizione spaziale è stata molto attesa.
-La trascrittomica spaziale rappresenta questa nuova tecnologia, 
-e attraverso il suo utilizzo, 
-è stata ottenuta una comprensione più completa dei meccanismi di inizio 
-e progressione del tumore, offrendo nuove prospettive e opportunità per la diagnosi del cancro e il suo trattamento.
-
-Ad esempio \textit{Beyondcell} è una metodologia progettata per identificare le vulnerabilità ai farmaci 
-utilizzando dati di trascrittomica spaziale. 
-Viene assegnato un punteggio Beyondcell per ogni spot e coppia di farmaci, 
-che va da 0 a 1, il quale indica la suscettibilità al farmaco. 
-Gli spot vengono quindi classificati in cluster e i punteggi vengono visualizzati 
-per comprendere l'efficacia terapeutica del campione\cite{Beyondcell}.
 
 \medskip
 Per poter recuperare le varie informazioni riguardanti l'espressione genica di un tessuto esistono diversi tipi di approcci\cite{CasiUsoTS2}.
@@ -185,18 +157,39 @@ e possono essere soggette a rumore\footnote{Forma di disturbo che si aggiunge al
 
 Con l'ISS si aggiunge un livello in più: l'RNA viene localizzato e ne viene letta la sequenza direttamente nel tessuto.
 
-\medskip
-\medskip
-\medskip
-\medskip
-\medskip
-\medskip
-\medskip
-\medskip
+\subsection{Casi d'uso}\label{subsec:datiEMetodi}
+Ad oggi il cancro rimane una sfida significativa per la salute globale. 
+Nonostante i notevoli progressi compiuti negli ultimi decenni, 
+il trattamento del cancro incontra ancora numerosi ostacoli, 
+come la resistenza ai farmaci, la recidiva tumorale e le metastasi.
+Utilizzando tecniche di sequenziamento trascrittomico ad alto rendimento, le RNA-seq, 
+i ricercatori hanno scoperto numerose alterazioni dell'espressione genica specifiche del cancro in diversi tumori. 
+Tuttavia, il sequenziamento dell'RNA in massa non può ottenere informazioni sull'ambiente tumorale e sull'eterogeneità cellulare\cite{casiUsoTS1}.
+
+La successiva comparsa del sequenziamento dell'RNA a singola cellula, la scRNA-seq, 
+ha inaugurato una nuova era che consente lo studio dei trascrittomi a livello di singole cellule, 
+facilitando analisi approfondite dell'eterogeneità cellulare e l'identificazione di diversi tipi cellulari. 
+Tuttavia, come detto in precedenza, l'esecuzione del sequenziamento a singola cellula richiede che le cellule siano dissociate dal tessuto, 
+causando una perdita di informazioni sulla loro posizione spaziale. 
+Poiché la posizione spaziale delle cellule può effettivamente riflettere l'interazione 
+tra le cellule, ed è strettamente correlata alle funzioni fisiologiche e patologiche, 
+una nuova tecnologia che collega l'espressione genica alle informazioni sulla posizione spaziale è stata molto attesa.
+La trascrittomica spaziale rappresenta questa nuova tecnologia, 
+e attraverso il suo utilizzo, 
+è stata ottenuta una comprensione più completa dei meccanismi di inizio 
+e progressione del tumore, offrendo nuove prospettive e opportunità per la diagnosi di malattie e il loro trattamento.
+
+Ad esempio \textit{Beyondcell} è una metodologia progettata per identificare le vulnerabilità ai farmaci 
+utilizzando dati di trascrittomica spaziale. 
+Viene assegnato un punteggio Beyondcell per ogni spot e coppia di farmaci, 
+che va da 0 a 1, il quale indica la suscettibilità al farmaco. 
+Gli spot vengono quindi classificati in cluster e i punteggi vengono visualizzati 
+per comprendere l'efficacia terapeutica del campione\cite{Beyondcell}.
+
 \medskip
 \medskip
 \noindent
-Come già annunciato in precendenza la TS si è rivelata uno strumento rivoluzionario per quanto rigurada la ricerca sul cancro.
+Come già annunciato in precendenza la TS si è quindi rivelata uno strumento rivoluzionario per quanto rigurada la ricerca sul cancro.
 I tumori, non essendo masse uniformi, sono composti da diverse famiglie cellulari con ruoli ben distinti.
 Comprendere spazialmente dove ogni cellula si trova e come interagisce con le cellule vicine è stato fondamentale per rivelare i meccanismi di crescita, progressione e resistenza terapeutica del tumore.
 L'utilizzo di questa tecnologia può facilitare la comprensione dei tipi e degli stati delle 
@@ -223,7 +216,7 @@ sottopopolazioni spazialmente specifiche che altrimenti sarebbero rimaste inosse
 
 \section{Algoritmi per la trascrittomica spaziale}\label{sec:cap_four_bioinfo}
 Una volta creata la library dei geni, i dati ottenuti vengono elaborati con algoritmi di analisi spaziale.
-Tra i più famosi figurano \textit{Seurat}\cite{Seurat}, \textit{GraphST}\cite{GraphST} e \textit{Giotto}\cite{Giotto}.
+Tra i più famosi figurano \textit{Seurat}\cite{Seurat}, \textit{GraphST}\cite{GraphST}, \textit{Giotto}\cite{Giotto}, \textit{GIST}\cite{GIST} e \textit{Stardust}\cite{Stardust}.
 
 \subsection{Seurat}\label{subsec:seurat}
 Seurat originariamente era un tool per l'analisi di dati di scRNA-seq, ma da recenti aggiornamenti possiede strumenti utili all'analisi di dati spaziali.
@@ -250,6 +243,44 @@ Questo toolkit offre vari metodi di clustering: sia classici basati su espressio
 Riassumendo Giotto è un toolkit abbastanza completo con molti moduli, incluso il modello HMRF che dà una componente spaziale ben fondata per il clustering.
 Tuttavia non avendo una rete neurale, al contrario di GraphST, potrebbe non cogliere pattern spaziali complessi.
 
+\subsection{GIST}\label{subsec:GIST}
+GIST (Graph Information for Spatial Transcriptomics) rappresenta un avanzamento significativo 
+nel campo della trascrittomica spaziale, 
+proponendo un approccio basato su reti neurali (le stesse usate da GraphSt\ref{subsec:graphst}) per migliorare 
+l'identificazione dei domini spaziali all'interno di tessuti biologici.
+Nella TS la corretta delimitazione dei domini spaziali 
+rimane una sfida computazionale complessa: 
+nonostante i notevoli progressi ottenuti, manca ancora un vero e 
+proprio standard di riferimento universalmente riconosciuto.
+
+In tale contesto, GIST propone una soluzione innovativa che 
+combina i dati di espressione genica con le coordinate spaziali, 
+costruendo una rappresentazione grafica del tessuto che riflette 
+la sua struttura biologica reale. 
+Il modello sfrutta le potenzialità delle reti neurali per 
+modellare in modo esplicito le dipendenze spaziali tra gli spot, 
+utilizzando un approccio di apprendimento contrastivo per ottimizzare le 
+rappresentazioni dei nodi nel grafo. 
+Questo consente di catturare con maggiore accuratezza le 
+relazioni locali e globali tra le regioni del tessuto, 
+migliorando in modo significativo l'identificazione dei domini.
+
+Dal punto di vista delle prestazioni, GIST mostra 
+risultati migliori rispetto ai metodi esistenti 
+in termini di metriche di clustering, 
+come l'\textit{Adjusted Rand Index} (ARI), 
+evidenziando la sua capacità di riprodurre in modo più fedele 
+la struttura intrinseca dei dati trascrittomici spaziali. 
+Inoltre, gli autori introducono una nuova metrica di valutazione, 
+la \textit{Silhouette Spatial Score} (SSS), 
+che incorpora l'informazione spaziale degli spot vicini per 
+valutare simultaneamente la coerenza trascrittomica e 
+la contiguità spaziale dei domini individuati.
+
+Nel complesso, GIST si distingue per la capacità di 
+identificare domini che non solo risultano avere espressione genica simile, 
+ma risultano anche coerenti dal punto di vista spaziale, 
+offrendo così un modello robusto per l'analisi dei tessuti.
 \section{Limiti}\label{sec:cap_five_bioinfo}
 Nonostante i grandi progressi, la trascrittomica spaziale presenta ancora vari problemi che ne frenano l'adozione su larga scala, tra cui: costi elevati, 
 bassa risoluzione spaziale, lunghi tempi di risposta e aree di cattura ridotte.
