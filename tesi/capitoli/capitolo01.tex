@@ -113,12 +113,64 @@ di espressione molto superiore a quanto atteso, nonostante ciò non sono in grad
 	\label{fig:one}
 \end{figure}
 
-La figura~\ref{fig:one} presenta un confronto tra HVGs e SVp alcuna iGs dato lo stesso Dataset. Si noti come gli HVGs non possiedono alcuna informazione 
+La figura~\ref{fig:one} presenta un confronto tra HVGs e SVGs dato lo stesso Dataset. Si noti come gli HVGs non possiedono alcuna informazione 
 spaziale, in quanto, non presentano alcun tipo di pattern;
 Gli SVGs, al contrario, mostrano una chiara suddivisione in cluster. 
 
+\subsection{HVGs}\label{sec:HVGs}
+Come introdotto precedentemente, nell'ambito dell'analisi trascrittomica, 
+la selezione dei geni più informativi è un passaggio cruciale per ridurre la 
+dimensionalità del dato e concentrare l'attenzione sui segnali biologicamente rilevanti.
+Nel contesto degli HVGs, tali geni sono quelli la cui espressione 
+mostra una variabilità molto maggiore di quella attesa sulla base del rumore tecnico 
+e della media di espressione, e vengono considerati indicatori di eterogeneità biologica\cite{HVGS}.
 
-\medskip
+Dal punto di vista formale, in un dataset di espressione genica 
+si valuta la dispersione di ciascun gene, eventualmente corretta 
+per la relazione tra media e varianza che naturalmente sussiste. 
+Le tecniche di identificazione degli HVGs includono modelli statistici, come ad esempio la 
+regressione della varianza stimata sulla media, o trasformazioni che stabilizzano la varianza, 
+con lo scopo di evidenziare quei geni che, rispetto alla media, mostrano una variabilità insolita\cite{HVGS2}.
+Nel caso della trascrittomica spaziale la selezione di HVGs è un passo preliminare 
+molto utile per filtrare i geni che più variano globalmente, in modo da ridurre il 
+rumore e concentrarsi su geni potenzialmente interessanti. 
+Tuttavia, come detto precedentemente, è fondamentale sottolineare che gli HVGs 
+non portano alcuna informazione spaziale: 
+la loro selezione si basa esclusivamente sulla variabilità trascrittomica complessiva, 
+senza considerare la disposizione spaziale degli spot.
+Questo significa che un gene può essere altamente variabile, in termini di espressione genica, 
+ma non mostrare alcun pattern spaziale. 
+Pertanto, pur essendo utili per filtrare il dataset, gli HVGs da soli non sono sufficienti 
+per definire domini spaziali o per evidenziare nicchie cellulari legate alla morfologia 
+o all'organizzazione tessutale.
+
+Dal punto di vista pratico invece, l'utilizzo degli HVGs usati come base per l'analisi 
+riduce il numero di geni considerati nei passaggi successivi, 
+migliorando l'efficienza computazionale e la stabilità dei modelli. 
+In molti workflow, gli HVGs assumono quindi un ruolo di filtro. 
+Alcuni studi recenti hanno anche confrontato decine di metodi di selezione di HVGs, 
+evidenziando che la scelta del metodo può influire significativamente su tutto il lavoro successivo 
+alla selezione di questi ultimi\cite{HVGS3}.
+
+\subsection{SVGs}\label{sec:SVGs}
+Gli SVGs sono quei geni la cui espressione genica mostra variazioni 
+dipendenti dalla posizione spaziale all'interno del tessuto: 
+non semplicemente differenze aggregate tra cellule, ma pattern spaziali che riflettono 
+l'architettura del tessuto preso in esame e le nicchie microambientali. 
+L'identificazione degli SVGs è fondamentale perché consente di mettere in 
+luce regioni tissutali con specifici profili molecolari, 
+facilitando la comprensione della morfologia funzionale del tessuto.
+
+Al contrario degli HVGs, gli SVGs implicano che la variabilità rilevante è correlata 
+con la disposizione spaziale degli spot. 
+In altre parole, un gene è SVG se non solo mostra variabilità, ma la sua intensità è anche 
+spazialmente correlata ai suoi vicini: essi infatti tendono ad avere valori simili, 
+generando così dei pattern.
+Non tutti gli HVG presentano variabilità spaziale: alcuni potrebbero variare randomicamente nel tessuto, 
+senza rispettare uno schema spaziale rilevante. 
+Viceversa, un gene con espressione moderata può essere un SVG se mostra 
+un pattern spaziale forte e coerente\cite{SVGS1}.
+\subsection{Ottenimento dei dati}\label{sec:OttenimentoDatiTS}
 Per poter recuperare le varie informazioni riguardanti l'espressione genica di un tessuto esistono diversi tipi di approcci\cite{CasiUsoTS2}.
 \paragraph{Approcci basati sulla microdissezione mediante cattura laser}
 La microdissezione a cattura laser (\textit{Laser capture microdissection , LCM}) 
@@ -259,7 +311,7 @@ costruendo una rappresentazione grafica del tessuto che riflette
 la sua struttura biologica reale. 
 Il modello sfrutta le potenzialità delle reti neurali per 
 modellare in modo esplicito le dipendenze spaziali tra gli spot, 
-utilizzando un approccio di apprendimento contrastivo per ottimizzare le 
+utilizzando un approccio di apprendimento contrastivo\footnote{Il modello impara confrontando coppie di esempi} per ottimizzare le 
 rappresentazioni dei nodi nel grafo. 
 Questo consente di catturare con maggiore accuratezza le 
 relazioni locali e globali tra le regioni del tessuto, 
@@ -268,11 +320,11 @@ migliorando in modo significativo l'identificazione dei domini.
 Dal punto di vista delle prestazioni, GIST mostra 
 risultati migliori rispetto ai metodi esistenti 
 in termini di metriche di clustering, 
-come l'\textit{Adjusted Rand Index} (ARI), 
+come l'\textit{Adjusted Rand Index}\footnote{Indica quanto bene sono stati raggruppati gli elementi dato un riferimento} (ARI), 
 evidenziando la sua capacità di riprodurre in modo più fedele 
 la struttura intrinseca dei dati trascrittomici spaziali. 
 Inoltre, gli autori introducono una nuova metrica di valutazione, 
-la \textit{Silhouette Spatial Score} (SSS), 
+la \textit{Silhouette Spatial Score} (SSS), una estensione della Silhouette Score\footnote{Indica quanto bene sono stati raggruppati gli elementi in base ai dati disponibili}, 
 che incorpora l'informazione spaziale degli spot vicini per 
 valutare simultaneamente la coerenza trascrittomica e 
 la contiguità spaziale dei domini individuati.
@@ -281,6 +333,39 @@ Nel complesso, GIST si distingue per la capacità di
 identificare domini che non solo risultano avere espressione genica simile, 
 ma risultano anche coerenti dal punto di vista spaziale, 
 offrendo così un modello robusto per l'analisi dei tessuti.
+\subsection{Stardust}\label{subsec:Stardust}
+Stardust è basato sull'algoritmo Seurat e ha come obiettivo quello di migliorare l'analisi dei dati di trascrittomica spaziale 
+concentrandosi in particolare sulla fase di clustering, 
+ovvero sulla suddivisione degli spot del tessuto in domini omogenei. 
+L'innovazione principale di Stardust consiste nell'integrare in modo flessibile le informazioni di espressione genica con quelle spaziali, 
+consentendo all'utente di modulare quanto peso dare allo spazio nella definizione delle similarità tra gli spot. 
+In alternativa, ne esiste anche una versione automatica, Stardust*,
+che calibra dinamicamente il contributo spaziale basandosi sulla distribuzione delle distanze di espressione.
+
+Come misura principale di valutazione viene adottato il \textit{Cell Stability Score} (CSS), che quantifica la stabilità\footnote{tendenza che uno spot mantenga il proprio clustering anche sotto perturbazioni del dataset} 
+degli spot e il coefficiente di variazione della distribuzione dei CSS, dove un valore più basso indica performance più stabili e omogenee.
+Inoltre, per valutare la coerenza dei cluster ottenuti, viene calcolato l'indice di autocorrelazione spaziale \textit{Moran's I} per ogni gene nei cluster, 
+verificando che i geni con elevata autocorrelazione fossero localizzati all'interno delle stesse regioni spaziali.
+
+Moran's I viene definito come segue:
+\begin{equation}
+	I = \frac{n}{W} \cdot 
+\frac{
+    \sum_{i=1}^{n} \sum_{j=i}^{n} w_{i,j} z_i z_j
+}{
+    \sum_{i=1}^{n} z_i^2
+}
+\end{equation}
+dove $z_i$ indica la deviazione del gene dalla media, $w_{i,j}$ è il peso spaziale tra gli spots, $n$ indica il numero di spots e infine $W$ indica la somma di tutti i $w_{i,j}$.
+
+I risultati mostrano che, in molti casi, l'inclusione dell'informazione spaziale 
+tramite Stardust o Stardust* migliora significativamente la stabilità del clustering 
+rispetto a metodi che non la considerano, e raggiunge prestazioni competitive rispetto 
+alle altre tecniche che già sfruttano aspetti spaziali.
+In sintesi, Stardust propone un compromesso fra informazione trascrittomica e 
+informazione spaziale nel clustering dei dati di trascrittomica spaziale, 
+offrendo uno strumento relativamente semplice da usare.
+
 \section{Limiti}\label{sec:cap_five_bioinfo}
 Nonostante i grandi progressi, la trascrittomica spaziale presenta ancora vari problemi che ne frenano l'adozione su larga scala, tra cui: costi elevati, 
 bassa risoluzione spaziale, lunghi tempi di risposta e aree di cattura ridotte.
