@@ -170,6 +170,21 @@ Non tutti gli HVG presentano variabilità spaziale: alcuni potrebbero variare ra
 senza rispettare uno schema spaziale rilevante. 
 Viceversa, un gene con espressione moderata può essere un SVG se mostra 
 un pattern spaziale forte e coerente\cite{SVGS1}.
+
+Selezionare gli SVGs validi non è un compito facile, diversi algoritmi possono 
+produrre set di SVGs molto diversi tra loro nonostante condividano lo stesso dataset.
+Inoltre, l'accuratezza degli SVGs identificati spesso dipende dalla qualità del 
+clustering dei domini sottostanti: se i domini spaziali sono mal definiti, 
+anche gli SVGs risultati possono essere meno affidabili.
+Uno studio ha analizzato e classificato i 14 algoritmi tra i più diffusi utilizzando 60 dataset diversi per cercare di coprire 
+tutte le casistiche possibili. Con questa varietà di dataset è stato possibile testare robustezza, sensibilità, specificità e 
+scalabilità di ciascun metodo in condizioni realistiche.
+Ma il confronto ha dimostrato che non esiste un metodo universalmente superiore, 
+e che la scelta ottimale dipende dalla natura del dataset, 
+dal livello di rumore, dalla risoluzione spaziale e dalle esigenze analitiche 
+downstream\footnote{Quello che occorre nel resto della ricerca}, 
+come il clustering o la ricostruzione delle reti geniche spaziali\cite{SVGS2}.
+
 \subsection{Ottenimento dei dati}\label{sec:OttenimentoDatiTS}
 Per poter recuperare le varie informazioni riguardanti l'espressione genica di un tessuto esistono diversi tipi di approcci\cite{CasiUsoTS2}.
 \paragraph{Approcci basati sulla microdissezione mediante cattura laser}
