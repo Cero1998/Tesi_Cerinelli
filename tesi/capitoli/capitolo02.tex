@@ -459,4 +459,78 @@ Il codice Python per poter calcolare relativi BIC e Knee Point è il seguente:
 	k    = find_knee(x, bics, plt.gca())
 \end{lstlisting}
 
-Una volta ottenuta $k$, si può creare la maschera binaria di quel gene
+Una volta ottenuta la $k$ ottimale tramite il Knee Point, si può creare la
+maschera binaria per il gene in esame. 
+La maschera binaria identifica, per ogni spot, se il gene è espresso (1) oppure no (0), 
+in base alla soglia determinata dal modello Gaussian Mixture.
+Il procedimento è il seguente:
+\begin{enumerate}
+	\item Si allena il modello GaussianMixture con $k$ componenti sul vettore di espressione genica smussato.
+	\item Si assegna ogni spot alla componente gaussiana con la media più alta, presenza del gene, oppure più bassa, assenza.
+	\item Si crea la maschera binaria: 1 se lo spot appartiene alla componente con media maggiore, 0 altrimenti.
+\end{enumerate}
+
+Questo procedimento mi porterà ad avere un array, di lunghezza \texttt{len($n_{\text{spots}}$)} in cui avrò valore 1 se il gene risulta presente nello spot $s_i$, oppure 0,  con $1 \le i \le s_n$.
+\newpage
+Il codice per generare la maschera binaria è il seguente:
+\begin{lstlisting}[style=mypython,label=code:binaryMask,caption={Funzioni per ottenere le machere binarie una volta ottenuta la k del Knee Point}]
+	def fit_MoG(gdata, k):
+		data = gdata.reshape(-1, 1)
+		gmm  = GaussianMixture(n_components=k,
+							   random_state=0)
+							   		.fit(data)
+		mus  = gmm.means_
+		stds = np.sqrt(gmm.covariances_)
+		return mus, stds
+
+	def smallest_dist(mus, stds):
+    	idx = np.argmin(mus)
+    	return mus[idx][0], stds[idx][0][0]
+	
+	def expansion_filter(gene_data):
+		global ITSNI, HNN
+		active_neigh = gene_data[ITSNI].sum(axis=1)
+		return (active_neigh >= 3)
+					.astype(int) * 
+					 gene_data + 
+					 (active_neigh > 3)
+						.astype(int) * 
+						 (1-gene_data)
+
+	def expansion_filter_iterated(gene_data, it):
+		for _ in range(it):
+			gene_data = expansion_filter(gene_data)
+		return gene_data
+	
+	ITSNI = ITNI[:,1:]
+    HNN   = NN//2
+	mus, stds = fit_MoG(gdata, k)
+    m, v = smallest_dist(mus, stds)
+    pgdata = expansion_filter_iterated((gdata>(m+1.5*v))
+									  	.astype(int), 10)
+\end{lstlisting}
+
+
+Segue la spiegazione di quanto avviene nel codice \ref{code:binaryMask}:
+
+\begin{itemize}
+	\item La funzione \texttt{fit\_MoG()} riceve il vettore di espressione smussata \texttt{gdata} e il numero di componenti $k$ trovate dal Knee Point. Viene poi trasformata in colonna da \texttt{gdata.reshape(-1,1)} per adattarsi al modello GaussianMixture. Il modello viene addestrato e restituisce i vettori di medie \texttt{mus} e deviazioni standard \texttt{stds} delle gaussiane. 
+  	\item \texttt{smallest\_dist} seleziona la gaussiana con la media più bassa, salvandola nell'indice \texttt{idx}, assumendo che quella rappresenti l'assenza di espressione. Restituisce poi la media $m$ e la deviazione standard $v$ di quella componente.
+	\item Nella codice \texttt{gdata > (m + 1.5 * v)).\text{astype(int)}} passato come argomento alla funzione \texttt{expansion\_filter\_iterated}
+		si applica la soglia $m + 1.5\cdot v$ per trasformare i valori continui in una prima maschera binaria grezza: gli spot con espressione maggiore rispetto a quella soglia sono considerati attivi, $1$, altrimenti inattivi, $0$.
+	\item \texttt{expansion\_filter} raffina questa maschera binaria guardando i vicini: 
+		\begin{itemize}
+			\item Si calcola il numero di vicini attivi per ciascun spot (\texttt{active\_neigh}).  
+			\item Se un vicino ha almeno 3 vicini attivi, si mantiene il valore attuale (\(\texttt{* gene\_data}\)).  
+			\item Se ha più di 3 vicini attivi, si può invertire il valore dello spot (\(1 - \texttt{gene\_data}\)) per favorire l'espansione del segnale.
+		\end{itemize}
+	\item \texttt{expansion\_filter\_iterated} applica iterativamente il filtro per \texttt{it} cicli, permettendo al pattern attivo di “espandersi” su regioni contigue.
+	\item Infine, la variabile \texttt{pgdata} contiene la maschera binaria finale raffinata: si parte da una soglia basata sulla componente con media minima, poi si enfatizza la coerenza spaziale tramite l'espansione iterata $10$ volte.
+\end{itemize}
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.8\textwidth]{immagini/transf_ex3.png}
+	\caption{Gene da dati iniziali a maschera binaria}
+	\label{fig:fromRawToBinaryMask}
+\end{figure}
