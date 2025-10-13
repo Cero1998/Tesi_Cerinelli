@@ -5,23 +5,25 @@ In genere ogni spot ha un diametro di circa $\qty{55}{\micro\meter}$ e con una d
 
 Possiamo definire l'insieme dei nostri spots nel seguente modo:  
 \begin{equation}
-	\mathcal{S}=\{\mathcal{S}_1,\mathcal{S}_2,...,\mathcal{S}_n\}
+	\mathbb{S}=\{s_1,s_2,...,s_n\}
 \label{eq:spots}
 \end{equation}
-dove ogni $\mathcal{S}_i$ è uno spot.
+dove ogni $\mathbb{S}_i$ è uno spot.
 
 Ogni spot, al suo interno, contiene più cellule. Per questo motivo, ogni spot viene associato ad un vettore di espressione genica che 
 da vita alla matrice $X\in \mathbb{R}^{n\times m}$ dove $n$ è il numero di spot e $m$ il numero di geni.
 Possiamo definire l'insieme dei nostri geni nel seguente modo: 
 \begin{equation}
-	\mathcal{G}=\{g_1,g_2,...,g_m\}
+	\mathbb{G}=\{g_1,g_2,...,g_m\}
 \end{equation}
 dove ogni $g_i$ è un gene.
-Di conseguenza si può definire $\mathcal{S}_i \in \mathcal{G}^{m}$ come: 
+Di conseguenza si può definire lo spot $\mathbb{S}_i \in \mathbb{G}^{m}$ come e assegniamo ad ogni 
+$\mathbb{S}_i$ il seguente vettore: 
 \begin{equation}
-	\mathcal{S}_i =\{g_1,g_2,...,g_m\}
+	\bigl( x_{i,1}, x_{i,2}, \dots, x_{i,m} \bigr)
 \end{equation}
-
+dove $x_{i,j}\in\mathbb{R}$ rappresenta l'espressione del gene $g_j$
+allo spot $s_i$, con $1 \le i \le n$.
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=0.575\textwidth]{immagini/spot_cubo.png}
@@ -30,16 +32,16 @@ Di conseguenza si può definire $\mathcal{S}_i \in \mathcal{G}^{m}$ come:
 \end{figure}
 
 La figura ~\ref{fig:four} mostra una rappresentazione grafica degli spot e dei geni all'interno di un tessuto. Ogni cella rappresenta uno spot, mentre ogni colore rappresenta un gene diverso\footnote{Si noti che il colore non è rappresentativo della presenza o meno di quel gene in quello spot}.
-Si può notare che ogni spot $\mathcal{S}_i$, al suo interno, può contenere più geni.
+Si può notare che ogni spot $\mathbb{S}_i$, al suo interno, può contenere più geni.
 Inoltre, nella figura d'esempio, si hanno 36 spot diversi e 4 geni, ma ma nella realtà i dati
 sono differenti: gli spot possono arrivare a oltre 3000
 celle e i geni possono superare i 30,000.
 
 La figura \ref{fig:four}, tuttavia, presenta una inesattezza in quanto gli spot non sono disposti su una matrice $n \times n$, bensì hanno una rappresentazione esagonale.
-Questo significa che, dato uno spot $\mathcal{S}_i$, questo presenterà sei spot
+Questo significa che, dato uno spot $\mathbb{S}_i$, questo presenterà sei spot
 adiacenti, tranne nei casi in cui gli spot sono localizzati ai bordi del tessuto.
 
-Per poter trovare spazialmente uno spot $\mathcal{S}_i$, quindi, occorre assegnare una coordinata $x$ e una coordinata $y$ ad ogni spot, e, una volta creata una matrice \\$[\mathcal{S}_i, <x_i, y_i>]$,
+Per poter trovare spazialmente uno spot $\mathbb{S}_i$, quindi, occorre assegnare una coordinata $x$ e una coordinata $y$ ad ogni spot, e, una volta creata una matrice \\$[\mathbb{S}_i, <x_i, y_i>]$,
 dove $<x, y>$ indicano le coordinate dello spot, è possibile trovare i 6 vicini attraverso un semplice calcolo.
 Inoltre, per sopperire ad eventuali spazi vuoti nel tessuto, viene calcolata la distanza euclidea tra gli spot, in modo da poter scartare gli spot che altrimenti verrebbero erronamente segnati come vicini.
 
@@ -63,15 +65,15 @@ Uno dei primi step per poter poter minimizzare il rumore è applicare un \textit
 ovvero una tecnica per poter sostituire ogni elemento, con la media dei valori dei suoi vicini dato un raggio prestabilito\cite{Giotto}.
 Questo serve per poter ridurre il rumore locale ed evitare variazioni importanti.
 
-Considerando un tessuto a due dimensioni, contenente $\mathcal{S}$ spots e $\mathcal{G}$ geni.
-Possiamo denotare con $y_{ij} \in \mathbb{R}$ il livello di espressione genica di un determinato gene $g_i$ nello spot $\mathcal{S}_i$.
-Dalla definizione di matrice di espressione genica $X$ definita precedentemente, possiamo ora definire $\hat{X}$ la matrice ottenuta come output 
+Considerando un tessuto a due dimensioni, contenente $\mathbb{S}$ spots e $\mathbb{G}$ geni.
+Possiamo denotare con $y_{ij} \in \mathbb{R}$ il livello di espressione genica di un determinato gene $g_i$ nello spot $\mathbb{S}_i$.
+Dalla definizione di matrice di espressione genica $X$ definita precedentemente, possiamo ora definire $\widehat{X}$ la matrice ottenuta come output 
 dopo aver applicato la seguente operazione:
 \begin{equation}
 \hat y_{ij} = \sum_{s_k \in \mathcal{N}_r(s_j)} w_{jk} \cdot y_{ik}
 \label{eq:smoothing}
 \end{equation}
-dove $N_r(s_j) = \{ s_k \mid \| s_k - s_j \| \le r,\; s_k \in \mathcal{S} \}$ con raggio $r \in \mathbb{R}$ denota i vicini dello spot $s_j$, e $w_{jk}$ sono i pesi spaziali 
+dove $N_r(s_j) = \{ s_k \mid \| s_k - s_j \| \le r,\; s_k \in \mathbb{S} \}$ con raggio $r \in \mathbb{R}$ denota i vicini dello spot $s_j$, e $w_{jk}$ sono i pesi spaziali 
 che soddisfano $\sum_k w_{jk} = 1$.
 
 Per trovare i pesi spaziali poi, viene applicato il filtro di media:
@@ -213,7 +215,7 @@ Le funzioni della libreria sono organizzate per famiglie:
 Per la trascrittomica spaziale, 
 Scanpy offre un'integrazione naturale con i dati 10x Visium tramite 
 \texttt{scanpy.read\_visium()}, che carica non solo la matrice di espressione ma anche immagini e coordinate degli spot. 
-la funzione ha la seguente firma:
+La funzione ha la seguente firma:
 
 \begin{center}
 \begin{minipage}{8cm}
@@ -272,7 +274,7 @@ Con come argomenti:
 Un esempio completo di un programma scritto in linguaggio Python con lettura dei dati 10x Visium attraverso Scanpy e 
 relativo salvataggio di AnnData in formato \texttt{.h5ad} è il seguente:
 
-\begin{lstlisting}[style=mypython]
+\begin{lstlisting}[style=mypython, caption={Funzione per caricare il file \texttt{.h5} ed esempio su come utilizzarla per inizializzare oggetto \texttt{AnnData}}]
 import scanpy as sc
 
 def load_data():
@@ -285,3 +287,176 @@ annData = load_data()
 
 annData.write_h5ad(filename="processed_adata")
 \end{lstlisting}
+
+\section{Ottenimento Maschere Binarie dei geni}\label{cap:BinaryMasks}
+Una volta ottenuti i dati in formato \texttt{AnnData} è possibile iniziare a manipolarli come oggetto per poterne ricavare le varie informazioni 
+necessarie allo studio che si sta svolgendo.
+
+Come detto in precendeza occorre applicare prima di tutto uno Smoothing per poter ripulire e ridurre la complessità dei dati ottenuti.
+Questo smoothing viene applicato gene per gene attraverso il filtro di media, definito precedentemente, in questo modo:
+\begin{lstlisting}[style=mypython,label=code:MeanFilter,caption={Funzioni per ottenere i dati di un gene specifico e applicarci il filtro di media}]
+	ITNI = np.zeros((nspot, 7), dtype=int)
+	VNI   = (ITNI!=-1).astype(int)
+    NN    = VNI.sum(axis=1)
+    NM    = (VNI.T / NN.T).T
+
+	def get_gene_data(data, gene_id):
+		array_data = data.X.toarray().T
+		gene_data  = array_data[gene_id]
+		return gene_data
+	
+	def super_opt_mean_filter(gene_data):
+		global ITNI, NM
+		return (gene_data[ITNI] * NM).sum(axis=1)
+
+	def opt_mean_filter_iterated(gene_data, it):
+		for _ in range(it):
+			gene_data = super_opt_mean_filter(gene_data)
+		return gene_data
+	
+	geneData = get_gene_data(anndata, 1)
+
+	geneData = opt_mean_filter_iterated(gdata, 5)
+\end{lstlisting}
+
+Lo Snippet del codice \ref{code:MeanFilter} presenta 3 funzioni principali che permettono di utilizzare il filtro di media: la prima, 
+\texttt{get\_gene\_data(data, gene\_id)}, permette di recuperare dall'oggetto \texttt{AnnData} un gene dato il suo \texttt{id}.
+Il suo funzionamento è molto basico in quanto intuitivamente viene creata una variabile contenente la matrice trasposta di \texttt{AnnData.X}, che, come detto precedentemente, l'oggetto \texttt{X} 
+all'interno di \texttt{AnnData} contiene la matrice \textit{Features}$\times$\textit{Barcodes}, e rendendola trasposta essa viene trasformata in \textit{Barcodes}$\times$\textit{Features}, ovvero anzichè avere 
+in ogni riga uno spot e per ogni colonna l'espressione genica di un determinato gene su quello spot, si otterrà invece un gene per ogni riga, e la sua espressione genica su ogni spot per ogni colonna.
+La tabella \ref{tab:ann_data_and_transpose} contiene una rappresentazione visiva della matrcie \texttt{AnnData.X} e della sua relativa trasposta.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Struttura di \texttt{AnnData.X} e della sua trasposta}
+  \label{tab:ann_data_and_transpose}
+  
+  \textbf{Matrice $X = \texttt{AnnData.X}$} \\[0.5em]
+  \begin{tabular}{c|ccc}
+    & Gene1 & Gene2 & Gene3 \\
+    \hline
+    Spot1 & $0$ & $10$ & $24$ \\
+    Spot2 & $15$ & $2$ & $0$ \\
+    Spot3 & $14$ & $12$ & $23$ \\
+  \end{tabular}
+
+  \vspace{2em} 
+
+  \textbf{Trasposta $X^\top$} \\[0.5em]
+  \begin{tabular}{c|ccc}
+    & Spot1 & Spot2 & Spot3 \\
+    \hline
+    Gene1 & $0$ & $15$ & $14$ \\
+    Gene2 & $10$ & $2$ & $12$ \\
+    Gene3 & $24$ & $0$ & $23$ \\
+  \end{tabular}
+  
+\end{table}
+
+
+La seconda funzione, \texttt{super\_opt\_mean\_filter(gene\_data)}, implementa un filtro di media sui valori di espressione genica sfruttando operazioni completamente vettorizzate.
+Prima della funzione vengono definite alcune variabili di supporto:
+
+\begin{itemize}
+\item \texttt{ITNI}: matrice di forma $(n_{spot}, 7)$ contenente, per ogni spot, gli indici dei suoi vicini. Gli elementi pari a \texttt{-1} indicano assenza di vicino.
+\item \texttt{VNI = (ITNI != -1)}: maschera binaria che vale $1$ dove l'indice è valido e $0$ altrimenti.
+\item \texttt{NN = VNI.sum(axis=1)}: numero di vicini validi per ciascuno spot.
+\item \texttt{NM = (VNI.T / NN.T).T}: matrice di pesi normalizzati, dove ogni vicino valido riceve un peso pari a $\frac{1}{NN_i}$.
+\end{itemize}
+
+La funzione calcola la media dei valori di espressione di un gene sui vicini di ciascuno spot.
+Ogni riga della matrice \texttt{gene\_data[ITNI]} contiene i valori del gene nei vicini di uno spot, che vengono moltiplicati per i pesi corrispondenti in \texttt{NM} e poi sommati.
+Il risultato è un vettore in cui ogni elemento rappresenta la media dei valori di espressione nei vicini.
+
+La terza funzione, \texttt{opt\_mean\_filter\_iterated(gene\_data, it)}, semplicemente itera \texttt{it} volte la funzione precedente.
+Questo perchè iterando più volte il filtro di media, ottengo una rappresentazione più accurata del valore dei vicini di ogni gene, e quindi ottenendo una rappresentazione migliore delle zone più dense.
+\newline
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.8\textwidth]{immagini/mean_filter.png}
+	\caption{Rappresentazione di alcuni geni prima e dopo il filtro di media}
+	\label{fig:meanFilter}
+\end{figure}
+
+Una volta ottenuto i vari geni con le loro espressioni geniche "smussate" dal filtro di media, stimiamo per ogni gene 
+un modello di misura  $\forall k \text{ tale che } 1 \le k \le 10$ gaussiane, attraverso la funzione di \texttt{sklearn.mixture.GaussianMixture()}.
+Questo algoritmo cerca di adattare, per ciascun valore di $k$, 
+una combinazione\footnote{In inglese: mixture} di $k$ distribuzioni gaussiane 
+ai dati di espressione del gene in esame, al fine di modellare la presenza di sottopopolazioni 
+o modalità multiple nell'espressione. 
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=1\textwidth]{immagini/gauss_misxture_multik.png}
+	\caption{Dimostrazione di come diverse $k$ rappresentano diversamente i dati}
+	\label{fig:gaussianMixture}
+\end{figure}
+
+Si può osservare dalla figura \ref{fig:gaussianMixture} come con $1 \le k$ la rappresentazione non colga efficacemente ogni picco dell'espressione genica del gene preso in esame; Si verifica perciò un fenomeno di \textit{underfitting}\footnote{Modello troppo semplice per catturare la complessità dei dati}.
+Al contario, con $k \> 3$ si verifica il problema opposto, ovvero ho troppe gaussiane per rappresentare efficacemente i dati in oggetto, si verifica perciò dell'\textit{overfitting}.
+Nell'esempio della figura \ref{fig:gaussianMixture} perciò la $k$ corretta corrisponde a $k = 3$.
+
+Per poter scegliere in autonomia la $k$ corretta, 
+una volta allenata la funzione \texttt{sklearn.mixture.GaussianMixture()} con un gene, 
+si salva attraverso la funzione \texttt{GaussianMixture().bic()} il \textit{Bayesian Information Criterion}(BIC) corrispondente a tale $k$ su quel gene.
+Il BIC è un indice statistico che misura quanto bene un modello spiega i dati passati, 
+penalizzando i modelli troppo complessi.
+
+La formula con la quale si può ottenere è la seguente:
+\begin{equation}
+	\mathrm{BIC} = k \cdot \ln(n) - 2 \cdot \ln(\widehat{L})
+\end{equation}
+dove $n$ indica il numero degli spots, $k$ il numero di parametri stimati dal modello, $\widehat{L}$ massima verosimiglianza del modello, 
+ovvero quanto bene il modello si adatta ai dati.
+
+Una volta ottenuti i vari BIC per ogni $k$, viene infine scelta la $k$ corretta attraverso il calcolo del "Knee Point".
+Il Knee Point, altro non è che il punto in cui la curva cambia inclinazione in modo evidente, 
+passando da una salita marcata a una più piatta, o viceversa.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.6\textwidth]{immagini/kneeOfACurve.png}
+	\caption{Esempio di Knee Point}
+	\label{fig:kneePoint}
+\end{figure}
+
+\noindent
+Il codice Python per poter calcolare relativi BIC e Knee Point è il seguente:
+
+\begin{lstlisting}[style=mypython,label=code:gmmAndKnee,caption={Funzioni per ottenere BIC e KP}]
+	def gmm_BIC(gdata, mink=2, maxk=10):
+
+		data = gdata.reshape(-1, 1)
+		bics = []
+
+		for i in range(mink, maxk+1):
+			gmm = GaussianMixture(n_components=i, 
+								  random_state=0)
+								  	.fit(data)
+			BIC_gmm = gmm.bic(data)
+			bics.append(BIC_gmm)
+
+		return bics
+	
+	def find_knee(x, y):
+		knee_locator = kneed
+						.KneeLocator(
+							x, 
+							y, 
+					 		interp_method="polynomial", 
+							curve="convex", 
+							direction="decreasing")
+		knee   = knee_locator.knee  
+			
+		return knee
+	
+	mink = 1
+	maxk = 10
+	x    = np.arange(mink, maxk+1)
+	
+	bics = gmm_BIC(gdata, mink, maxk)
+	k    = find_knee(x, bics, plt.gca())
+\end{lstlisting}
+
+Una volta ottenuta $k$, si può creare la maschera binaria di quel gene
