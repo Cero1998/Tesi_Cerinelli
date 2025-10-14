@@ -41,6 +41,7 @@
 \makeatother
 \renewcommand{\lstlistingname}{Codice}
 \renewcommand{\listalgorithmname}{Elenco degli algoritmi}
+\renewcommand{\lstlistlistingname}{Elenco degli algoritmi}
 
 % Blank page after title
 \let\origdoublepage\cleardoublepage

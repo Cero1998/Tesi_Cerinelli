@@ -98,15 +98,16 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Indici
 \pagestyle{plain}
-\pagenumbering{roman}
+\pagenumbering{arabic}
 \tableofcontents
 
-% \listoffigures    % Commentare se non vi sono immagini
-% \listofalgorithms % Commentare se non vi sono algoritmi
-% \listoftables     % Commentare se non vi sono tabelle
+ \listoffigures    % Commentare se non vi sono immagini
+ %\listofalgorithms % Commentare se non vi sono algoritmi
+ \lstlistoflistings
+ \listoftables     % Commentare se non vi sono tabelle
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Prefazione
-\pagenumbering{arabic}
+%\pagenumbering{arabic}
 \include{capitoli/introduzione}
 	
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Contenuto
@@ -114,9 +115,11 @@
 \include{capitoli/capitolo01}
 % \include{capitoli/background}
 \include{capitoli/capitolo02}
+
+\include{capitoli/capitolo03}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Conclusioni
 \pagestyle{plain}
-% \include{capitoli/conclusione}
+\include{capitoli/conclusione}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Appendici
 % \appendix
