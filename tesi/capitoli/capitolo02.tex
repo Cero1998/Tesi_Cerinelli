@@ -54,15 +54,24 @@ Lo spot preso in esempio, come riferimento, è lo spot con coordinate $x = 2, y 
 	\label{fig:five}
 \end{figure}
 
-\section{Smoothing spaziale}\label{sec:cap_two_notions}
+\section{Preprocessing dei dati}\label{sec:capPreProcessing}
 Quando si entra in possesso di una library, contenente i barcode degli spot, le coordinate spaziali e i relativi metadati, non è consigliato
 avviare l'analisi dei dati fin da subito, 
 questo perchè i dati di TS contengono anche rumore tecnico e biologico che può mascherare dei pattern in realtà utili, come ad esempio dei geni con profili irregolari.
 Occorre quindi prima di tutto ripulire e ridurre la complessità dei dati prima di poterli analizzare.
 
-\medskip
-Uno dei primi step per poter poter minimizzare il rumore è applicare un \textit{filtro di media} (Mean Filter),
-ovvero una tecnica per poter sostituire ogni elemento, con la media dei valori dei suoi vicini dato un raggio prestabilito\cite{Giotto}.
+Per lo studio che questa tesi si è posta come obiettivo, il preprocessing consiste in tre fasi principali:
+\begin{enumerate}
+	\item Smoothing Spaziale
+	\item Partizionamento delle espressioni
+	\item Creazione maschere binarie
+\end{enumerate}
+Queste 3 fasi sono fondamentali per ottenere per ciascun gene una lista dei vari spot dove il gene ha a 
+tutti gli effetti una sua espressione e dove invece quest'ultima non è presente\cite{binaryMasksBonniciGrazioli}.
+\subsection{Smoothing spaziale}\label{subsec:SpatialSmoothing}
+
+Il primo step, ampiamente utilizzato in gran parte degli algoritmi di trascrittomica spaziale\cite{Giotto,SpatialSmoothing1,SpatialSmoothing2}, per poter poter minimizzare il rumore è applicare un \textit{filtro di media} (Mean Filter),
+ovvero una tecnica per poter sostituire ogni elemento, con la media dei valori dei suoi vicini dato un raggio prestabilito.
 Questo serve per poter ridurre il rumore locale ed evitare variazioni importanti.
 
 Considerando un tessuto a due dimensioni, contenente $\mathbb{S}$ spots e $\mathbb{G}$ geni.
@@ -134,6 +143,62 @@ evitando che l'espressione dello spot in esame risulti eccessivamente smussata.
 $\beta$ invece modula il peso relativo dello smussamento basato sulla vicinanza spaziale rispetto a quello basato sui pattern.
 $N_s(i)$ e $N_p(i)$ indicano, rispettivamente, i vicini spaziali e i pattern nello spot $i$.
 $c^{p}_{ji}$ e $c^{s}_{ji}$ indicano, rispettivamente, il contributo spaziale e quello di pattern dello spot $j$ vicino allo spot in oggetto $i$.
+\subsection{Partizionamento delle espressioni}\label{subsec:ExpressionsPartitioning}
+Una volta ottenuti i dati dei vari geni smussati $\hat{y}_i = (\hat{y}_{i1},...,\hat{y}_{in})$ dal filtro di media \ref{eq:filtroDiMedia}, 
+il passo successivo consiste nel suddividere le posizioni spaziali associate a ciascun gene $g_i$ in sotto-regioni omogenee.
+
+Formalmente per ogni gene $g_i \in \mathbb{G}$:
+\begin{enumerate}
+	\item I vari valori di espressione genica smussati $\{\hat{y}_{ij}\}_{j=1}^n$ vengono trattati 
+		come osservazioni all'interno di uno spazio probabilistico.
+	\item Su tali valori viene applicato un modello di \textit{Gaussian Mixture Model} (GMM) con $k$ componenti, 
+		che consente di rappresentare la distribuzione dei dati come combinazioni di più distribuzioni gaussiane.
+		Il numero di componenti $k$ del modello non viene scelto a priori, ma determinato in modo automatico secondo la seguente procedura:
+		\begin{enumerate}
+			\item Per prima cosa vengono addestrati diversi GMM con un numero cresente di componenti, da $1$ a $K_{\text{max}}$, in modo da ottenere 
+				un set di modelli ordinati per numero di componenti:
+				\begin{equation}
+					\label{eq:GMMPrimoStep}
+					\mathbb{M}_i = (GMM_1(\hat{y}_i), GMM_2(\hat{y}_i), ..., GMM_{K_{\text{max}}}(\hat{y}_i))
+				\end{equation}
+			\item Ciascun modello viene poi valutato con una funzione $V: GMM \rightarrow \mathbb{R}$, (come ad esempio AIC, BIC, ecc...),
+				in modo da ottenere il vettore:
+				\begin{equation}
+					\label{eq:GMMSecondoStep}
+					\mathbb{V}_i = (V(GMM_1(\hat{y}_i)), V(GMM_2(\hat{y}_i)), ..., V(GMM_{K_{\text{max}}}(\hat{y}_i)))
+				\end{equation}
+			\item Infine i valori ottenuti vengono rappresentati graficamente e il modello ottimale viene scelto nel \textit{Knee Point}, cioè dove l'incremento di qualità del modello diventa marginale.
+				Questa scelta evita il rischio di \textit{overfitting}\footnote{Fenomeno per cui un modello si adatta eccessivamente ai dati di training, perdendo capacità di generalizzazione}, garantendo al contempo una suddivisione coerente delle regioni di espressione.
+		\end{enumerate}
+	\item Una volta determinato il modello ottimale, ogni spot $s_j$ viene assegnato alla componente gaussiana con la massima probabilità a posteriori, generando così un insieme di partizioni spaziali
+		\begin{equation}
+			\mathbb{P}_i = \{P_{i1}, ..., P_{ik}\}
+		\end{equation}
+		dove ciascun sottogene $P_{im}$ è definito nel seguente modo:
+		\begin{equation}
+			P_{im} = \left\{ s_j \;\middle|\; m = \arg\max_{\ell} P(\ell \mid \hat{y}_{ij}) \right\}
+		\end{equation}
+\end{enumerate}
+\subsection{Creazione maschere binarie}\label{subsec:CreazioneMaschereBinarie}
+Per ogni gene $g_i \in \mathbb{G}$, generiamo dalle partizioni ottenute la media dell'espressione smussata all'interno di ciascuna regione $P_{im}$.
+Dopodichè la regione con la media più bassa viene identificata come zona a bassa espressione:
+\begin{equation}
+	\label{ec:BassaEspressione}
+	P_i^{\text{min}} = \arg\min_{P \in P_i} \left(\frac{1}{|P|} \sum_{s_j \in P} \hat{y}_{ij}\right)
+\end{equation}
+Si definisce quindi una maschera binaria $\overline{\overline{y}}_i \in \{0, 1\}^n$ dove:
+\begin{equation}
+	\label{eq:BinaryMaskEq}
+	\overline{\overline{y}}_{ij} =
+		\begin{cases}
+			0, & \text{se } s_j \in P_i^{\text{min}} \quad \text{(bassa espressione)}\\[4pt]
+			1, & \text{altrimenti.}
+		\end{cases}
+\end{equation}
+
+Questa maschera sintetizza il comportamento spaziale del gene, distinguendo le regioni di minima attività a cui è stato assegnato valore 0, da quelle di maggiore espressione a cui è stato assegnato valore 1.
+Le maschere così generate costituiscono la rappresentazione compatta e comparabile dei pattern spaziali di ciuascun gene.
+
 \section{Formato dei dati}\label{sec:cap_three_notions}
 I dati del campione di tessuto fornitoci sono in formato \textit{10x Visium}, una piattaforma 
 di trascrittomica spaziale che misura l'espressione genica 
