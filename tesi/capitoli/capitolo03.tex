@@ -1,8 +1,8 @@
 % !TeX spellcheck = it_IT
 \chapter{Sviluppo e risultati sperimentali}\label{chapter:MineStuff}
-Dopo aver presentato nel Capitolo~\ref{chapter:cap_one_notions} le nozioni 
+Dopo aver presentato nel Capitolo precedente le nozioni 
 fondamentali e le operazioni di pre-processing necessarie 
-alla gestione dei dati di trascrittomica spaziale, in questo capitolo 
+alla gestione dei dati, in questo capitolo 
 verrà descritto lo sviluppo pratico e le analisi sperimentale svolta.  
 L'obiettivo principale è quello di progettare e realizzare 
 una metodologia computazionale in grado di 
@@ -10,3 +10,106 @@ identificare \textit{clustering alternativi} nei dati di trascrittomica spaziale
 fornendo una rappresentazione più flessibile e interpretabile dei 
 domini genici rispetto agli approcci convenzionali.
 
+Per fare ciò è necessario che ogni gene venga e suddiviso spazialmente in sottogeni, affinchè essi si possano 
+catalogare tra di loro e poter analizzare eventuali relazioni particolari che ci sono fra un sottogene e un altro.
+\section{Grafo dei vicini}\label{subsec:Vicini}
+Come prima cosa, come mostrato nella figura \ref{fig:five}, è necessario individuare per ogni spot $s_i$ 
+l'insieme dei suoi spot adiacenti, ovvero la lista dei \textit{vicini}. 
+Questa informazione è fondamentale poiché consente di stabilire quando due geni si trovano in prossimità spaziale,
+condizione necessaria per poter poi definire relazioni di vicinanza, contiguità e sovrapposizione tra geni attivi.
+
+I dati forniti dalla tecnologia 10x Visium contengono, per ciascuno spot, 
+le sue coordinate sulla griglia di cattura. 
+Tuttavia, tali coordinate sono organizzate in forma tabellare, come visto nella tabella \ref{tab:tsvTable}, all'interno della struttura \texttt{scdata.obs},
+e perciò non immediatamente interpretabili in termini spaziali. 
+Per poter costruire un grafo dei vicini è quindi necessario effettuare una conversione preliminare di queste informazioni,
+trasformando le coordinate della griglia in coordinate cartesiane.
+In questo modo è possibile rappresentare ogni spot come un punto nel piano, preservando le distanze e la disposizione
+esagonale della griglia Visium.
+
+\begin{lstlisting}[style=mypython,
+                   label=code:index_to_cart,
+                   caption={Trasformazione delle coordinate spaziali in coordinate cartesiane}]
+    index_to_cart = np.zeros((len(scdata.obs), 2))
+    max_row       = scdata.obs['array_row'].max()
+    for i, ind in enumerate(scdata.obs.index):
+        col = scdata.obs['array_col'][ind]
+        row = scdata.obs['array_row'][ind]
+        index_to_cart[i, 0] = col * (np.sqrt(3)/2)
+        index_to_cart[i, 1] = (max_row - row) * (3/2)
+\end{lstlisting}
+
+
+Il frammento di codice \ref{code:index_to_cart} mostra come vengono calcolate e salvate le coordinate cartesiane di ciascuno spot,
+partendo dalle colonne \texttt{array\_row} e \texttt{array\_col} della tabella di input. 
+Viene inoltre applicata una correzione di scala per tenere conto della disposizione esagonale della griglia,
+in cui le colonne sono sfalsate e le distanze orizzontali e verticali non sono equivalenti.
+
+\paragraph{Costruzione del grafo dei vicini con k\text{-}NN.}
+Definite le coordinate cartesiane $\mathbb{R}^2$ per ciascuno spot, 
+il passo successivo consiste nell'identificare, per ogni spot $s_i$ 
+i sei spot più prossimi nella griglia esagonale 10x Visium. 
+A tal fine è stato impiegato l'algoritmo dei \textit{Nearest Neighbors} (k\text{-}NN), 
+nella sua implementazione fornita dalla libreria \texttt{sklearn.neighbors}, 
+libreria che implementa la funzione (\texttt{NearestNeighbors( ... )}).
+L'idea dietro la funzione è la seguente: dato l'insieme di punti $\{x_1, ..., x_n\} \in \mathbb{R}^2$, 
+per ciascun punto $\mathbf{x}_i$ si ricercano i $k$ vicini
+più prossimi secondo una metrica prefissata, come la distanza euclidea. 
+Poiché la funzione restituisce anche il punto stesso 
+come primo vicino, si imposta $k = 1+6$ così da ottenere, 
+oltre a $s_i$, i sei vicini geometrici desiderati. 
+
+In pratica, dopo aver eseguito l'addestramento con (\texttt{NearestNeighbors( ... ).fit(coords)}), 
+si invoca \texttt{kneighbors(coords)} per ottenere, per ogni riga $i$, 
+le coppie \texttt{(dists[i], inds[i])}, dove \texttt{inds[i]} sono gli indici 
+dei $k$ punti più vicini a $s_i$ e \texttt{dists[i]} le corrispondenti distanze.
+Scartando la prima posizione, \texttt{inds[i, 0]}, che coincide con $i$, 
+si ottiene la lista ordinata dei sei vicini di $s_i$.
+Inoltre su ogni distanza viene fatto un confronto per verificare che sia minore o uguale del raggio prefissato, così 
+da poter escludere i vicini che sono stati erroneamente ritornati dalla funzione.
+
+Operativamente, la procedura si articola come segue: (i) si prepara la matrice \texttt{coords} di dimensione
+$(n_{\text{spots}},\,2)$ contenente le coordinate cartesiane; (ii) si istanzia l’oggetto \texttt{NearestNeighbors}
+specificando il numero di vicini $k$ e la metrica (\texttt{metric='euclidean'}); (iii) si addestra l’indicizzatore con
+\texttt{fit}; (iv) si calcolano per tutti i punti i $k$ vicini con \texttt{kneighbors}, ottenendo indici e distanze;
+(v) per ciascuno spot si selezionano i sei vicini effettivi come \texttt{inds[i, 1:]} e si memorizzano, se necessario,
+anche le distanze \texttt{dists[i, 1:]} a supporto di eventuali pesature o controlli di qualità.
+
+Dal punto di vista algoritmico, \texttt{NearestNeighbors} costruisce internamente una struttura di ricerca (KD-tree o
+Ball-tree, a seconda dei dati, con selezione automatica) che consente query efficienti nello spazio bidimensionale: il
+costo atteso è sub-quadratico e risulta adatto al numero di spot tipico dei vetrini Visium. L’uso della metrica euclidea
+è coerente con la proiezione cartesiana effettuata in precedenza e preserva le relazioni di prossimità indotte dalla
+geometria esagonale.
+
+\paragraph{Accortezze pratiche e robustezza.}
+La costruzione del grafo k\text{-}NN presenta alcune attenzioni utili in ambito sperimentale. Innanzitutto, nei bordi
+della griglia reale possono mancare spot (ad esempio per ritagli o aree escluse); la scelta k-fissa garantisce comunque
+sei vicini “geometrici” tra quelli effettivamente presenti, ma è consigliabile simmetrizzare il grafo finale (se $j$ è
+vicino di $i$, rendere $i$ vicino di $j$) per ottenere un grafo non orientato e più stabile. In presenza di distanze
+quasi uguali (tie), l’ordinamento restituito dall’algoritmo è deterministico rispetto alla struttura interna, e la
+simmetrizzazione riduce sensibilmente l’effetto di scelte arbitrarie locali. Inoltre, salvare anche le distanze consente
+di diagnosticare outlier geometrici (vicini insolitamente lontani) ed eventualmente applicare un filtro a raggio
+(\textit{radius cutoff}) come controllo secondario.
+
+Infine, la scelta k=6 è motivata dalla topologia esagonale di Visium: in una tessellazione ideale ciascun esagono ha sei
+adiacenze. In pratiche reali con “buchi” o artefatti di imaging, una variante a raggio fisso (\texttt{radius\_neighbors})
+può essere utilizzata per confermare la consistenza locale delle connessioni; tuttavia, la strategia k\text{-}NN risulta
+più semplice e riproducibile per la costruzione iniziale del grafo dei vicini.
+
+\paragraph{Estratto di codice.}
+Il frammento seguente riassume l’implementazione descritta:
+\begin{lstlisting}[style=mypython,caption={Ricerca dei 6 vicini più prossimi con k\text{-}NN},label=code:knn_neighbors,float,floatplacement=H]
+    coords = index_to_cart  # shape: (n_spot, 2)
+    k = 1 + 6 
+    nbrs = NearestNeighbors(n_neighbors=k, metric='euclidean').fit(coords)
+    dists, inds = nbrs.kneighbors(coords)
+
+    i = 0  # ad esempio: i = indice dello spot
+    vicini6  = inds[i, 1:]
+    distanze = dists[i, 1:]
+\end{lstlisting}
+
+A valle di questo passaggio, la struttura \texttt{inds} costituisce la base per costruire l’elenco di adiacenze del
+grafo dei vicini, che verrà poi utilizzato nelle analisi di connettività (componenti connesse), nelle misure di
+vicinanza tra geni attivi e, più in generale, in tutte le operazioni che richiedono consapevolezza della geometria
+spaziale del tessuto.
