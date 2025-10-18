@@ -30,7 +30,8 @@ RUN pip install --no-cache-dir pytest
 RUN pip install --no-cache-dir sphinx
 RUN pip install --no-cache-dir tzlocal
 
-RUN pip install --no-cache-dir torch>=1.8.0
+#RUN pip install --no-cache-dir torch>=1.8.0
+RUN pip install --index-url https://download.pytorch.org/whl/cpu torch
 # RUN pip install --no-cache-dir cudnn>=10.2
 RUN pip install --no-cache-dir numpy==1.22.3
 RUN pip install --no-cache-dir scanpy==1.9.1

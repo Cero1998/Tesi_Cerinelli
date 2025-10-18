@@ -8,7 +8,7 @@ pip install --no-cache-dir sphinx
 pip install --no-cache-dir tzlocal
 
 pip install --no-cache-dir torch>=1.8.0
-pip install --no-cache-dir cudnn>=10.2
+#pip install --no-cache-dir cudnn>=10.2
 pip install --no-cache-dir numpy==1.22.3
 pip install --no-cache-dir scanpy==1.9.1
 pip install --no-cache-dir squidpy

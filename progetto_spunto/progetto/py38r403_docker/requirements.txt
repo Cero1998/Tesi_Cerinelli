@@ -1,5 +1,5 @@
-torch>=1.8.0 #serve nvidia
-cudnn>=10.2 #serve nvidia
+#torch>=1.8.0 #serve nvidia
+#cudnn>=10.2 #serve nvidia
 numpy==1.22.3
 scanpy==1.9.1
 squidpy

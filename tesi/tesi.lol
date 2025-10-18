@@ -3,4 +3,3 @@
 \contentsline {lstlisting}{\numberline {3.3}{\ignorespaces Funzioni per ottenere BIC e KP}}{38}{lstlisting.3.3}%
 \contentsline {lstlisting}{\numberline {3.4}{\ignorespaces Funzioni per ottenere le machere binarie una volta ottenuta la k del Knee Point}}{41}{lstlisting.3.4}%
 \contentsline {lstlisting}{\numberline {4.1}{\ignorespaces Trasformazione delle coordinate spaziali in coordinate cartesiane}}{43}{lstlisting.4.1}%
-\contentsline {lstlisting}{\numberline {4.2}{\ignorespaces Ricerca dei 6 vicini più prossimi con k\text {-}NN}}{45}{lstlisting.4.2}%
