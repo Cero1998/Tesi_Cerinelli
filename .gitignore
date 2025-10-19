@@ -1,3 +1,7 @@
 progetto_spunto/progetto/subgenes.npy
 .venv-rpy2/
 filt_processed_adata
+main_hub_close_adata
+spat_var_processed_adata
+small_hub_close_adata
+small_hub2_close_adata
