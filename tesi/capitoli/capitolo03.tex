@@ -12,7 +12,7 @@ domini genici rispetto agli approcci convenzionali.
 
 Per fare ciò è necessario che ogni gene venga e suddiviso spazialmente in sottogeni, affinchè essi si possano 
 catalogare tra di loro e poter analizzare eventuali relazioni particolari che ci sono fra un sottogene e un altro.
-\section{Grafo dei vicini}\label{subsec:Vicini}
+\section{Lista degli spot vicini}\label{subsec:Vicini}
 Come prima cosa, come mostrato nella figura \ref{fig:five}, è necessario individuare per ogni spot $s_i$ 
 l'insieme dei suoi spot adiacenti, ovvero la lista dei \textit{vicini}. 
 Questa informazione è fondamentale poiché consente di stabilire quando due geni si trovano in prossimità spaziale,
@@ -26,7 +26,7 @@ Per poter costruire un grafo dei vicini è quindi necessario effettuare una conv
 trasformando le coordinate della griglia in coordinate cartesiane.
 In questo modo è possibile rappresentare ogni spot come un punto nel piano, preservando le distanze e la disposizione
 esagonale della griglia Visium.
-
+\newpage
 \begin{lstlisting}[style=mypython,
                    label=code:index_to_cart,
                    caption={Trasformazione delle coordinate spaziali in coordinate cartesiane}]
@@ -51,10 +51,77 @@ il passo successivo consiste nell'identificare, per ogni spot $s_i$
 i sei spot più prossimi nella griglia esagonale 10x Visium. 
 A tal fine è stato impiegato l'algoritmo dei \textit{Nearest Neighbors} (k\text{-}NN), 
 nella sua implementazione fornita dalla libreria \texttt{sklearn.neighbors}, 
-libreria che implementa la funzione (\texttt{NearestNeighbors( ... )}).
+libreria che implementa la funzione \texttt{NearestNeighbors( ... )}.
+
 L'idea dietro la funzione è la seguente: dato l'insieme di punti $\{x_1, ..., x_n\} \in \mathbb{R}^2$, 
 per ciascun punto $\mathbf{x}_i$ si ricercano i $k$ vicini
 più prossimi secondo una metrica prefissata, come la distanza euclidea. 
 Poiché la funzione restituisce anche il punto stesso 
 come primo vicino, si imposta $k = 1+6$ così da ottenere, 
-oltre a $s_i$, i sei vicini geometrici desiderati. 
+oltre a $s_i$, i sei vicini geometrici desiderati.
+Una volta trovati i vicini occorre applicare un filtro sulle distanze, in quanto la funzione 
+ritorna vicini che possono avere distanze diverse tra loro, e quindi non direttamente solo i vicini prossimi 
+allo spot.
+Applicando un filtro sulle distanze il nuovo risultato sarà una lista dove per ogni spot avremo i suoi vicini più prossimi.
+
+Il codice per la creazione della lista dei vicini è come segue:
+\begin{lstlisting}[style=mypython,
+                   label=code:NN,
+                   caption={Creazione della lista dei vicini per ogni spot}]
+    coords = index_to_cart
+    k = 1 + 6
+    nbrs = NearestNeighbors(n_neighbors=k, 
+                            metric='euclidean')
+                                .fit(coords)
+    dists, inds = nbrs.kneighbors(coords)
+
+    R = 1.74 #Raggio
+
+    vicini_filtrati  = []
+    distanze_filtrate = []
+
+    for i in range(len(coords)):
+        di = dists[i, 1:]
+        ii = inds[i, 1:]
+        mask = di <= R #Filtro
+        vicini_filtrati.append(ii[mask])
+        distanze_filtrate.append(di[mask])
+\end{lstlisting}
+
+\begin{figure}[ht]
+    \centering 
+    \begin{subfigure}{0.45\textwidth} 
+        \includegraphics[width=\linewidth]{immagini/SpotViciniNonFiltratiPerRaggio.png} 
+        \caption{6-NN senza filtro del Raggio (subset)} 
+        \label{fig:noFilterRaggio} 
+    \end{subfigure}\hfill 
+    \begin{subfigure}{0.45\textwidth} 
+        \includegraphics[width=\linewidth]{immagini/SpotViciniFiltratiPerRaggio.png} 
+        \caption{6-NN dopo filtro del Raggio (subset)} 
+        \label{fig:yesFilterRaggio} 
+    \end{subfigure} 
+    \caption{Rappresentazione grafica degli spot vicini} 
+    \label{fig:bothRaggio} 
+\end{figure}
+% \begin{figure}[ht]
+% 	\centering
+% 	\includegraphics[width=0.45\textwidth]{immagini/SpotViciniNonFiltratiPerRaggio.png}
+% 	\caption{6-NN senza filtro del Raggio (subset)}
+% 	\label{fig:NoFilterRaggio}
+% \end{figure}
+
+% \begin{figure}[ht]
+% 	\centering
+% 	\includegraphics[width=0.45\textwidth]{immagini/SpotViciniFiltratiPerRaggio.png}
+% 	\caption{6-NN dopo filtro del Raggio (subset)}
+% 	\label{fig:yesFilterRaggio}
+% \end{figure}
+
+
+Dalla figura \ref{fig:noFilterRaggio} si può vedere come senza applicare il filtro sul raggio $R$ vengano presi 
+come vicini anche spot diversi da quelli immediatamente prossimi allo spot in oggetto.
+Si può  notare inoltre come non tutti gli spot possiedono 6 vicini, ma quelli in prossimità del bordo, o di buchi nel tessuto 
+ne possiedono un quantitativo minore.
+
+\section{Divisione in sotto geni}\label{subsec:SubGenes}
+
