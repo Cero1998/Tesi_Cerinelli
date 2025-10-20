@@ -135,7 +135,7 @@ espressione all'interno del tessuto.
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=0.45\textwidth]{immagini/geneSingleWithSubGenesShow.png}
+	\includegraphics[width=0.7\textwidth]{immagini/geneSingleWithSubGenesShow.png}
 	\caption{Maschera binaria di un gene con evidenti sottogeni}
 	\label{fig:singleBinaryMaskGene}
 \end{figure}
@@ -146,6 +146,7 @@ Il numero totale di sottogeni dipende dalla distribuzione dell'espressione: picc
 soglia minima vengono scartati per evitare classificazioni non significative o influenzate dal rumore tecnico.
 In tal modo, si ottiene una rappresentazione più pulita e interpretabile della distribuzione spaziale
 dell'attività genica.
+In altre parole per ogni gene $g_j$ avremo $h$ sottogeni $g'$ con $1 \le h$, quindi $g_j = \{g'_1, ..., g'_h\}$.
 
 \paragraph{Motivazione}
 La suddivisione in sottogeni è una fase cruciale, poiché le successive analisi di relazione tra geni richiedono di
@@ -181,11 +182,11 @@ Il codice è il seguente:
 \begin{lstlisting}[style=mypython,
                    label=code:NN,
                    caption={Identificazione sottogeni tramite BFS}]
-    def connected_components_on_mask(mask, 
-                                     neighbors, 
-                                     number_of_spots, 
-                                     min_size=1, 
-                                     return_masks=True):
+def connected_components_on_mask(mask, 
+                                 neighbors, 
+                                 number_of_spots, 
+                                 min_size=1, 
+                                 return_masks=True):
     
     mask = np.asarray(mask).astype(bool)
     n = len(mask)
@@ -237,18 +238,27 @@ Il codice è il seguente:
         return comp_labels, components
 \end{lstlisting}
 
-Per poter applicare questa funzione automaticamente su tutti i geni che prendiamo in considerazione,
-semplicemente richiamiamo la funzione all'interno di un ciclo \texttt{for()} e ci salviamo i risultati in un dictionary
+\newpage
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=1\textwidth]{immagini/subGenes.png}
+	\caption{Risultato individuazione sottogeni}
+	\label{fig:subGenesResult}
+\end{figure}
+
+La figura \ref{fig:subGenesResult} mostra come dato un gene vengano individuati i suoi corrispettivi sottogeni.
+Per poter applicare questa funzione automaticamente su tutti i geni che prendiamo in considerazione, 
+richiamiamo la funzione all'interno di un ciclo \texttt{for()} e ci salviamo i risultati in un dictionary
 avente forma \texttt{[çgene\_idç, çsub\_idç, çcountç, çcomp\_maskç]}.
 
 \begin{lstlisting}[style=mypython,
-                   label=code:NN,
+                   label=code:nn_foreach_gene,
                    caption={Creazione completa sottogeni}]
-    def build_subgenes(binary_masks, 
-                       neighbors, 
-                       number_of_spots, 
-                       min_size=1, 
-                       gene_ids=None):
+def build_subgenes(binary_masks, 
+                   neighbors, 
+                   number_of_spots, 
+                   min_size=1, 
+                   gene_ids=None):
 
     if isinstance(binary_masks, np.ndarray) and 
        binary_masks.ndim == 2:
@@ -282,4 +292,178 @@ avente forma \texttt{[çgene\_idç, çsub\_idç, çcountç, çcomp\_maskç]}.
                     "comp_mask": cmask
                 })
     return results
+\end{lstlisting}
+
+\section{Calcolo del rapporto}\label{subsec:rapportoSottogeni}
+Ottenuta la scomposizione di ciascun gene in sottogeni, 
+il passo successivo consiste nel determinare, per ogni coppia di sottogeni 
+appartenenti a famiglie differenti, 
+il \textit{rapporto spaziale} che li lega. 
+L'obiettivo è distinguere i casi in cui due sottogeni sono completamente separati dai casi in 
+cui esiste una forma di contatto, sovrapposizione o contenimento geografico 
+all'interno del tessuto.
+
+Dato un sottogene $A$ e un sottogene $B$, il rapporto viene classificato
+nelle seguenti categorie mutuamente esclusive:
+\begin{itemize}
+  \item \textbf{DISGIUNTI}: i due sottogeni non condividono alcuno spot.
+  \item \textbf{IN\_COSTA}: sottogeni parzialmente sovrapposti senza contenimento.
+  \item \textbf{A\_CONTENUTO}: il sottogene $A$ è contenuto in $B$.
+  \item \textbf{B\_CONTENUTO}: simmetricamente, $B$ è contenuto in $A$.
+  \item \textbf{VICINI}: piccola sovrapposizione trascurabile e presenza di contatto tramite la lista dei vicini:
+  esistono spot di $A$ che hanno, tra i loro vicini, spot appartenenti a $B$.
+\end{itemize}
+
+Operativamente, si rappresentano i sottogeni come insiemi di indici di spot attivi, $A,B\subseteq\{1,\dots,n\}$,
+e si calcolano: l’intersezione $A\cap B$ e le quote di overlap
+\[
+\text{overlap}_A=\frac{|A\cap B|}{|A|}\,,\qquad
+\text{overlap}_B=\frac{|A\cap B|}{|B|}.
+\]
+Il \emph{contenimento} è valutato tramite una tolleranza $\texttt{contain\_tol}\in[0,1]$ che ammette piccole discrepanze:
+$A$ è contenuto in $B$ se $\frac{|A\cap B|}{|A|}\le\texttt{contain\_tol}$, e viceversa per $B$ in $A$.
+La \emph{vicinanza} è invece definita usando la lista dei vicini: $A$ e $B$ sono VICINI se
+un numero sufficiente di spot in $A$ possiede almeno un vicino in $B$.
+
+Confrontiamo solo coppie che appartengono a famiglie diverse. 
+Il numero di confronti è quindi pari a $z$ tale che $z \le \sum_{i=1}^n{i}$ dove 
+$n$ sono il numero dei sottogeni totali, ossia tutte le coppie possibili meno quelle intra-famiglia.
+
+
+Il codice seguente riporta la classificazione implementata. 
+Le maschere binarie sono convertite in insiemi di indici (\texttt{mask\_to\_set}). 
+La funzione \texttt{are\_touching} valuta la vicinanza su grafo 
+contando quanti spot di $A$ hanno almeno un vicino in $B$; 
+un contatore supera una soglia assoluta (\texttt{> 50}) per confermare il contatto.
+La procedura \texttt{classify\_relation\_soft\_matrix} applica nell'ordine: 
+contenimento, overlap significativo, vicinanza, e in disgiunzione.
+Le soglie numeriche impiegate (\emph{e.g.}, \texttt{contain\_tol}=0.02, \texttt{overlap}>0.3 per IN\_COSTA,
+\texttt{overlap}<0.03 per VICINI, soglia di contatto $>50$) riflettono una scelta conservativa: si privilegia
+un contenimento "quasi perfetto" e si minimizza il rischio di confondere overlap marginali con vera sovrapposizione.
+
+\begin{lstlisting}[style=mypython,
+                   label=code:rapportoSottogeni,
+                   caption={Calcolo del rappporto dei sottogeni}]
+def mask_to_set(mask):
+    maskArray = np.asarray(mask)
+    return set(np.flatnonzero(maskArray == 1)) 
+
+def are_touching(A_set, B_set, neighbors):
+    count = 0
+    if not A_set or not B_set:
+        return False
+    if len(A_set) > len(B_set):
+        A_set, B_set = B_set, A_set
+    for i in A_set:
+        if any((j in B_set) for j in neighbors[i]):
+            count+=1
+    if(count>50):
+        return True
+    return False
+  
+def classify_relation_soft_matrix(maskA, 
+                                  maskB, 
+                                  neighbors,
+                                  contain_tol=0.02):
+    A = mask_to_set(maskA) #Binary mask 1
+    B = mask_to_set(maskB) #Binary mask 2
+
+
+    inter = A & B #intersezione.
+    overlapA = (len(inter) / len(A)) if A else 0.0
+    overlapB = (len(inter) / len(B)) if B else 0.0
+
+    missA = len(A - B)
+    missB = len(B - A)
+    if len(A) > 0 and (missA / len(A) <= contain_tol):
+        return ("A_CONTENUTO")
+
+    if len(B) > 0 and (missB / len(B) <= contain_tol):
+        return ("B_CONTENUTO")
+
+    if inter and (overlapA > 0.3) and (overlapB > 0.3):
+        return ("IN_COSTA")
+
+    if are_touching(A, B, neighbors) and (overlapA < 0.03) and (overlapB < 0.03):
+        return ("VICINI")
+
+    return ("DISGIUNTI")
+\end{lstlisting}
+
+
+\paragraph{Filtraggio dei risultati}
+Una volta classificati vengono infine rimosse le coppie DISGIUNTE e si salvano i risultati in un dictionary: 
+\texttt{[çgene\_id\_aç, çsub\_id\_aç, çgene\_id\_bç, çsub\_id\_bç, çrapportoç]}.
+Dal dictionary si salvano infine, applicando un ulteriore filtro, oltre alla lista appena creata anche le liste contenenti
+senza IN\_COSTA e con solo VICINI, per alimentare le analisi successive.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=1\textwidth]{immagini/807_0_and_27_0.png}
+	\caption{Due sottogeni VICINI messi a confronto}
+	\label{fig:comparison1}
+\end{figure}
+
+\section{Grafo dei rapporti}\label{sec:gafoDeiRapporti}
+Una volta ottenute le liste dei vari rapporti costruiamo un CVS per poter analizzare i dati appena
+raccolti sotto forma di grafo. Questo ci è utile per analizzare i rapporti e vederli rappresentati graficamente, in modo da scovare pattern altrimenti invisibili.
+Per poter creare il grafo, essendoci milioni di record diversi, si è scelto di utilizzare \textit{Gephi} un software opensource nato appositamente per rappresentare i grafi.
+
+il codice è il seguente:
+\begin{lstlisting}[style=mypython,
+                   label=code:NN,
+                   caption={Creazione CSV grafi}]
+def node_id(gene_id: int, sub_id: int) -> str:
+    return f"G_{gene_id}_S_{sub_id}"
+
+def dump_gephi_nodes_and_edges(relations, 
+                               nodes_csv="nodes.csv", 
+                               edges_csv="edges.csv",
+                               dedup_undirected=True, 
+                               log_every=200000):
+    
+    nodes = {}
+    seen_undir = set()
+
+    with open(edges_csv, "w", encoding="utf-8") as fe:
+        we = fe.write
+        we("Source,Target,Type,Relation\n")
+        for c, r in enumerate(relations, 1):
+            ga, sa = int(r["gene_id_a"]), int(r["sub_id_a"])
+            gb, sb = int(r["gene_id_b"]), int(r["sub_id_b"])
+            rel = str(r["rapporto"]).upper()
+
+            # crea (o registra) i nodi
+            ida = node_id(ga, sa)
+            idb = node_id(gb, sb)
+            if ida not in nodes:
+                nodes[ida] = (ida, ga, sa) 
+            if idb not in nodes:
+                nodes[idb] = (idb, gb, sb)
+
+            if rel == "A_CONTENUTO":
+                we(f"{ida},{idb},Directed,A_CONTENUTO\n")
+            elif rel == "B_CONTENUTO":
+                we(f"{idb},{ida},Directed,B_CONTENUTO\n")  # normalizzo il valore Relation per colore coerente
+            else:
+                if dedup_undirected:
+                    key = (ida, idb) if ida <= idb else (idb, ida)
+                    if key in seen_undir:
+                        continue
+                    seen_undir.add(key)
+                    s, t = key
+                else:
+                    s, t = ida, idb
+                we(f"{s},{t},Undirected,{rel}\n")
+
+            if log_every and c % log_every == 0:
+                print(f"edges written: {c}")
+
+    with open(nodes_csv, "w", encoding="utf-8") as fn:
+        wn = fn.write
+        wn("Id,Label,Gene,Sub\n")
+        for nid, (label, g, s) in nodes.items():
+            wn(f"{nid},{label},{g},{s}\n")
+
+    return nodes_csv, edges_csv
 \end{lstlisting}
