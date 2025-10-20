@@ -405,11 +405,41 @@ senza IN\_COSTA e con solo VICINI, per alimentare le analisi successive.
 \end{figure}
 
 \section{Grafo dei rapporti}\label{sec:gafoDeiRapporti}
-Una volta ottenute le liste dei vari rapporti costruiamo un CVS per poter analizzare i dati appena
-raccolti sotto forma di grafo. Questo ci è utile per analizzare i rapporti e vederli rappresentati graficamente, in modo da scovare pattern altrimenti invisibili.
-Per poter creare il grafo, essendoci milioni di record diversi, si è scelto di utilizzare \textit{Gephi} un software opensource nato appositamente per rappresentare i grafi.
+Una volta ottenute le liste dei vari rapporti tra sottogeni, 
+il passo successivo consiste nel tradurre queste informazioni in una forma 
+graficamente interpretabile. A tale scopo, si costruisce un file CSV che 
+rappresenta il grafo delle relazioni tra sottogeni, 
+successivamente importato nel software \textit{Gephi} per l'analisi e la visualizzazione. 
 
-il codice è il seguente:
+La rappresentazione a grafo risulta particolarmente utile poiché consente 
+di individuare pattern di co-espressione e vicinanza difficilmente osservabili 
+in forma tabellare. Attraverso la disposizione spaziale e la colorazione degli archi
+in base alla tipologia di rapporto, emergono strutture
+e relazioni tra geni che riflettono la loro organizzazione nel tessuto. 
+Questo approccio permette di passare da una descrizione puramente numerica 
+dei rapporti a una visione sistemica, nella quale i sottogeni diventano nodi 
+di una rete e i loro legami spaziali archi etichettati.
+
+Nel grafo costruito:
+\begin{itemize}
+    \item ogni \textbf{nodo} rappresenta un sottogene, identificato dalla coppia \texttt{[gene\_id, sub\_id]};
+    \item ogni \textbf{arco} rappresenta un rapporto spaziale significativo tra due sottogeni appartenenti a geni diversi.
+        La direzione dell'arco è usata solo per i rapporti di tipo \texttt{A\_CONTENUTO} e \texttt{B\_CONTENUTO}, dove è
+        rilevante il verso del contenimento; gli altri rapporti (\texttt{VICINI}, \texttt{IN\_COSTA}) sono rappresentati come
+        archi non orientati. Su Gephi questo viene permesso scegliendo l'opzione \textit{mixed} quando si importano gli archi.
+\end{itemize}
+
+Per ridurre la ridondanza, nel caso di rapporti non direzionali è stato inserito 
+un sistema di deduplicazione: se due nodi sono già stati collegati con un arco 
+non orientato, l'associazione non viene duplicata nel CSV di output. 
+Questa scelta semplifica la lettura dei grafi e riduce la dimensione dei file, 
+che in presenza di milioni di record può facilmente diventare consistente.
+
+\paragraph{Implementazione}
+Il codice seguente viene utilizzato per generare i file CSV compatibili con \textit{Gephi}.
+L'opzione \texttt{dedup\_undirected=True} evita duplicazioni nelle relazioni non orientate, mentre
+\texttt{log\_every} consente di stampare a video lo stato di avanzamento ogni $N$ archi scritti.
+
 \begin{lstlisting}[style=mypython,
                    label=code:NN,
                    caption={Creazione CSV grafi}]
@@ -467,3 +497,13 @@ def dump_gephi_nodes_and_edges(relations,
 
     return nodes_csv, edges_csv
 \end{lstlisting}
+
+\paragraph{Visualizzazione in Gephi}
+I file generati vengono infine importati in Gephi.
+Una volta importati i CSV, è possibile applicare layout di disposizione dei nodi, come ad esempio \textit{ForceAtlas2} o
+\textit{Fruchterman-Reingold}, per evidenziare strutture modulari, regioni densamente connesse e rapporti dominanti tra
+specifici geni. 
+Inoltre, colorando gli archi in base al tipo di relazione,
+diventa possibile individuare facilmente pattern di prossimità, contenimento o contatto, 
+offrendo una prospettiva visiva e intuitiva sulle interazioni 
+spaziali tra sottogeni nel tessuto analizzato.
