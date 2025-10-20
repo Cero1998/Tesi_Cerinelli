@@ -124,4 +124,120 @@ Si può  notare inoltre come non tutti gli spot possiedono 6 vicini, ma quelli i
 ne possiedono un quantitativo minore.
 
 \section{Divisione in sotto geni}\label{subsec:SubGenes}
+Una volta trovati i vicini di ogni spot, il passo successivo consiste nel suddividere ciascun gene in
+sottogruppi più piccoli, detti \textit{sottogeni}. 
+Questa operazione è necessaria poiché l'espressione genica spaziale di un gene
+non si manifesta quasi mai come un unico dominio compatto, 
+ma tende piuttosto a presentare molteplici regioni locali di attivazione, 
+separate tra loro da aree di non espressione. 
+In altri termini, un singolo gene può dar luogo a più \textit{cluster} distinti di 
+espressione all'interno del tessuto.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.45\textwidth]{immagini/geneSingleWithSubGenesShow.png}
+	\caption{Maschera binaria di un gene con evidenti sottogeni}
+	\label{fig:singleBinaryMaskGene}
+\end{figure}
+
+Come illustrato nella figura \ref{fig:singleBinaryMaskGene} il gene analizzato risulta suddivisibile in 3 sottogeni
+distinti, ciascuno dei quali corrisponde a un agglomerato spaziale di spot in cui il gene risulta espresso. 
+Il numero totale di sottogeni dipende dalla distribuzione dell'espressione: piccoli cluster isolati al di sotto di una
+soglia minima vengono scartati per evitare classificazioni non significative o influenzate dal rumore tecnico.
+In tal modo, si ottiene una rappresentazione più pulita e interpretabile della distribuzione spaziale
+dell'attività genica.
+
+\paragraph{Motivazione}
+La suddivisione in sottogeni è una fase cruciale, poiché le successive analisi di relazione tra geni richiedono di
+confrontare non più le espressioni globali del gene, ma le singole regioni locali di attivazione. 
+Ogni sottogene può infatti essere in prossimità o in relazione con un altro sottogene appartenente a un gene diverso, anche se i due geni nel loro
+complesso non mostrano un pattern di co-espressione globale. Questa granularità permette di cogliere fenomeni locali
+che andrebbero persi in un'analisi unica.
+
+\paragraph{Approccio algoritmico}
+Per identificare automaticamente i sottogeni di ciascun gene, 
+è stato adottato un approccio basato sulla ricerca delle \textit{componenti connesse} 
+nella maschera binaria del gene. Si consideri, per un dato gene, 
+la maschera booleana $\mathbf{y} \in \{0,1\}^n$ che indica, per ciascuno spot, 
+se il gene risulta espresso ($1$) o meno ($0$). 
+Utilizzando la lista dei vicini precedentemente costruita, 
+è possibile determinare quali spot attivi (con $\mathbf{y}_i=1$) siano connessi 
+tra loro, ovvero appartengano alla stessa regione contigua di espressione. 
+Ogni insieme di spot tra loro connessi rappresenta una componente del grafo, e quindi un sottogene.
+
+La ricerca delle componenti connesse viene implementata tramite l'algoritmo \textit{Breadth-First Search} (BFS),
+una procedura classica di esplorazione su grafi. 
+A partire da uno spot attivo non ancora visitato, la BFS esplora ricorsivamente tutti i suoi vicini anch'essi attivi,
+poi i vicini dei vicini, e così via, fino a esaurire la regione connessa. 
+In tal modo, ogni esplorazione restituisce una componente distinta del grafo dei nodi attivi.
+
+La funzione riportata di seguito implementa l'intera procedura descritta. 
+Essa riceve in input la maschera binaria del gene (\texttt{mask}), la lista dei vicini per ogni spot (\texttt{neighbors}), e il numero totale di spot
+(\texttt{number\_of\_spots}). 
+Restituisce l'elenco delle componenti connesse, le relative etichette e, se richiesto,
+le Binary Mask corrispondenti.
+
+Il codice è il seguente:
+\begin{lstlisting}[style=mypython,
+                   label=code:NN,
+                   caption={Identificazione sottogeni tramite BFS}]
+    def connected_components_on_mask(mask, 
+                                     neighbors, 
+                                     number_of_spots, 
+                                     min_size=1, 
+                                     return_masks=True):
+    
+    mask = np.asarray(mask).astype(bool)
+    n = len(mask)
+    visited = np.zeros(n, dtype=bool)
+    comp_labels = -1 * np.ones(n, dtype=int)
+    components = []
+    comp_masks = [] if return_masks else None
+    cid = 0
+
+    # Consideriamo solo i nodi attivi
+    active_nodes = np.flatnonzero(mask)
+
+    for start in active_nodes:
+        if visited[start]:
+            continue
+        if not mask[start]:
+            continue
+
+        q = deque([start])
+        visited[start] = True
+        comp = []
+
+        while q:
+            u = q.popleft()
+            comp.append(u)
+            # espandi solo verso vicini attivi
+            for v in neighbors[u]:
+                if v < 0 or v >= n:
+                    continue
+                if mask[v] and not visited[v]:
+                    visited[v] = True
+                    q.append(v)
+
+        # Applica soglia per la dimensione componente
+        if len(comp) >= min_size:
+            for u in comp:
+                comp_labels[u] = cid
+            components.append(comp)
+            cid += 1
+
+            if return_masks:
+                comp_masks.append(
+                    component_to_mask(
+                        comp,number_of_spots))
+    
+    if return_masks:
+        return comp_labels, components, comp_masks
+    else:
+        return comp_labels, components
+\end{lstlisting}
+
+Per poter applicare questa funzione automaticamente su tutti i geni che prendiamo in considerazione,
+semplicemente richiamiamo la funzione all'interno di un ciclo \texttt{for()} e ci salviamo i risultati in un dictionary
+avente forma \texttt{[çgene\_idç, çsub\_idç, çcountç, çcomp\_maskç]}.
 
