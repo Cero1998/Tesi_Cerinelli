@@ -241,3 +241,45 @@ Per poter applicare questa funzione automaticamente su tutti i geni che prendiam
 semplicemente richiamiamo la funzione all'interno di un ciclo \texttt{for()} e ci salviamo i risultati in un dictionary
 avente forma \texttt{[çgene\_idç, çsub\_idç, çcountç, çcomp\_maskç]}.
 
+\begin{lstlisting}[style=mypython,
+                   label=code:NN,
+                   caption={Creazione completa sottogeni}]
+    def build_subgenes(binary_masks, 
+                       neighbors, 
+                       number_of_spots, 
+                       min_size=1, 
+                       gene_ids=None):
+
+    if isinstance(binary_masks, np.ndarray) and 
+       binary_masks.ndim == 2:
+        n_genes = binary_masks.shape[0]
+        get_mask = lambda i: binary_masks[i]
+    else:
+        n_genes = len(binary_masks)
+        get_mask = lambda i: np.asarray(binary_masks[i])
+
+    if gene_ids is None:
+        gene_ids = list(range(n_genes))
+
+    results = []
+    for gi in range(n_genes):
+        mask = get_mask(gi)
+        _, comps, comp_masks = 
+            connected_components_on_mask(
+                mask, 
+                neighbors, 
+                number_of_spots, 
+                min_size=min_size, 
+                return_masks=True
+            )
+
+        for sub_id, (comp, cmask) in 
+            enumerate(zip(comps, comp_masks)):
+                results.append({
+                    "gene_id": gene_ids[gi],
+                    "sub_id": sub_id,
+                    "count": len(comp),
+                    "comp_mask": cmask
+                })
+    return results
+\end{lstlisting}
