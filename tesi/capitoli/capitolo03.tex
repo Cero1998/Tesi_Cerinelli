@@ -1,5 +1,5 @@
 % !TeX spellcheck = it_IT
-\chapter{Sviluppo e risultati sperimentali}\label{chapter:MineStuff}
+\chapter{Metodologia}\label{chapter:metodologia}
 Dopo aver presentato nel Capitolo precedente le nozioni 
 fondamentali e le operazioni di pre-processing necessarie 
 alla gestione dei dati, in questo capitolo 
@@ -507,3 +507,74 @@ Inoltre, colorando gli archi in base al tipo di relazione,
 diventa possibile individuare facilmente pattern di prossimità, contenimento o contatto, 
 offrendo una prospettiva visiva e intuitiva sulle interazioni 
 spaziali tra sottogeni nel tessuto analizzato.
+
+\begin{figure}[htbp]
+  \centering
+
+  % --- riga 1 (due affiancate) ---
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{immagini/graphs_all_background_legend.png}
+    \caption{Grafo di tutti i rapporti}
+    \label{fig:graphsAll}
+  \end{subfigure}\hfill
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{immagini/graphs_no_costa_background_legend.png}
+    \caption{Senza IN\_COSTA}
+    \label{fig:graphsNoCosta}
+  \end{subfigure}
+
+  \caption{Confronto tra i due grafi più grandi}
+  \label{fig:graphs_triptych}
+\end{figure}
+
+% \begin{figure}[ht]
+% 	\centering
+% 	\includegraphics[width=0.5\textwidth]{immagini/cluster_a_contenuto_legend.png}
+% 	\caption{Dettaglio del cluster A_CONTENUTO}
+% 	\label{fig:graphAContenuto}
+% \end{figure}
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.5\textwidth]{immagini/graphs_close_background2_noLabels_legend.png}
+	\caption{Grafo dei solo VICINI}
+	\label{fig:graphsClose}
+\end{figure}
+
+
+\subsection{Analisi pattern grafo vicini}\label{subsec:analisiPatternGrafo}
+Osservando la rappresentazione grafica dei soli archi \texttt{VICINI}, 
+si nota la presenza di un cluster centrale che domina il grafo. 
+Questo gruppo racchiude un insieme di geni connessi, i cui sottogeni presentano numerosi rapporti di vicinanza reciproca. 
+La densità delle connessioni suggerisce la presenza di una regione tissutale in cui diversi geni sono co-espressi in prossimità spaziale, 
+pur mantenendo domini distinti.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.5\textwidth]{immagini/graph_main_cluster_close.png}
+	\caption{Grafo cluster principale dei VICINI}
+	\label{fig:mainClusterVicini}
+\end{figure}
+
+Accanto a questo nucleo principale, è presente un cluster secondario di dimensioni 
+più ridotte, situato sul lato destro del grafo, in cui un singolo gene 
+funge da nodo centrale. Questo gene risulta collegato a più sottogeni di geni 
+differenti.
+
+\begin{figure}[hb]
+	\centering
+	\includegraphics[width=0.5\textwidth]{immagini/graphs_close_hub1_background_legend.png}
+	\caption{Grafo cluster secondario dei VICINI}
+	\label{fig:clusterSecondarioVicini}
+\end{figure}
+
+La loro rappresentazione è la seguente:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\textwidth]{immagini/combined_left_first_right_centered_smallHub.png}
+  \caption{Rappresentazione maschere binarie cluster secondario}
+  \label{fig:clusterSecondarioVicini}
+\end{figure}
