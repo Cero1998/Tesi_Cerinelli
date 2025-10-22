@@ -1,6 +1,40 @@
-\chapter{Conclusione} %Se si cambia il Titolo cambiare anche la riga successiva così che appia corretto nell'conclusione
+\chapter{Conclusione}\label{chapter:conclusione}%Se si cambia il Titolo cambiare anche la riga successiva così che appia corretto nell'conclusione
 %\addcontentsline{toc}{chapter}{Conclusione} %Per far apparire Introduzione nell'indice (Il nome deve rispecchiare quello del chapter)
-Conclusione che riassume il lavoro svolto ed eventuali lavori futuri.
 
-\blindtext %Dummy Text - remove
-\blindtext %Dummy Text - remove
+Il lavoro svolto in questa tesi ha avuto come obiettivo la progettazione e l'implementazione di una metodologia computazionale per lo studio e il riconoscimento di potenziali \textit{clustering alternativi} nei dati di trascrittomica spaziale.  
+A partire dai dati forniti dalla piattaforma 10x~Visium, è stato costruito un intero flusso di analisi — dal preprocessing alla rappresentazione grafica delle relazioni spaziali — con lo scopo di esplorare in modo sistematico la distribuzione e l'interazione dei geni nel tessuto.
+
+\medskip
+L'intero processo è stato sviluppato in ambiente Python, integrando librerie come \texttt{Scanpy}, \texttt{sklearn} e strumenti per l'analisi grafica e statistica, fino a includere modelli avanzati come \textit{GraphST} e \textit{Mclust}.  
+In particolare, la pipeline ha previsto:  
+\begin{itemize}
+  \item la costruzione di una mappa cartesiana degli \textit{spot} e la definizione del grafo dei vicini mediante l'algoritmo dei \textit{Nearest Neighbors};
+  \item la creazione di maschere binarie per ciascun gene, rappresentanti la sua espressione spaziale;
+  \item la suddivisione dei geni in sottogeni attraverso l'individuazione delle componenti connesse via \textit{Breadth-First Search};
+  \item il calcolo dei rapporti spaziali tra sottogeni, classificati in cinque categorie (\texttt{DISGIUNTI}, \texttt{IN\_COSTA}, \texttt{A\_CONTENUTO}, \texttt{B\_CONTENUTO}, \texttt{VICINI});
+  \item la rappresentazione dei rapporti tramite un grafo esportato e visualizzato in \textit{Gephi}, utile per l'analisi visiva dei pattern e delle connessioni tra geni.
+\end{itemize}
+
+\medskip
+L'analisi del grafo dei geni \texttt{VICINI} ha rivelato la presenza di cluster ben distinti: un macro-cluster centrale, caratterizzato da un'elevata connettività, e uno secondario di dimensioni ridotte, in cui un singolo gene fungeva da nodo centrale.  
+Questa osservazione ha confermato che i rapporti di vicinanza possono essere interpretati come indicatori di co-localizzazione spaziale tra geni, suggerendo possibili interazioni locali o domini funzionali condivisi.
+
+\medskip
+Per valutare se tali correlazioni spaziali corrispondessero anche a una reale struttura trascrittomica interna al tessuto, si è proceduto con un'analisi di clustering basata su \textit{GraphST} e \textit{Mclust}.  
+Nonostante la solidità metodologica dell'approccio, i risultati non hanno mostrato l'emergere di cluster alternativi significativi rispetto a quelli già noti.  
+Questo esito, tuttavia, non rappresenta un fallimento, ma un risultato scientificamente rilevante: dimostra che la metodologia proposta è in grado di analizzare relazioni spaziali complesse senza introdurre artefatti o pattern artificiali.  
+Inoltre, suggerisce che la vicinanza spaziale tra geni non implica necessariamente una correlazione diretta di espressione, ma può riflettere fenomeni locali di prossimità o di contatto marginale.
+
+\medskip
+Il lavoro ha quindi raggiunto l'obiettivo di costruire una pipeline modulare, robusta e replicabile per l'analisi computazionale di dati di trascrittomica spaziale, aprendo la strada a possibili sviluppi futuri.  
+Tra le direzioni di approfondimento più promettenti si segnalano:
+\begin{itemize}
+  \item l'estensione dell'analisi a dataset con risoluzione spaziale più elevata (ad esempio \textit{Slide-seq} o \textit{Stereo-seq});
+  \item l'integrazione con approcci multi-omici che combinino informazione trascrittomica, epigenetica e proteomica;
+  \item l'adozione di tecniche di machine learning avanzate (Graph Neural Networks o modelli contrastivi) per individuare pattern nascosti e migliorare la sensibilità ai segnali locali.
+\end{itemize}
+
+\medskip
+In conclusione, la metodologia proposta rappresenta un contributo utile per l'esplorazione delle relazioni spaziali tra geni nei dati di trascrittomica.  
+Pur non avendo individuato nuovi cluster, il lavoro ha permesso di consolidare una base analitica solida e riproducibile, capace di essere estesa e adattata a futuri studi in ambito bioinformatico e computazionale.  
+La trascrittomica spaziale resta un campo in rapida evoluzione, e strumenti di analisi come quello sviluppato in questa tesi potranno costituire un supporto prezioso per comprendere meglio la complessità dei tessuti e l'organizzazione spaziale dell'espressione genica.

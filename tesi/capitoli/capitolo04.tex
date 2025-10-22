@@ -33,12 +33,18 @@ adata_main_hub  = adata[:, originalGeneIdsToSaveMainHub].copy()
 
 \paragraph{Addestramento del modello GraphST}
 Il sottoinsieme così ottenuto viene quindi utilizzato per l'addestramento 
-di un modello \textit{GraphST}, una metodologia di analisi non supervisionata 
+di un modello \textit{GraphST}, una metodologia di analisi 
 che integra l'informazione spaziale con l'espressione genica per 
 individuare cluster coerenti di spot.
-Il modello sfrutta una rappresentazione grafica dei dati per apprendere
-una codifica latente delle relazioni locali tra geni e posizioni spaziali.
-dopodichè facciamo l'addestramento del modello Con GraphST.
+
+L'addestramento consente di generare una nuova rappresentazione 
+dello spazio trascrittomico, nella quale gli spots, sono organizzati 
+in modo da massimizzare la similarità dei profili di espressione locale e la continuità
+geometrica.  
+In questa fase, l'obiettivo non è il clustering diretto, bensì l'ottenimento 
+di un \texttt{AnnData} ottimizzato in cui
+algoritmi di clustering successivi possano operare in modo più robusto e 
+sensibile.
 
 \begin{lstlisting}[style=mypython,
                    label=code:NN,
@@ -47,14 +53,62 @@ model = GraphST.GraphST(adata_main_hub, device=device)
 
 adata_main_hub = model.train()
 \end{lstlisting}
-e infine applichiamo la funzione di clustering che sfrutta McLust per trovare i pattern
+
+\paragraph{Applicazione del clustering con Mclust}
+Per individuare eventuali sottostrutture all'interno dell'\texttt{AnnData} prodotto 
+da GraphSt, è stato impiegato l'algoritmo \textit{Mclust}. 
+Questa scelta è motivata dalla natura probabilistica e adattiva di Mclust, 
+che consente di riconoscere cluster di forma e dimensione variabile, 
+particolarmente adatto ai dati trascrittomici rumorosi e ad alta dimensionalità.
 \begin{lstlisting}[style=mypython,
                    label=code:NN,
-                   caption={Addestramento modello con GraphSt}],
+                   caption={Applicazione algoritmo Mclust}],
 adata_main_hub = ad.read_h5ad("main_hub_close_adata")
 
 Mc_Lust(adata_main_hub, n_cluster, refinement=True)
 \end{lstlisting}
 
-I risulati ottenuti purtroppo portano alla conclusione che questa metodologia non ha portato 
-al ritrovamento di cluster alternativi all'interno del tessuto.
+\paragraph{Analisi dei risultati}
+I risultati ottenuti, tuttavia, non hanno evidenziato la presenza di cluster alternativi 
+all'interno del tessuto.  
+L'algoritmo Mclust, pur esplorando differenti configurazioni di componenti gaussiane, 
+non ha rilevato sottostrutture statisticamente significative, 
+restituendo modelli in cui la maggior parte degli spot veniva assegnata
+a un singolo cluster dominante.
+
+Tale esito suggerisce che i geni classificati come \texttt{VICINI}, 
+sebbene mostrino una struttura topologica complessa e ricca di
+interconnessioni, non si traduce necessariamente in una separazione 
+biologica netta o in una differenziazione
+trascrittomica rilevabile a scala locale.  
+È possibile che i rapporti di vicinanza tra geni rappresentino fenomeni 
+di co-localizzazione o contatto marginale,
+più che veri e propri domini di co-espressione.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{immagini/showmclust_original.png}
+  \caption{Rappresentazione Mclust su AnnData originale}
+  \label{fig:clusterPrimarioVicini}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+
+  % --- riga 1 (due affiancate) ---
+  \begin{subfigure}[t]{0.45\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{immagini/showmclust_mainHub.png}
+    \caption{Clustering Principale}
+    \label{fig:graphsAll}
+  \end{subfigure}\hfill
+  \begin{subfigure}[t]{0.45\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{immagini/showmclust_smallHub.png}
+    \caption{Clustering secondario}
+    \label{fig:graphsNoCosta}
+  \end{subfigure}
+
+  \caption{Rappresentazione Mclust su AnnData filtrati coi geni in rapporto \texttt{VICINI}}
+  \label{fig:graphs_triptych}
+\end{figure}
