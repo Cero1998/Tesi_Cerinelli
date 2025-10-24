@@ -1,8 +1,7 @@
 \chapter{Concetti generali}\label{chapter:cap_one}
-Da sempre tutto ciò che circonda l'uomo è stato fonte di curiosità e studio.
-Partendo dall'interesse di tutti i vari aspetti riguardanti l’essere umano e gli organismi viventi,
-con cui ci relazioniamo quotidianamente, si è sviluppata la branca della biologia
-
+Da sempre tutto ciò che circonda l'uomo è stato fonte di curiosità, osservazioni e studio.
+Partendo dall'interesse di tutti i vari aspetti riguardanti l'essere umano e gli organismi viventi,
+con cui ci relazioniamo quotidianamente, si è sviluppata la branca della biologia.
 L'informatica, invece, la branca della scienza che si occupa dello studio e dell'elaborazione delle informazioni,
 è stata fin da sempre utilizzata come strumento per migliorare la qualità della vita dell'uomo\cite{treccaniInformatica}.
 Dalla prima calcolatrice meccanica, la \textit{Pascalina}, inventata da Blaise Pascal nel 1644\cite{pascal1995pensieri}, 
@@ -29,8 +28,8 @@ sequenze che codificano gli aminoacidi, i quali, vengono espressi in proteine, i
 invece non codificano nessuna proteina. Al giorno d'oggi sappiamo che il genoma umano presenta
 circa 20000 geni che codificano proteine\cite{principiBiochimica}.
 Con il passare degli anni sono stati sequenziati molti genomi, sia di microrganismi che di animali,
-questo perché, l'interesse degli scienziati è quello di andare definire i processi evolutivi degli esseri
-viventi, ma, per ottenere dei risultati, è indispensabile andare a comparare numerosi genomi di
+questo perché, l'interesse degli scienziati è quello di definire i processi evolutivi degli esseri
+viventi, e, per ottenere dei risultati, è indispensabile comparare numerosi genomi di
 organismi differenti.
 
 La branca della bioinformatica è molto ampia, per questo, noi ci interesseremo
@@ -45,7 +44,7 @@ cellule di un organismo hanno lo stesso genoma, ma
 possono presentare epigenomi e trascrittomi molto
 diversi.
 \subsection{Epigenoma}\label{subsec:epigenomi}
-L'\textit{epigenoma} è una moltitudine di composti chimici e preoteine che regolano il genoma su cosa fare senza cambiare la sequenza del DNA.
+L'\textit{epigenoma} è una moltitudine di composti chimici e proteine che agiscono sul genoma controllandone l'attività, senza alterare in alcun modo la sequenza del DNA.
 Esso contiene le varie istruzioni per poter costruire le proteine necessarie per svolgere le diverse funzioni della cellula.
 L'epigenoma, poi, può attaccarsi al DNA e impartire diversi comandi, tra cui l'attivazione o la disattivazione di geni, o il controllo della produzione di
 determinate proteine all'interno della cellula stessa.
@@ -57,8 +56,8 @@ presenta essenzialmente lo stesso genoma all'interno del
 nucleo\footnote{il nucleo è una struttura subcellulare, presente negli
 eucarioti, che contiene il DNA.}.
 Le differenze tra le cellule sono determinate da come e quando diversi gruppi di geni vengono attivati 
-o disattivati in vari tipi di cellule. Se prendiamo, ad esempio, in
-esame le cellule specializzate nell'occhio, queste attivano
+o disattivati in vari tipi di cellule. Se prendiamo in esame, ad esempio, 
+le cellule specializzate dell'occhio, queste attivano
 speciﬁci geni che producono 
 proteine in grado di rilevare la luce, mentre le cellule specializzate nei 
 globuli rossi producono proteine che trasportano l'ossigeno dall'aria al resto del corpo. 
@@ -76,19 +75,19 @@ la sequenza di basi dell'mRNA viene letta e tradotta in catene di amminoacidi.
 Accanto all'mRNA, esistono anche altri tipi di RNA che non codificano proteine ma che svolgono funzioni regolatorie 
 o strutturali, contribuendo a controllare l'attività dei geni e l'organizzazione della cellula.
 Poiché ogni cellula del corpo umano possiede lo stesso patrimonio genetico, 
-ciò che la distingue dalle altre non è il genoma ma l'insieme dei geni che vengono attivati o silenziati. 
-Questo insieme di trascrizioni geniche costituisce il trascrittoma, e varia notevolmente da cellula a cellula 
+ciò che la distingue dalle altre non è il genoma, ma l'insieme dei geni che vengono attivati o silenziati. 
+Questo insieme di trascrizioni geniche costituisce il trascrittoma e varia notevolmente da cellula a cellula 
 e da tessuto a tessuto. Ad esempio, le cellule muscolari esprimono geni che producono proteine contrattili, 
 mentre le cellule nervose attivano geni che permettono la trasmissione dei segnali elettrici.
 
-Il trascrittoma quindi è lo specchio dell'attività del genoma: mostra quali geni sono effettivamente 
+Il trascrittoma, quindi, è lo specchio dell'attività del genoma: mostra quali geni sono effettivamente 
 in funzione in un determinato momento e fornisce informazioni preziose sull'identità, 
 lo stato e la salute delle cellule\cite{genomeGov}.
 
 \section{Trascrittomica spaziale}\label{sec:cap_two_bioinfo}
 Come detto in precendenza, il trascrittoma rappresenta l'insieme di tutte le molecole di RNA presenti in una cellula in un dato momento.
 La trascrittomica a singola cellula (scRNA-seq) è diventata essenziale per la ricerca biomedica nell'ultimo decennio, 
-in particolare nello sviluppo della biologia, cancro, immunologia e neuroscienze. 
+in particolare nello sviluppo della biologia, neoplasia, immunologia e neuroscienze. 
 
 La maggior parte dei protocolli scRNA-seq disponibili in commercio richiedono che le cellule siano recuperate intatte e vitali dai tessuti. 
 Ciò ha precluso lo studio di molti tipi cellulari e ha in gran parte distrutto il contesto spaziale che altrimenti avrebbe potuto 
@@ -102,7 +101,7 @@ La TS produce dati ad alta dimensionalità utili a descrivere l'organizzazione c
 Una sfida fondamentale nella TS è l'identificazione degli \textit{Spatially Variable Genes (SVGs)}.
 Questi ultimi sono geni la cui espressione varia in modo dipendente dalla posizione nello spazio del tessuto.
 Analizzando lo spazio è possibile scovare pattern non casuali di espressione genica.
-Identificarli è cruciale nelle analisi di TS perché rivela domini tissutali, le quali sono nicchie cellulari e transizioni; 
+Identificarli è cruciale nelle analisi di TS, poichè rivelano domini tissutali che corrispondono a nicchie cellulari o a regioni di transizione tra diversi tipi di cellule; 
 In più facilita l'annotazione\footnote{L'assegnazione di etichette biologiche a cluster o spot} e quindi il clustering\cite{SVGs}.
 Oltre agli SVGs esistono anche gli \textit{Highly Variable Genes (HVGs)}, geni, che presentano una variabilità 
 di espressione molto superiore a quanto atteso, nonostante ciò non sono in grado di fornire informazioni spaziali rilevanti.
@@ -163,7 +162,7 @@ facilitando la comprensione della morfologia funzionale del tessuto.
 
 Al contrario degli HVGs, gli SVGs implicano che la variabilità rilevante è correlata 
 con la disposizione spaziale degli spot. 
-In altre parole, un gene è SVG se non solo mostra variabilità, ma la sua intensità è anche 
+In altre parole, un gene è un SVG se non solo mostra variabilità, ma la sua intensità è anche 
 spazialmente correlata ai suoi vicini: essi infatti tendono ad avere valori simili, 
 generando così dei pattern.
 Non tutti gli HVG presentano variabilità spaziale: alcuni potrebbero variare randomicamente nel tessuto, 
@@ -187,7 +186,7 @@ come il clustering o la ricostruzione delle reti geniche spaziali\cite{SVGS2}.
 
 \subsection{Ottenimento dei dati}\label{sec:OttenimentoDatiTS}
 Per poter recuperare le varie informazioni riguardanti l'espressione genica di un tessuto esistono diversi tipi di approcci\cite{CasiUsoTS2}.
-\paragraph{Approcci basati sulla microdissezione mediante cattura laser}
+\paragraph{Approcci basati sulla microdissezione mediante cattura laser\\}
 La microdissezione a cattura laser (\textit{Laser capture microdissection , LCM}) 
 consente la dissezione accurata di singole cellule da sezioni di tessuto 
 con notevole precisione, fornendo informazioni spaziali.
@@ -210,9 +209,10 @@ all'interno del tessuto.
 	\label{fig:two}
 \end{figure}
 
-\paragraph{Approcci basati sull'osservazione in situ}
-Gli approcci basati sull'osservazione in situ\footnote{Dal latino: "nel luogo". Significa analizzare direttamente nel tessuto originale} 
-rappresentano tecniche che permettono di osservare direttamente la distribuzione di RNA nel tessuto, 
+\paragraph{Approcci basati sull'osservazione in situ\\}
+%\footnote{Dal latino: "nel luogo". Significa analizzare direttamente nel tessuto originale}
+Questi approcci rappresentano tecniche che permettono di osservare 
+direttamente la distribuzione di RNA nel tessuto, 
 senza necessità di estrazione preventiva, mantenendo il contesto spaziale originale. 
 I due metodi più comunemente utilizzati sono l'ibridazione in situ (ISH) e il sequenziamento in situ (ISS).
 
@@ -239,7 +239,7 @@ facilitando analisi approfondite dell'eterogeneità cellulare e l'identificazion
 Tuttavia, come detto in precedenza, l'esecuzione del sequenziamento a singola cellula richiede che le cellule siano dissociate dal tessuto, 
 causando una perdita di informazioni sulla loro posizione spaziale. 
 Poiché la posizione spaziale delle cellule può effettivamente riflettere l'interazione 
-tra le cellule, ed è strettamente correlata alle funzioni fisiologiche e patologiche, 
+tra le cellule ed è strettamente correlata alle funzioni fisiologiche e patologiche, 
 una nuova tecnologia che collega l'espressione genica alle informazioni sulla posizione spaziale è stata molto attesa.
 La trascrittomica spaziale rappresenta questa nuova tecnologia, 
 e attraverso il suo utilizzo, 
@@ -256,7 +256,7 @@ per comprendere l'efficacia terapeutica del campione\cite{Beyondcell}.
 \medskip
 \medskip
 \noindent
-Come già annunciato in precendenza la TS si è quindi rivelata uno strumento rivoluzionario per quanto rigurada la ricerca sul cancro.
+Come già annunciato in precendenza la TS si è quindi rivelata uno strumento rivoluzionario per quanto riguarda la ricerca sul cancro.
 I tumori, non essendo masse uniformi, sono composti da diverse famiglie cellulari con ruoli ben distinti.
 Comprendere spazialmente dove ogni cellula si trova e come interagisce con le cellule vicine è stato fondamentale per rivelare i meccanismi di crescita, progressione e resistenza terapeutica del tumore.
 L'utilizzo di questa tecnologia può facilitare la comprensione dei tipi e degli stati delle 
@@ -281,7 +281,7 @@ la loro composizione e posizione cambiano, influenzando il comportamento della m
 Inoltre, l'integrazione tra TS e scRNA-seq ha permesso di identificare cellule rare, transizioni cellulari e 
 sottopopolazioni spazialmente specifiche che altrimenti sarebbero rimaste inosservate.
 
-\section{Algoritmi per la trascrittomica spaziale}\label{sec:cap_four_bioinfo}
+\section{Algoritmi di clustering per la trascrittomica spaziale}\label{sec:cap_four_bioinfo}
 Una volta creata la library dei geni, i dati ottenuti vengono elaborati con algoritmi di analisi spaziale.
 Tra i più famosi figurano \textit{Seurat}\cite{Seurat}, \textit{GraphST}\cite{GraphST}, \textit{Giotto}\cite{Giotto}, \textit{GIST}\cite{GIST} e \textit{Stardust}\cite{Stardust}.
 
@@ -303,12 +303,23 @@ Al contrario di Seurat, quindi, GraphST è stato progettato specificamente per d
 Nonostante ciò, richiede diversa attenzione per la costruzione del grafo, ed avendo una rete neurale richiede più risorse computazionali e tempo per l'addestramento\footnote{Processo di allenamento di un modello per eseguire un compito specifico} rispetto ad altre soluzioni.
 
 \subsection{Giotto}\label{subsec:giotto}
-Giotto è un toolkit open-source scritto in R pensato per l'analisi integrata di dati spaziali, con una serie di moduli per clustering spaziale, rilevamento di domini e interazioni tra cellule.
-Costruisce internamente una “spatial neighborhood network” che connette spot vicini in base alle coordinate fisiche. Il grafo ottenuto viene poi utilizzato per tutte le analisi spaziali.
-Questo toolkit offre vari metodi di clustering: sia classici basati su espressione, come l'algoritmo k-means, e sia metodi che integrano la struttura spaziale, in particolare un modello basato su Hidden Markov Random Fields (HMRF) che da vita a cluster spazialmente coerenti.
+Giotto è un toolkit open-source scritto in R pensato per 
+l'analisi integrata di dati spaziali, con una serie di moduli 
+per clustering spaziale, rilevamento di domini e interazioni tra cellule.
+Costruisce internamente una "spatial neighborhood network" 
+che connette spot vicini in base alle coordinate fisiche. 
+Il grafo ottenuto viene poi utilizzato per tutte le analisi spaziali.
+Questo toolkit offre vari metodi di clustering: sia classici 
+basati su espressione, come l'algoritmo k-means, 
+sia metodi che integrano la struttura spaziale, 
+in particolare un modello basato su 
+Hidden Markov Random Fields (HMRF) che dà vita a cluster spazialmente coerenti.
 
-Riassumendo Giotto è un toolkit abbastanza completo con molti moduli, incluso il modello HMRF che dà una componente spaziale ben fondata per il clustering.
-Tuttavia non avendo una rete neurale, al contrario di GraphST, potrebbe non cogliere pattern spaziali complessi.
+Riassumendo Giotto è un toolkit abbastanza completo con molti moduli, 
+incluso il modello HMRF che dà una componente spaziale 
+ben fondata per il clustering, 
+tuttavia non avendo una rete neurale, al contrario di GraphST, 
+potrebbe non cogliere pattern spaziali complessi.
 
 \subsection{GIST}\label{subsec:GIST}
 GIST (Graph Information for Spatial Transcriptomics) rappresenta un avanzamento significativo 
@@ -375,22 +386,40 @@ dove $z_i$ indica la deviazione del gene dalla media, $w_{i,j}$ è il peso spazi
 
 I risultati mostrano che, in molti casi, l'inclusione dell'informazione spaziale 
 tramite Stardust o Stardust* migliora significativamente la stabilità del clustering 
-rispetto a metodi che non la considerano, e raggiunge prestazioni competitive rispetto 
+rispetto a metodi che non la considerano e raggiunge prestazioni competitive rispetto 
 alle altre tecniche che già sfruttano aspetti spaziali.
 In sintesi, Stardust propone un compromesso fra informazione trascrittomica e 
 informazione spaziale nel clustering dei dati di trascrittomica spaziale, 
 offrendo uno strumento relativamente semplice da usare.
 
 \section{Limiti}\label{sec:cap_five_bioinfo}
-Nonostante i grandi progressi, la trascrittomica spaziale presenta ancora vari problemi che ne frenano l'adozione su larga scala, tra cui: costi elevati, 
-bassa risoluzione spaziale, lunghi tempi di risposta e aree di cattura ridotte.
-Inoltre, come detto precedentemente,  idealmente gli identificatori molecolari univoci (UMI) in uno spot misurano l'espressione specifica dello spot, 
-ma, spesso, questo non avviene nella pratica a causa della contaminazione causata dal sanguinamento degli spot vicini. Questo fenomento genera un artefatto chiamato spot swapping.
-Ignorare tale problematica può portare a risultati fuorvianti, come l'identificazione errata di SVGs o la sovrastima dell'espressione genica in regioni specifiche del tessuto.
+Nonostante i grandi progressi, la trascrittomica spaziale 
+presenta ancora vari problemi che ne frenano l'adozione 
+su larga scala, tra cui: costi elevati, 
+bassa risoluzione spaziale, lunghi tempi di risposta e 
+aree di cattura ridotte.
+Inoltre, come detto precedentemente,  idealmente gli 
+identificatori molecolari univoci (UMI) in uno spot 
+misurano l'espressione specifica dello spot, 
+ma, spesso, questo non avviene nella pratica a causa 
+della contaminazione causata dal sanguinamento degli spot 
+vicini. Questo fenomeno genera un artefatto chiamato spot swapping.
+Ignorare tale problematica può portare a risultati fuorvianti, 
+come l'identificazione errata di SVGs o la sovrastima 
+dell'espressione genica in regioni specifiche del tessuto.
 
-Nonostante ci siano strumenti specializzati per la risoluzione delle problematiche sopracitate, come SpotClean\cite{SpotClean} per rimuovere lo spot swapping, e iSCALE\cite{iSCALE} per poter utilizzare tessuti di grosse dimensioni,
-non esiste ad oggi un algoritmo unico che possa risolvere tutti i problemi della TS.
-Vari benchmark e review scientifiche hanno portato alla stessa conclusione: occorre una pipeline modulare, che si possa adattare alle esigenze specifiche di ciascun tessuto.
+Nonostante ci siano strumenti specializzati per la 
+risoluzione delle problematiche sopracitate, come 
+SpotClean\cite{SpotClean} per rimuovere lo spot swapping, 
+e iSCALE\cite{iSCALE} per poter utilizzare tessuti di grosse dimensioni,
+non esiste ad oggi un algoritmo unico che possa 
+risolvere tutti i problemi della TS.
+Vari benchmark e review scientifiche hanno portato alla 
+stessa conclusione: occorre una pipeline modulare, 
+che si possa adattare alle esigenze specifiche di ciascun tessuto.
 
 \medskip
-La TS resta un campo molto recente, e nuove analisi, metodi e software, vengono pubblicati ogni mese, perciò non sono da escludere eventuali sviluppi futuri che miglioreranno tale problematica\cite{limitiTS}.
+La TS resta un campo molto recente, e nuove analisi, 
+metodi e software, vengono pubblicati ogni mese, 
+perciò non sono da escludere eventuali sviluppi futuri 
+che miglioreranno tale problematica\cite{limitiTS}.
