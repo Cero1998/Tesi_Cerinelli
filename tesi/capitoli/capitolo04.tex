@@ -9,7 +9,7 @@ un approccio di \textit{clustering spaziale} basato sul'algoritmo \textit{GraphS
 integrato con la modellizzazione statistica offerta dal pacchetto \textit{Mclust} in ambiente R.
 
 
-\paragraph{Selezione dei geni di interesse}
+\paragraph{Selezione dei geni di interesse\\}
 Come primo passo, dal dataset originale \texttt{AnnData} 
 sono stati selezionati esclusivamente i geni appartenenti al cluster 
 principale del grafo dei VICINI, ovvero il gruppo centrale emerso dall'analisi 
@@ -17,7 +17,8 @@ grafica descritta nella sezione precedente.
 
 \begin{lstlisting}[style=mypython,
                    label=code:NN,
-                   caption={Creazione anndata con solo geni del cluster principale dei VICINI}],
+                   caption={Creazione anndata con solo geni del cluster principale dei VICINI},
+                   basicstyle=\ttfamily\scriptsize],
 geneIdsToSaveMainHub = [837,810,183,240,
 						578,116,193,700,
 						792,892,437,815,
@@ -31,7 +32,7 @@ adata = load_data()
 adata_main_hub  = adata[:, originalGeneIdsToSaveMainHub].copy()
 \end{lstlisting}
 
-\paragraph{Addestramento del modello GraphST}
+\paragraph{Addestramento del modello GraphST\\}
 Il sottoinsieme così ottenuto viene quindi utilizzato per l'addestramento 
 di un modello \textit{GraphST}, una metodologia di analisi 
 che integra l'informazione spaziale con l'espressione genica per 
@@ -48,13 +49,14 @@ sensibile.
 
 \begin{lstlisting}[style=mypython,
                    label=code:NN,
-                   caption={Addestramento modello con GraphSt}],
+                   caption={Addestramento modello con GraphSt},
+                   basicstyle=\ttfamily\scriptsize],
 model = GraphST.GraphST(adata_main_hub, device=device)
 
 adata_main_hub = model.train()
 \end{lstlisting}
 
-\paragraph{Applicazione del clustering con Mclust}
+\paragraph{Applicazione del clustering con Mclust\\}
 Per individuare eventuali sottostrutture all'interno dell'\texttt{AnnData} prodotto 
 da GraphSt, è stato impiegato l'algoritmo \textit{Mclust}. 
 Questa scelta è motivata dalla natura probabilistica e adattiva di Mclust, 
@@ -62,13 +64,14 @@ che consente di riconoscere cluster di forma e dimensione variabile,
 particolarmente adatto ai dati trascrittomici rumorosi e ad alta dimensionalità.
 \begin{lstlisting}[style=mypython,
                    label=code:NN,
-                   caption={Applicazione algoritmo Mclust}],
+                   caption={Applicazione algoritmo Mclust},
+                   basicstyle=\ttfamily\scriptsize],
 adata_main_hub = ad.read_h5ad("main_hub_close_adata")
 
 Mc_Lust(adata_main_hub, n_cluster, refinement=True)
 \end{lstlisting}
 
-\paragraph{Analisi dei risultati}
+\paragraph{Analisi dei risultati\\}
 I risultati ottenuti, tuttavia, non hanno evidenziato la presenza di cluster alternativi 
 all'interno del tessuto.  
 L'algoritmo Mclust, pur esplorando differenti configurazioni di componenti gaussiane, 
@@ -99,13 +102,13 @@ più che veri e propri domini di co-espressione.
   \begin{subfigure}[t]{0.45\textwidth}
     \centering
     \includegraphics[width=\linewidth]{immagini/showmclust_mainHub.png}
-    \caption{Clustering Principale}
+    \caption{Clustering principale, \texttt{Silhouette score: 0.015554267913103104}}
     \label{fig:graphsAll}
   \end{subfigure}\hfill
   \begin{subfigure}[t]{0.45\textwidth}
     \centering
     \includegraphics[width=\linewidth]{immagini/showmclust_smallHub.png}
-    \caption{Clustering secondario}
+    \caption{Clustering secondario, \texttt{Silhouette score: 0.085098035633564}}
     \label{fig:graphsNoCosta}
   \end{subfigure}
 
