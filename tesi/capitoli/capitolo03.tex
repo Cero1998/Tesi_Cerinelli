@@ -3,18 +3,18 @@
 Dopo aver presentato nel Capitolo precedente le nozioni 
 fondamentali e le operazioni di pre-processing necessarie 
 alla gestione dei dati, in questo capitolo 
-verrà descritto lo sviluppo pratico e le analisi sperimentale svolta.  
+verrà descritto lo sviluppo pratico e l'analisi sperimentale svolta.  
 L'obiettivo principale è quello di progettare e realizzare 
 una metodologia computazionale in grado di 
 identificare \textit{clustering alternativi} nei dati di trascrittomica spaziale, 
-fornendo una rappresentazione più flessibile e interpretabile dei 
-domini genici rispetto agli approcci convenzionali.
+analizzando il rapporto che intercorre tra i vari geni, fornendo una 
+metodologia alternativa rispetto agli approcci convenzionali.
 
-Per fare ciò è necessario che ogni gene venga e suddiviso spazialmente in sottogeni, affinchè essi si possano 
-catalogare tra di loro e poter analizzare eventuali relazioni particolari che ci sono fra un sottogene e un altro.
+Per fare ciò è necessario che ogni gene venga suddiviso spazialmente in sottogeni, affinchè essi si possano 
+catalogare e poter analizzare eventuali relazioni particolari che ci sono fra un sottogene e un altro.
 \section{Lista degli spot vicini}\label{subsec:Vicini}
 Come prima cosa, come mostrato nella figura \ref{fig:five}, è necessario individuare per ogni spot $s_i$ 
-l'insieme dei suoi spot adiacenti, ovvero la lista dei \textit{vicini}. 
+l'insieme dei suoi spot adiacenti, ovvero la \textit{lista dei vicini}. 
 Questa informazione è fondamentale poiché consente di stabilire quando due geni si trovano in prossimità spaziale,
 condizione necessaria per poter poi definire relazioni di vicinanza, contiguità e sovrapposizione tra geni attivi.
 
@@ -22,14 +22,15 @@ I dati forniti dalla tecnologia 10x Visium contengono, per ciascuno spot,
 le sue coordinate sulla griglia di cattura. 
 Tuttavia, tali coordinate sono organizzate in forma tabellare, come visto nella tabella \ref{tab:tsvTable}, all'interno della struttura \texttt{scdata.obs},
 e perciò non immediatamente interpretabili in termini spaziali. 
-Per poter costruire un grafo dei vicini è quindi necessario effettuare una conversione preliminare di queste informazioni,
+Per poter costruire una lista dei vicini è quindi necessario effettuare una conversione preliminare di queste informazioni,
 trasformando le coordinate della griglia in coordinate cartesiane.
 In questo modo è possibile rappresentare ogni spot come un punto nel piano, preservando le distanze e la disposizione
 esagonale della griglia Visium.
 \newpage
 \begin{lstlisting}[style=mypython,
                    label=code:index_to_cart,
-                   caption={Trasformazione delle coordinate spaziali in coordinate cartesiane}]
+                   caption={Trasformazione delle coordinate spaziali in coordinate cartesiane},
+                   basicstyle=\ttfamily\scriptsize]
     index_to_cart = np.zeros((len(scdata.obs), 2))
     max_row       = scdata.obs['array_row'].max()
     for i, ind in enumerate(scdata.obs.index):
@@ -39,19 +40,18 @@ esagonale della griglia Visium.
         index_to_cart[i, 1] = (max_row - row) * (3/2)
 \end{lstlisting}
 
-
+\noindent
 Il frammento di codice \ref{code:index_to_cart} mostra come vengono calcolate e salvate le coordinate cartesiane di ciascuno spot,
 partendo dalle colonne \texttt{array\_row} e \texttt{array\_col} della tabella di input. 
 Viene inoltre applicata una correzione di scala per tenere conto della disposizione esagonale della griglia,
 in cui le colonne sono sfalsate e le distanze orizzontali e verticali non sono equivalenti.
 
-\paragraph{Costruzione del grafo dei vicini con k\text{-}NN.}
+\paragraph{Costruzione della lista dei vicini con k\text{-}NN \\}
 Definite le coordinate cartesiane $\mathbb{R}^2$ per ciascuno spot, 
 il passo successivo consiste nell'identificare, per ogni spot $s_i$ 
 i sei spot più prossimi nella griglia esagonale 10x Visium. 
 A tal fine è stato impiegato l'algoritmo dei \textit{Nearest Neighbors} (k\text{-}NN), 
-nella sua implementazione fornita dalla libreria \texttt{sklearn.neighbors}, 
-libreria che implementa la funzione \texttt{NearestNeighbors( ... )}.
+nella sua implementazione fornita dalla libreria \texttt{sklearn.neighbors}.
 
 L'idea dietro la funzione è la seguente: dato l'insieme di punti $\{x_1, ..., x_n\} \in \mathbb{R}^2$, 
 per ciascun punto $\mathbf{x}_i$ si ricercano i $k$ vicini
@@ -67,7 +67,8 @@ Applicando un filtro sulle distanze il nuovo risultato sarà una lista dove per 
 Il codice per la creazione della lista dei vicini è come segue:
 \begin{lstlisting}[style=mypython,
                    label=code:NN,
-                   caption={Creazione della lista dei vicini per ogni spot}]
+                   caption={Creazione della lista dei vicini per ogni spot},
+                   basicstyle=\ttfamily\scriptsize]
     coords = index_to_cart
     k = 1 + 6
     nbrs = NearestNeighbors(n_neighbors=k, 
@@ -77,8 +78,7 @@ Il codice per la creazione della lista dei vicini è come segue:
 
     R = 1.74 #Raggio
 
-    vicini_filtrati  = []
-    distanze_filtrate = []
+    vicini_filtrati, distanze_filtrate = [], []
 
     for i in range(len(coords)):
         di = dists[i, 1:]
@@ -90,12 +90,12 @@ Il codice per la creazione della lista dei vicini è come segue:
 
 \begin{figure}[ht]
     \centering 
-    \begin{subfigure}{0.45\textwidth} 
+    \begin{subfigure}{0.48\textwidth} 
         \includegraphics[width=\linewidth]{immagini/SpotViciniNonFiltratiPerRaggio.png} 
         \caption{6-NN senza filtro del Raggio (subset)} 
         \label{fig:noFilterRaggio} 
     \end{subfigure}\hfill 
-    \begin{subfigure}{0.45\textwidth} 
+    \begin{subfigure}{0.48\textwidth} 
         \includegraphics[width=\linewidth]{immagini/SpotViciniFiltratiPerRaggio.png} 
         \caption{6-NN dopo filtro del Raggio (subset)} 
         \label{fig:yesFilterRaggio} 
@@ -120,7 +120,7 @@ Il codice per la creazione della lista dei vicini è come segue:
 
 Dalla figura \ref{fig:noFilterRaggio} si può vedere come senza applicare il filtro sul raggio $R$ vengano presi 
 come vicini anche spot diversi da quelli immediatamente prossimi allo spot in oggetto.
-Si può  notare inoltre come non tutti gli spot possiedono 6 vicini, ma quelli in prossimità del bordo, o di buchi nel tessuto 
+Si può  notare inoltre come non tutti gli spot posseggano 6 vicini, ma quelli in prossimità del bordo, o di buchi nel tessuto 
 ne possiedono un quantitativo minore.
 
 \section{Divisione in sotto geni}\label{subsec:SubGenes}
@@ -133,13 +133,6 @@ separate tra loro da aree di non espressione.
 In altri termini, un singolo gene può dar luogo a più \textit{cluster} distinti di 
 espressione all'interno del tessuto.
 
-\begin{figure}[ht]
-	\centering
-	\includegraphics[width=0.7\textwidth]{immagini/geneSingleWithSubGenesShow.png}
-	\caption{Maschera binaria di un gene con evidenti sottogeni}
-	\label{fig:singleBinaryMaskGene}
-\end{figure}
-
 Come illustrato nella figura \ref{fig:singleBinaryMaskGene} il gene analizzato risulta suddivisibile in 3 sottogeni
 distinti, ciascuno dei quali corrisponde a un agglomerato spaziale di spot in cui il gene risulta espresso. 
 Il numero totale di sottogeni dipende dalla distribuzione dell'espressione: piccoli cluster isolati al di sotto di una
@@ -148,21 +141,28 @@ In tal modo, si ottiene una rappresentazione più pulita e interpretabile della 
 dell'attività genica.
 In altre parole per ogni gene $g_j$ avremo $h$ sottogeni $g'$ con $1 \le h$, quindi $g_j = \{g'_1, ..., g'_h\}$.
 
-\paragraph{Motivazione}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{immagini/geneSingleWithSubGenesShow.png}
+	\caption{Maschera binaria di un gene con evidenti sottogeni}
+	\label{fig:singleBinaryMaskGene}
+\end{figure}
+
+\paragraph{Motivazione\\}
 La suddivisione in sottogeni è una fase cruciale, poiché le successive analisi di relazione tra geni richiedono di
 confrontare non più le espressioni globali del gene, ma le singole regioni locali di attivazione. 
 Ogni sottogene può infatti essere in prossimità o in relazione con un altro sottogene appartenente a un gene diverso, anche se i due geni nel loro
 complesso non mostrano un pattern di co-espressione globale. Questa granularità permette di cogliere fenomeni locali
 che andrebbero persi in un'analisi unica.
 
-\paragraph{Approccio algoritmico}
+\paragraph{Approccio algoritmico\\}
 Per identificare automaticamente i sottogeni di ciascun gene, 
 è stato adottato un approccio basato sulla ricerca delle \textit{componenti connesse} 
 nella maschera binaria del gene. Si consideri, per un dato gene, 
 la maschera booleana $\mathbf{y} \in \{0,1\}^n$ che indica, per ciascuno spot, 
 se il gene risulta espresso ($1$) o meno ($0$). 
 Utilizzando la lista dei vicini precedentemente costruita, 
-è possibile determinare quali spot attivi (con $\mathbf{y}_i=1$) siano connessi 
+è possibile determinare quali spot attivi, con $\mathbf{y}_i=1$, siano connessi 
 tra loro, ovvero appartengano alla stessa regione contigua di espressione. 
 Ogni insieme di spot tra loro connessi rappresenta una componente del grafo, e quindi un sottogene.
 
@@ -176,34 +176,24 @@ La funzione riportata di seguito implementa l'intera procedura descritta.
 Essa riceve in input la maschera binaria del gene (\texttt{mask}), la lista dei vicini per ogni spot (\texttt{neighbors}), e il numero totale di spot
 (\texttt{number\_of\_spots}). 
 Restituisce l'elenco delle componenti connesse, le relative etichette e, se richiesto,
-le Binary Mask corrispondenti.
+le Binary Mask corrispondenti:
 
-Il codice è il seguente:
 \begin{lstlisting}[style=mypython,
                    label=code:NN,
-                   caption={Identificazione sottogeni tramite BFS}]
-def connected_components_on_mask(mask, 
-                                 neighbors, 
-                                 number_of_spots, 
-                                 min_size=1, 
-                                 return_masks=True):
+                   caption={Identificazione sottogeni tramite BFS},
+                   basicstyle=\ttfamily\scriptsize]
+def connected_components_on_mask(mask, neighbors, number_of_spots, 
+                                 min_size=1, return_masks=True):
     
-    mask = np.asarray(mask).astype(bool)
-    n = len(mask)
+    mask = np.asarray(mask).astype(bool); n = len(mask)
     visited = np.zeros(n, dtype=bool)
     comp_labels = -1 * np.ones(n, dtype=int)
-    components = []
-    comp_masks = [] if return_masks else None
-    cid = 0
-
-    # Consideriamo solo i nodi attivi
-    active_nodes = np.flatnonzero(mask)
+    components = []; comp_masks = [] if return_masks else None; cid = 0
+    
+    active_nodes = np.flatnonzero(mask) #Consideriamo solo i nodi attivi
 
     for start in active_nodes:
-        if visited[start]:
-            continue
-        if not mask[start]:
-            continue
+        if visited[start] or not mask[start]: continue
 
         q = deque([start])
         visited[start] = True
@@ -212,15 +202,14 @@ def connected_components_on_mask(mask,
         while q:
             u = q.popleft()
             comp.append(u)
-            # espandi solo verso vicini attivi
-            for v in neighbors[u]:
+            
+            for v in neighbors[u]: #espandi solo verso vicini attivi
                 if v < 0 or v >= n:
                     continue
                 if mask[v] and not visited[v]:
                     visited[v] = True
                     q.append(v)
 
-        # Applica soglia per la dimensione componente
         if len(comp) >= min_size:
             for u in comp:
                 comp_labels[u] = cid
@@ -228,9 +217,7 @@ def connected_components_on_mask(mask,
             cid += 1
 
             if return_masks:
-                comp_masks.append(
-                    component_to_mask(
-                        comp,number_of_spots))
+                comp_masks.append(component_to_mask(comp,number_of_spots))
     
     if return_masks:
         return comp_labels, components, comp_masks
@@ -247,21 +234,18 @@ def connected_components_on_mask(mask,
 \end{figure}
 
 La figura \ref{fig:subGenesResult} mostra come dato un gene vengano individuati i suoi corrispettivi sottogeni.
-Per poter applicare questa funzione automaticamente su tutti i geni che prendiamo in considerazione, 
-richiamiamo la funzione all'interno di un ciclo \texttt{for()} e ci salviamo i risultati in un dictionary
+Per poter applicare questa funzione automaticamente su tutti i geni che vengono presi in considerazione, 
+si richiama la funzione all'interno di un ciclo \texttt{for()} e si salvano i risultati in un dictionary
 avente forma \texttt{[çgene\_idç, çsub\_idç, çcountç, çcomp\_maskç]}.
 
 \begin{lstlisting}[style=mypython,
                    label=code:nn_foreach_gene,
-                   caption={Creazione completa sottogeni}]
-def build_subgenes(binary_masks, 
-                   neighbors, 
-                   number_of_spots, 
-                   min_size=1, 
-                   gene_ids=None):
+                   caption={Creazione completa sottogeni},
+                   basicstyle=\ttfamily\scriptsize]
+def build_subgenes(binary_masks, neighbors, number_of_spots, 
+                   min_size=1, gene_ids=None):
 
-    if isinstance(binary_masks, np.ndarray) and 
-       binary_masks.ndim == 2:
+    if isinstance(binary_masks, np.ndarray) and binary_masks.ndim == 2:
         n_genes = binary_masks.shape[0]
         get_mask = lambda i: binary_masks[i]
     else:
@@ -330,20 +314,21 @@ Il numero di confronti è quindi pari a $z$ tale che $z \le \sum_{i=1}^n{i}$ dov
 $n$ sono il numero dei sottogeni totali, ossia tutte le coppie possibili meno quelle intra-famiglia.
 
 
-Il codice seguente riporta la classificazione implementata. 
+Il codice riportato di seguito contiene la classificazione implementata. 
 Le maschere binarie sono convertite in insiemi di indici (\texttt{mask\_to\_set}). 
-La funzione \texttt{are\_touching} valuta la vicinanza su grafo 
+La funzione \texttt{are\_touching()} valuta la vicinanza  
 contando quanti spot di $A$ hanno almeno un vicino in $B$; 
-un contatore supera una soglia assoluta (\texttt{> 50}) per confermare il contatto.
-La procedura \texttt{classify\_relation\_soft\_matrix} applica nell'ordine: 
+Un contatore supera una soglia assoluta (\texttt{> 50}) per confermare il contatto.
+La funzione \texttt{classify\_relation\_soft\_matrix()} applica nell'ordine: 
 contenimento, overlap significativo, vicinanza, e in disgiunzione.
-Le soglie numeriche impiegate (\emph{e.g.}, \texttt{contain\_tol}=0.02, \texttt{overlap}>0.3 per IN\_COSTA,
-\texttt{overlap}<0.03 per VICINI, soglia di contatto $>50$) riflettono una scelta conservativa: si privilegia
+Le soglie numeriche impiegate (\emph{e.g.}, \texttt{contain\_tol} = 0.02, \texttt{overlap} $ > 0.3$ per IN\_COSTA,
+\texttt{overlap} $ < 0.03$ per VICINI, soglia di contatto $ > 50$) riflettono una scelta conservativa: si privilegia
 un contenimento "quasi perfetto" e si minimizza il rischio di confondere overlap marginali con vera sovrapposizione.
 
 \begin{lstlisting}[style=mypython,
                    label=code:rapportoSottogeni,
-                   caption={Calcolo del rappporto dei sottogeni}]
+                   caption={Calcolo del rappporto dei sottogeni},
+                   basicstyle=\ttfamily\scriptsize]
 def mask_to_set(mask):
     maskArray = np.asarray(mask)
     return set(np.flatnonzero(maskArray == 1)) 
@@ -361,13 +346,10 @@ def are_touching(A_set, B_set, neighbors):
         return True
     return False
   
-def classify_relation_soft_matrix(maskA, 
-                                  maskB, 
-                                  neighbors,
-                                  contain_tol=0.02):
+def classify_relation_soft_matrix(maskA, maskB, neighbors, contain_tol=0.02):
+    
     A = mask_to_set(maskA) #Binary mask 1
     B = mask_to_set(maskB) #Binary mask 2
-
 
     inter = A & B #intersezione.
     overlapA = (len(inter) / len(A)) if A else 0.0
@@ -375,6 +357,7 @@ def classify_relation_soft_matrix(maskA,
 
     missA = len(A - B)
     missB = len(B - A)
+
     if len(A) > 0 and (missA / len(A) <= contain_tol):
         return ("A_CONTENUTO")
 
@@ -384,18 +367,21 @@ def classify_relation_soft_matrix(maskA,
     if inter and (overlapA > 0.3) and (overlapB > 0.3):
         return ("IN_COSTA")
 
-    if are_touching(A, B, neighbors) and (overlapA < 0.03) and (overlapB < 0.03):
+    if are_touching(A, B, neighbors) 
+       and (overlapA < 0.03) 
+       and (overlapB < 0.03):
         return ("VICINI")
 
     return ("DISGIUNTI")
 \end{lstlisting}
 
 
-\paragraph{Filtraggio dei risultati}
-Una volta classificati vengono infine rimosse le coppie DISGIUNTE e si salvano i risultati in un dictionary: 
+\paragraph{Filtraggio dei risultati\\}
+Una volta classificati vengono infine rimosse le coppie DISGIUNTE e 
+vengono salvati i risultati in un dictionary avente la seguente forma: 
 \texttt{[çgene\_id\_aç, çsub\_id\_aç, çgene\_id\_bç, çsub\_id\_bç, çrapportoç]}.
-Dal dictionary si salvano infine, applicando un ulteriore filtro, oltre alla lista appena creata anche le liste contenenti
-senza IN\_COSTA e con solo VICINI, per alimentare le analisi successive.
+Dal dictionary vengono salvate infine, oltre alla lista appena creata, anche le liste
+senza IN\_COSTA e con solo VICINI applicando un ulteriore filtro, per alimentare le analisi successive.
 
 \begin{figure}[ht]
 	\centering
@@ -442,7 +428,8 @@ L'opzione \texttt{dedup\_undirected=True} evita duplicazioni nelle relazioni non
 
 \begin{lstlisting}[style=mypython,
                    label=code:NN,
-                   caption={Creazione CSV grafi}]
+                   caption={Creazione CSV grafi},
+                   basicstyle=\ttfamily\scriptsize]
 def node_id(gene_id: int, sub_id: int) -> str:
     return f"G_{gene_id}_S_{sub_id}"
 
