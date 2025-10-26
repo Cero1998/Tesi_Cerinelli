@@ -318,7 +318,7 @@ Il codice riportato di seguito contiene la classificazione implementata.
 Le maschere binarie sono convertite in insiemi di indici (\texttt{mask\_to\_set}). 
 La funzione \texttt{are\_touching()} valuta la vicinanza  
 contando quanti spot di $A$ hanno almeno un vicino in $B$; 
-Un contatore supera una soglia assoluta (\texttt{> 50}) per confermare il contatto.
+un contatore supera una soglia assoluta (\texttt{> 50}) per confermare il contatto.
 La funzione \texttt{classify\_relation\_soft\_matrix()} applica nell'ordine: 
 contenimento, overlap significativo, vicinanza, e in disgiunzione.
 Le soglie numeriche impiegate (\emph{e.g.}, \texttt{contain\_tol} = 0.02, \texttt{overlap} $ > 0.3$ per IN\_COSTA,
@@ -391,7 +391,7 @@ senza \texttt{IN\_COSTA} e con solo \texttt{VICINI} applicando un ulteriore filt
 \end{figure}
 
 \section{Grafo dei rapporti}\label{sec:gafoDeiRapporti}
-Una volta ottenuti i dictionray dei vari rapporti tra sottogeni, 
+Una volta ottenuti i dictionary dei vari rapporti tra sottogeni, 
 il passo successivo consiste nel tradurre queste informazioni in una forma 
 graficamente interpretabile. A tale scopo, si costruisce un file CSV per 
 rappresentare il grafo delle relazioni tra sottogeni, 
@@ -408,7 +408,7 @@ di una rete e i loro legami spaziali archi etichettati.
 
 Nel grafo costruito:
 \begin{itemize}
-    \item ogni \textbf{nodo} rappresenta un sottogene, identificato dalla coppia \texttt{[gene\_id, sub\_id]};
+    \item ogni \textbf{nodo} rappresenta un sottogene, identificato dalla coppia \texttt{[gene\_id, sub\_id]}.
     \item ogni \textbf{arco} rappresenta un rapporto spaziale significativo tra due sottogeni appartenenti a geni diversi.
         La direzione dell'arco è usata solo per i rapporti di tipo \texttt{A\_CONTENUTO} e \texttt{B\_CONTENUTO}, dove è
         rilevante il verso del contenimento; gli altri rapporti sono rappresentati come

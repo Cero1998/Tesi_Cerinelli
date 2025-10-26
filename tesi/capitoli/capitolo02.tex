@@ -43,7 +43,7 @@ adiacenti, tranne nei casi in cui gli spot sono localizzati ai bordi del tessuto
 
 Per poter trovare spazialmente uno spot $\mathbb{S}_i$, quindi, occorre assegnare una coordinata $x$ e una coordinata $y$ ad ogni spot, e, una volta creata una matrice \\$[\mathbb{S}_i, <x_i, y_i>]$,
 dove $<x, y>$ indicano le coordinate dello spot, è possibile trovare i 6 vicini attraverso un semplice calcolo.
-Inoltre, per sopperire ad eventuali spazi vuoti nel tessuto, viene calcolata la distanza euclidea tra gli spot, in modo da poter scartare gli spot che altrimenti verrebbero erronamente segnati come vicini.
+Inoltre, per sopperire ad eventuali spazi vuoti nel tessuto, viene calcolata la distanza euclidea tra gli spot, in modo da poter scartare gli spot che altrimenti verrebbero erroneamente segnati come vicini.
 
 La figura~\ref{fig:five} mostra una rappresentazione grafica degli spot in un tessuto, con le loro coordinate $x$ e $y$.
 Lo spot preso in esempio, come riferimento, è lo spot con coordinate $x = 2, y = 3$.
@@ -57,7 +57,7 @@ Lo spot preso in esempio, come riferimento, è lo spot con coordinate $x = 2, y 
 \section{Preprocessing dei dati}\label{sec:capPreProcessing}
 Quando si entra in possesso di una library, contenente i barcode degli spot, le coordinate spaziali e i relativi metadati, non è consigliato
 avviare l'analisi dei dati fin da subito, 
-questo perchè i dati di TS contengono anche rumore tecnico e biologico che può mascherare dei pattern in realtà utili, come ad esempio dei geni con profili irregolari.
+questo perchè i dati di trascrittomica spaziale contengono anche rumore tecnico e biologico che può mascherare dei pattern in realtà utili, come ad esempio dei geni con profili irregolari.
 Occorre, quindi, prima di tutto, ripulire e ridurre la complessità dei dati prima di poterli analizzare.
 
 Per lo studio che questa tesi si è posta come obiettivo, il preprocessing consiste in tre fasi principali:
@@ -158,7 +158,7 @@ Formalmente per ogni gene $g_i \in \mathbb{G}$:
 		che consente di rappresentare la distribuzione dei dati come combinazioni di più distribuzioni gaussiane.
 		Il numero di componenti $k$ del modello non viene scelto a priori, ma determinato in modo automatico secondo la seguente procedura:
 		\begin{enumerate}
-			\item Per prima cosa vengono addestrati diversi GMM con un numero cresente di componenti, da $1$ a $K_{\text{max}}$, in modo da ottenere 
+			\item Per prima cosa vengono addestrati diversi GMM con un numero crescente di componenti, da $1$ a $K_{\text{max}}$, in modo da ottenere 
 				un set di modelli ordinati per numero di componenti:
 				\begin{equation}
 					\label{eq:GMMPrimoStep}
@@ -170,7 +170,7 @@ Formalmente per ogni gene $g_i \in \mathbb{G}$:
 					\label{eq:GMMSecondoStep}
 					\mathbb{V}_i = (V(GMM_1(\hat{y}_i)), V(GMM_2(\hat{y}_i)), ..., V(GMM_{K_{\text{max}}}(\hat{y}_i)))
 				\end{equation}
-			\item Infine, i valori ottenuti vengono rappresentati graficamente e il modello ottimale viene scelto nel \textit{Knee Point}, cioè dove l'incremento di qualità del modello diventa marginale.
+			\item Infine, i valori ottenuti vengono rappresentati graficamente e il modello ottimale viene scelto nel \textit{Knee Point} (KP), cioè dove l'incremento di qualità del modello diventa marginale.
 				Questa scelta evita il rischio di \textit{overfitting}\footnote{Fenomeno per cui un modello si adatta eccessivamente ai dati di training, perdendo capacità di generalizzazione}, garantendo al contempo una suddivisione coerente delle regioni di espressione.
 		\end{enumerate}
 	\item Una volta determinato il modello ottimale, ogni spot $s_j$ viene assegnato alla componente gaussiana con la massima probabilità a posteriori, generando così un insieme di partizioni spaziali
@@ -214,7 +214,7 @@ su sezioni di tessuto, mantenendo per ogni misura la posizione spaziale.
 La cattura avviene su spot barcodati stampati su una slide. Il programma che processa i dati in modo da mappare i barcode con la loro 
 posizione spaziale viene chiamato \textit{Space Ranger} e produce la matrice \textit{Features}$\times$\textit{Barcodes}, dove con Features si intendono i geni 
 e con Barcodes i vari spot; 
-Ogni spot raccoglie RNA da più cellule e i conteggi vengono poi mappati sull'immagine.
+ogni spot raccoglie RNA da più cellule e i conteggi vengono poi mappati sull'immagine.
 
 
 I file 10x Visium sono in formato \texttt{.h5}, un file specifico pronto per essere 
@@ -313,7 +313,7 @@ Gli argomenti della funzione sono i seguenti:
   \item \texttt{path}: Percorso alla cartella radice che contiene l'output Visium, ovvero il file \texttt{.h5} e la sottocartella \texttt{spatial/}.
   \item \texttt{genome}: Opzionale, è l'identificatore del genoma che si vuole filtrare, se presente nei metadati 10x.
   \item \texttt{count\_file}: Nome del file di 10x Visium contenente i vari dati. Deve essere presente nella cartella inserita in \texttt{path}. Di default ha come nome (\texttt{filtered\_feature\_bc\_matrix.h5}) per default.
-  \item \texttt{library\_id}: Opzionale, è l'dentificativo della libreria Visium. Risulta utile quando occorre concatenare più librerie.
+  \item \texttt{library\_id}: Opzionale, è l'identificativo della libreria Visium. Risulta utile quando occorre concatenare più librerie.
   \item \texttt{load\_images}: Se \texttt{True}, carica le immagini del tessuto.
   \item \texttt{source\_image\_path}: Opzionale, è il percorso alternativo da cui leggere le immagini se non si trovano in \texttt{spatial/}.
 \end{itemize}
@@ -366,7 +366,7 @@ annData.write_h5ad(filename="processed_adata")
 Una volta ottenuti i dati in formato \texttt{AnnData} è possibile iniziare a manipolarli come oggetto per poterne ricavare le varie informazioni 
 necessarie allo studio che si sta svolgendo.
 
-Come detto in precendeza, occorre applicare prima di tutto uno smoothing per poter ripulire e ridurre la complessità dei dati ottenuti.
+Come detto in precedenza, occorre applicare prima di tutto uno smoothing per poter ripulire e ridurre la complessità dei dati ottenuti.
 Questo smoothing viene applicato, gene per gene, attraverso il filtro di media, definito precedentemente, in questo modo:
 \begin{lstlisting}[style=mypython,label=code:MeanFilter,caption={Funzioni per ottenere i dati di un gene specifico e applicarci il filtro di media}]
 	ITNI = np.zeros((nspot, 7), dtype=int)
@@ -485,8 +485,8 @@ o modalità multiple nell'espressione.
 \end{figure}
 
 Si può osservare dalla figura \ref{fig:gaussianMixture} come con $2 \le k$ la rappresentazione non colga efficacemente ogni picco dell'espressione genica del gene preso in esame; 
-Si verifica, perciò, un fenomeno di \textit{underfitting}\footnote{Modello troppo semplice per catturare la complessità dei dati}.
-Al contario, con $k \>> 3$ si verifica il problema opposto, ovvero si hanno troppe gaussiane per rappresentare efficacemente i dati in oggetto, 
+si verifica, perciò, un fenomeno di \textit{underfitting}\footnote{Modello troppo semplice per catturare la complessità dei dati}.
+Al contrario, con $k \>> 3$ si verifica il problema opposto, ovvero si hanno troppe gaussiane per rappresentare efficacemente i dati in oggetto, 
 verificandosi dell'\textit{overfitting}.
 Nell'esempio della figura \ref{fig:gaussianMixture} perciò la $k$ corretta corrisponde a $k = 3$.
 
@@ -503,7 +503,7 @@ La formula con la quale lo si può ottenere è la seguente:
 dove $n$ indica il numero degli spots, $k$ il numero di parametri stimati dal modello, $\widehat{L}$ massima verosimiglianza del modello, 
 ovvero quanto bene il modello si adatta ai dati.
 
-Una volta ottenuti i vari BIC per ogni $k$, viene infine scelta la $k$ corretta attraverso il calcolo del "Knee Point".
+Una volta ottenuti i vari BIC per ogni $k$, viene infine scelta la $k$ corretta attraverso il calcolo del Knee Point.
 Il Knee Point, altro non è che il punto in cui la curva cambia inclinazione in modo evidente, 
 passando da una salita marcata a una più piatta o viceversa.
 
@@ -574,7 +574,7 @@ si avrà valore $1$ se il gene risulta presente nello spot $s_i$, oppure $0$,  c
 Il codice per generare la maschera binaria è il seguente:
 \begin{lstlisting}[style=mypython,
 				   label=code:binaryMask,
-				   caption={Funzioni per ottenere le machere binarie una volta ottenuta la k del Knee Point},
+				   caption={Funzioni per ottenere le maschere binarie una volta ottenuta la k del Knee Point},
 				   basicstyle=\ttfamily\scriptsize]
 	def fit_MoG(gdata, k):
 		data = gdata.reshape(-1, 1)

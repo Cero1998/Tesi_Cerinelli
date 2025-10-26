@@ -2,7 +2,7 @@
 Negli ultimi anni la \textit{trascrittomica spaziale} (TS) ha rappresentato una delle innovazioni
 più significative nel campo della biologia molecolare e della bioinformatica.  
 A differenza delle tecniche di trascrittomica tradizionali, che misurano i livelli di espressione genica senza
-informazioni di posizione in quanto le cellule devono essere estratte dal tessuto, la trascrittomica spaziale consente di mappare l'attività dei geni direttamente nel contesto
+informazioni di posizione, in quanto le cellule devono essere estratte dal tessuto, la trascrittomica spaziale consente di mappare l'attività dei geni direttamente nel contesto
 del tessuto senza bisogno alcuno di doverle rimuovere.  
 Questo approccio fornisce una visione bidimensionale dell'espressione genica, permettendo di studiare
 non solo quali geni sono attivi, ma anche la loro posizione spaziale.
@@ -16,7 +16,7 @@ Da qui nasce la necessità di sviluppare strumenti e algoritmi in grado di integ
 \medskip
 Date queste premesse si sviluppa il lavoro presentato in questa tesi, il cui obiettivo principale è stato quello di
 progettare e realizzare una pipeline computazionale per l'identificazione e la classificazione delle relazioni spaziali
-tra geni in un dataset 10x Visium.  
+tra geni in un dataset 10x Visium al fine di trovare cluster spaziali alternativi.  
 Partendo dai dati di espressione e dalle coordinate spaziali degli \textit{spot}, è stata costruita una lista degli spot vicini
 tramite l'algoritmo dei \textit{Nearest Neighbors} (k-NN), in modo da avere le connessioni spaziali tra i vari spot del tessuto.  
 Successivamente, ogni gene è stato suddiviso in \textit{sottogeni}, regioni locali di espressione contigua, mediante
@@ -36,10 +36,8 @@ regioni di possibile co-localizzazione genica e relazioni funzionali potenzialme
 \medskip
 Per verificare la consistenza di tali osservazioni, i risultati grafici sono stati presi e studiati con un'analisi di
 \textit{clustering} condotta tramite il modello \textit{GraphST} e successivamente raffinata con \textit{Mclust}.  
-L'obiettivo di questa seconda fase era valutare se le relazioni spaziali individuate tra geni corrispondessero anche a pattern nei dati di espressione.  
-Sebbene non siano emersi cluster alternativi significativi, l'esperimento ha permesso di validare la correttezza del
-metodo proposto, mostrando che la pipeline è in grado di analizzare in modo coerente e riproducibile la distribuzione
-spaziale dei geni.
+L'obiettivo di questa seconda fase è valutare se le relazioni spaziali individuate tra geni corrispondono anche a pattern nei dati di espressione.  
+
 
 \medskip
 In sintesi, questa tesi propone un approccio completo per l'analisi della trascrittomica spaziale,

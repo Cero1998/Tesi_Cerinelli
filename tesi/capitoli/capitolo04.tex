@@ -49,7 +49,7 @@ sensibile.
 
 \begin{lstlisting}[style=mypython,
                    label=code:NN,
-                   caption={Addestramento modello con GraphSt},
+                   caption={Addestramento modello con GraphST},
                    basicstyle=\ttfamily\scriptsize],
 model = GraphST.GraphST(adata_main_hub, device=device)
 
@@ -58,7 +58,7 @@ adata_main_hub = model.train()
 
 \paragraph{Applicazione del clustering con Mclust\\}
 Per individuare eventuali sottostrutture all'interno dell'\texttt{AnnData} prodotto 
-da GraphSt, è stato impiegato l'algoritmo \textit{Mclust}. 
+da GraphST, è stato impiegato l'algoritmo \textit{Mclust}. 
 Questa scelta è motivata dalla natura probabilistica e adattiva di Mclust, 
 che consente di riconoscere cluster di forma e dimensione variabile, 
 particolarmente adatto ai dati trascrittomici rumorosi e ad alta dimensionalità.

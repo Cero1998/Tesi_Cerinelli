@@ -9,7 +9,7 @@ alla \textit{Macchina di Turing}, ideata da Alan Turing nel 1943\cite{singh1999c
 fino ai moderni computer quantistici, l'informatica ha sempre avuto un ruolo fondamentale nell'evoluzione della società umana.
 
 Lo sviluppo di entrambe queste discipline col passare degli anni ha portato ad un'innovazione: la \textit{bioinformatica}.
-La bioinformatica nasce dalla combinazione delle due materie prima elencate in quanto gli scienziati manifestavano
+La bioinformatica nasce dalla combinazione delle due materie appena elencate in quanto gli scienziati manifestavano
 sempre più l'esigenza di gestire i dati rilevati dalla biologia
 molecolare, questo perchè, spesso, i dati superano le decine di gigabyte e serviva un modo per poter interpretare più facilmente i campioni raccolti.
 Oggi la gran parte delle informazioni bioinformatiche possono essere reperite sul \textit{National
@@ -32,8 +32,6 @@ questo perché, l'interesse degli scienziati è quello di definire i processi ev
 viventi, e, per ottenere dei risultati, è indispensabile comparare numerosi genomi di
 organismi differenti.
 
-La branca della bioinformatica è molto ampia, per questo, noi ci interesseremo
-principalmente del genoma.
 La bioinformatica ha un ruolo
 fondamentale negli studi della struttura del genoma, per esempio, nell'assemblaggio 
 e annotazione di genomi, o nella caratterizzazione del profilo di espressione genica,
@@ -51,7 +49,7 @@ determinate proteine all'interno della cellula stessa.
 
 Un essere umano possiede trilioni
 di cellule distribuite nei tessuti: muscolare, nervoso e
-osseo e, ciascuna delle cellule che compongono i tessuti,
+osseo, e ciascuna delle cellule che compongono i tessuti,
 presenta essenzialmente lo stesso genoma all'interno del
 nucleo\footnote{il nucleo è una struttura subcellulare, presente negli
 eucarioti, che contiene il DNA.}.
@@ -75,7 +73,7 @@ la sequenza di basi dell'mRNA viene letta e tradotta in catene di amminoacidi.
 Accanto all'mRNA, esistono anche altri tipi di RNA che non codificano proteine ma che svolgono funzioni regolatorie 
 o strutturali, contribuendo a controllare l'attività dei geni e l'organizzazione della cellula.
 Poiché ogni cellula del corpo umano possiede lo stesso patrimonio genetico, 
-ciò che la distingue dalle altre non è il genoma, ma l'insieme dei geni che vengono attivati o silenziati. 
+ciò che la distingue dalle altre non è il genoma, ma l'insieme dei geni che sono attivati o silenziati. 
 Questo insieme di trascrizioni geniche costituisce il trascrittoma e varia notevolmente da cellula a cellula 
 e da tessuto a tessuto. Ad esempio, le cellule muscolari esprimono geni che producono proteine contrattili, 
 mentre le cellule nervose attivano geni che permettono la trasmissione dei segnali elettrici.
@@ -85,7 +83,7 @@ in funzione in un determinato momento e fornisce informazioni preziose sull'iden
 lo stato e la salute delle cellule\cite{genomeGov}.
 
 \section{Trascrittomica spaziale}\label{sec:cap_two_bioinfo}
-Come detto in precendenza, il trascrittoma rappresenta l'insieme di tutte le molecole di RNA presenti in una cellula in un dato momento.
+Come detto in precedenza, il trascrittoma rappresenta l'insieme di tutte le molecole di RNA presenti in una cellula in un dato momento.
 La trascrittomica a singola cellula (scRNA-seq) è diventata essenziale per la ricerca biomedica nell'ultimo decennio, 
 in particolare nello sviluppo della biologia, neoplasia, immunologia e neuroscienze. 
 
@@ -96,13 +94,13 @@ Oggi, un numero crescente di piattaforme disponibili in commercio,
 consente di mappare l'espressione dell'RNA direttamente sulla struttura del tessuto, 
 mantenendo l'informazione di posizione di ciascun segnale: 
 questo approccio è noto come \textit{trascrittomica spaziale (TS)}.
-La TS produce dati ad alta dimensionalità utili a descrivere l'organizzazione cellulare e i processi biologici direttamente nel tessuto, preservandone la posizione\cite{trascrittomicaSpazialeIntroduzione}.
+Essa produce dati ad alta dimensionalità utili a descrivere l'organizzazione cellulare e i processi biologici direttamente nel tessuto, preservandone la posizione\cite{trascrittomicaSpazialeIntroduzione}.
 
-Una sfida fondamentale nella TS è l'identificazione degli \textit{Spatially Variable Genes (SVGs)}.
+Una sfida fondamentale nella trascrittomica spaziale è l'identificazione degli \textit{Spatially Variable Genes (SVGs)}.
 Questi ultimi sono geni la cui espressione varia in modo dipendente dalla posizione nello spazio del tessuto.
 Analizzando lo spazio è possibile scovare pattern non casuali di espressione genica.
-Identificarli è cruciale nelle analisi di TS, poichè rivelano domini tissutali che corrispondono a nicchie cellulari o a regioni di transizione tra diversi tipi di cellule; 
-In più facilita l'annotazione\footnote{L'assegnazione di etichette biologiche a cluster o spot} e quindi il clustering\cite{SVGs}.
+Identificarli è cruciale nelle analisi di trascrittomica spaziale, poichè rivelano domini tissutali che corrispondono a nicchie cellulari o a regioni di transizione tra diversi tipi di cellule; 
+in più facilita l'annotazione\footnote{L'assegnazione di etichette biologiche a cluster o spot} e quindi il clustering\cite{SVGs}.
 Oltre agli SVGs esistono anche gli \textit{Highly Variable Genes (HVGs)}, geni, che presentano una variabilità 
 di espressione molto superiore a quanto atteso, nonostante ciò non sono in grado di fornire informazioni spaziali rilevanti.
 \begin{figure}[ht]
@@ -114,7 +112,7 @@ di espressione molto superiore a quanto atteso, nonostante ciò non sono in grad
 
 La figura~\ref{fig:one} presenta un confronto tra HVGs e SVGs dato lo stesso Dataset. Si noti come gli HVGs non possiedono alcuna informazione 
 spaziale, in quanto, non presentano alcun tipo di pattern;
-Gli SVGs, al contrario, mostrano una chiara suddivisione in cluster. 
+gli SVGs, al contrario, mostrano una chiara suddivisione in cluster. 
 
 \subsection{HVGs}\label{sec:HVGs}
 Come introdotto precedentemente, nell'ambito dell'analisi trascrittomica, 
@@ -216,7 +214,7 @@ direttamente la distribuzione di RNA nel tessuto,
 senza necessità di estrazione preventiva, mantenendo il contesto spaziale originale. 
 I due metodi più comunemente utilizzati sono l'ibridazione in situ (ISH) e il sequenziamento in situ (ISS).
 
-Con l'ISH, vengono preparate molecole, chiamate sonde, di RNA che sono complementari agli RNA bersaglio; Le sonde 
+Con l'ISH, vengono preparate molecole, chiamate sonde, di RNA che sono complementari agli RNA bersaglio; le sonde 
 si legano agli RNA nelle cellule o nel tessuto e sono marcate con molecole fluorescenti, così da poter essere visualizzate al microscopio. 
 Questo processo permette di osservare dove e quanto è espresso un certo RNA.
 Nonostante ciò, queste tecniche richiedono molteplici cicli di ibridazione e osservazione, 
@@ -256,7 +254,7 @@ per comprendere l'efficacia terapeutica del campione\cite{Beyondcell}.
 \medskip
 \medskip
 \noindent
-Come già annunciato in precendenza la TS si è quindi rivelata uno strumento rivoluzionario per quanto riguarda la ricerca sul cancro.
+Come già annunciato in precedenza la trascrittomica spaziale si è quindi rivelata uno strumento rivoluzionario per quanto riguarda la ricerca sul cancro.
 I tumori, non essendo masse uniformi, sono composti da diverse famiglie cellulari con ruoli ben distinti.
 Comprendere spazialmente dove ogni cellula si trova e come interagisce con le cellule vicine è stato fondamentale per rivelare i meccanismi di crescita, progressione e resistenza terapeutica del tumore.
 L'utilizzo di questa tecnologia può facilitare la comprensione dei tipi e degli stati delle 
@@ -278,7 +276,7 @@ Il cancro al polmone, ad esempio, è una delle principali cause di morte in ambi
 ed è una malattia complessa con numerosi sottotipi, ognuno dei quali presenta esiti clinici diversi.
 Studi su masse tumorali polmonari, hanno rivelato che i macrofagi\footnote{Cellule immunitarie che uccidono batteri, detriti e cellule danneggiate} non si distribuiscono uniformemente: 
 la loro composizione e posizione cambiano, influenzando il comportamento della malattia e la risposta alle terapie
-Inoltre, l'integrazione tra TS e scRNA-seq ha permesso di identificare cellule rare, transizioni cellulari e 
+Inoltre, l'integrazione tra trascrittomica spaziale e scRNA-seq ha permesso di identificare cellule rare, transizioni cellulari e 
 sottopopolazioni spazialmente specifiche che altrimenti sarebbero rimaste inosservate.
 
 \section{Algoritmi di clustering per la trascrittomica spaziale}\label{sec:cap_four_bioinfo}
@@ -324,9 +322,9 @@ potrebbe non cogliere pattern spaziali complessi.
 \subsection{GIST}\label{subsec:GIST}
 GIST (Graph Information for Spatial Transcriptomics) rappresenta un avanzamento significativo 
 nel campo della trascrittomica spaziale, 
-proponendo un approccio basato su reti neurali (le stesse usate da GraphSt\ref{subsec:graphst}) per migliorare 
+proponendo un approccio basato su reti neurali (le stesse usate da GraphST) per migliorare 
 l'identificazione dei domini spaziali all'interno di tessuti biologici.
-Nella TS la corretta delimitazione dei domini spaziali 
+Nella trascrittomica spaziale la corretta delimitazione dei domini spaziali 
 rimane una sfida computazionale complessa: 
 nonostante i notevoli progressi ottenuti, manca ancora un vero e 
 proprio standard di riferimento universalmente riconosciuto.
@@ -413,13 +411,13 @@ risoluzione delle problematiche sopracitate, come
 SpotClean\cite{SpotClean} per rimuovere lo spot swapping, 
 e iSCALE\cite{iSCALE} per poter utilizzare tessuti di grosse dimensioni,
 non esiste ad oggi un algoritmo unico che possa 
-risolvere tutti i problemi della TS.
+risolvere tutti i problemi della trascrittomica spaziale.
 Vari benchmark e review scientifiche hanno portato alla 
 stessa conclusione: occorre una pipeline modulare, 
 che si possa adattare alle esigenze specifiche di ciascun tessuto.
 
 \medskip
-La TS resta un campo molto recente, e nuove analisi, 
+La trascrittomica spaziale resta un campo molto recente, e nuove analisi, 
 metodi e software, vengono pubblicati ogni mese, 
 perciò non sono da escludere eventuali sviluppi futuri 
 che miglioreranno tale problematica\cite{limitiTS}.
