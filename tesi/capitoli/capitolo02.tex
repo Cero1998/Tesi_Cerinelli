@@ -8,7 +8,7 @@ Possiamo definire l'insieme dei nostri spots nel seguente modo:
 	\mathbb{S}=\{s_1,s_2,...,s_n\}
 \label{eq:spots}
 \end{equation}
-dove ogni $\mathbb{S}_i$ è uno spot.
+dove ogni $s_i$ è uno spot.
 
 Ogni spot, al suo interno, contiene più cellule. Per questo motivo, ogni spot viene associato ad un vettore di espressione genica che 
 da vita alla matrice $X\in \mathbb{R}^{n\times m}$ dove $n$ è il numero di spot e $m$ il numero di geni.
@@ -17,8 +17,8 @@ Possiamo definire l'insieme dei nostri geni nel seguente modo:
 	\mathbb{G}=\{g_1,g_2,...,g_m\}
 \end{equation}
 dove ogni $g_j$ è un gene.
-Di conseguenza si può definire lo spot $\mathbb{S}_i \in \mathbb{G}^{m}$ come e assegniamo ad ogni 
-$\mathbb{S}_i$ il seguente vettore: 
+Di conseguenza si può definire lo spot $s_i \in \mathbb{G}^{m}$ e assegniamo ad ogni 
+$s_i$ il seguente vettore: 
 \begin{equation}
 	\bigl( x_{i,1}, x_{i,2}, \dots, x_{i,m} \bigr)
 \end{equation}
@@ -32,16 +32,16 @@ allo spot $s_i$, con $1 \le i \le n$ e $1 \le j \le m$.
 \end{figure}
 
 La figura ~\ref{fig:four} mostra una rappresentazione grafica degli spot e dei geni all'interno di un tessuto. Ogni cella rappresenta uno spot, mentre ogni colore rappresenta un gene diverso\footnote{Si noti che il colore non è rappresentativo della presenza o meno di quel gene in quello spot}.
-Si può notare che ogni spot $\mathbb{S}_i$, al suo interno, può contenere più geni.
+Si può notare che ogni spot $s_i$, al suo interno, può contenere più geni.
 Inoltre, nella figura d'esempio, si hanno 36 spot diversi e 4 geni, ma ma nella realtà i dati
 sono differenti: gli spot possono arrivare a oltre 3.000
 celle e i geni possono superare le 30.000 unità.
 
 La figura \ref{fig:four}, tuttavia, presenta una inesattezza in quanto gli spot non sono disposti su una matrice $n \times n$, bensì hanno una rappresentazione esagonale.
-Questo significa che, dato uno spot $\mathbb{S}_i$, questo presenterà sei spot
+Questo significa che, dato uno spot $s_i$, questo presenterà sei spot
 adiacenti, tranne nei casi in cui gli spot sono localizzati ai bordi del tessuto.
 
-Per poter trovare spazialmente uno spot $\mathbb{S}_i$, quindi, occorre assegnare una coordinata $x$ e una coordinata $y$ ad ogni spot, e, una volta creata una matrice \\$[\mathbb{S}_i, <x_i, y_i>]$,
+Per poter trovare spazialmente uno spot $s_i$, quindi, occorre assegnare una coordinata $x$ e una coordinata $y$ ad ogni spot, e, una volta creata una matrice \\$[s_i, <x_i, y_i>]$,
 dove $<x, y>$ indicano le coordinate dello spot, è possibile trovare i 6 vicini attraverso un semplice calcolo.
 Inoltre, per sopperire ad eventuali spazi vuoti nel tessuto, viene calcolata la distanza euclidea tra gli spot, in modo da poter scartare gli spot che altrimenti verrebbero erroneamente segnati come vicini.
 
@@ -77,7 +77,7 @@ ovvero una tecnica per poter sostituire ogni elemento, con la media dei valori d
 Questo serve per poter ridurre il rumore locale ed evitare variazioni importanti.
 
 Considerando un tessuto a due dimensioni, contenente $\mathbb{S}$ spots e $\mathbb{G}$ geni.
-Possiamo denotare con $y_{ij} \in \mathbb{R}$ il livello di espressione genica di un determinato gene $g_i$ nello spot $\mathbb{S}_i$.
+Possiamo denotare con $y_{ij} \in \mathbb{R}$ il livello di espressione genica di un determinato gene $g_i$ nello spot $s_i$.
 Dalla definizione di matrice di espressione genica $X$ definita precedentemente, possiamo ora definire $\widehat{X}$ la matrice ottenuta come output 
 dopo aver applicato la seguente operazione:
 \begin{equation}

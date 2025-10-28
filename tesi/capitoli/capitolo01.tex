@@ -390,34 +390,44 @@ In sintesi, Stardust propone un compromesso fra informazione trascrittomica e
 informazione spaziale nel clustering dei dati di trascrittomica spaziale, 
 offrendo uno strumento relativamente semplice da usare.
 
-\section{Limiti}\label{sec:cap_five_bioinfo}
-Nonostante i grandi progressi, la trascrittomica spaziale 
-presenta ancora vari problemi che ne frenano l'adozione 
-su larga scala, tra cui: costi elevati, 
-bassa risoluzione spaziale, lunghi tempi di risposta e 
-aree di cattura ridotte.
-Inoltre, come detto precedentemente,  idealmente gli 
-identificatori molecolari univoci (UMI) in uno spot 
-misurano l'espressione specifica dello spot, 
-ma, spesso, questo non avviene nella pratica a causa 
-della contaminazione causata dal sanguinamento degli spot 
-vicini. Questo fenomeno genera un artefatto chiamato spot swapping.
-Ignorare tale problematica può portare a risultati fuorvianti, 
-come l'identificazione errata di SVGs o la sovrastima 
-dell'espressione genica in regioni specifiche del tessuto.
+\section{Limiti metodolgie attuali}\label{sec:cap_five_bioinfo}
+% Nonostante i grandi progressi, la trascrittomica spaziale 
+% presenta ancora vari problemi che ne frenano l'adozione 
+% su larga scala, tra cui: costi elevati, 
+% bassa risoluzione spaziale, lunghi tempi di risposta e 
+% aree di cattura ridotte.
+% Inoltre, come detto precedentemente,  idealmente gli 
+% identificatori molecolari univoci (UMI) in uno spot 
+% misurano l'espressione specifica dello spot, 
+% ma, spesso, questo non avviene nella pratica a causa 
+% della contaminazione causata dal sanguinamento degli spot 
+% vicini. Questo fenomeno genera un artefatto chiamato spot swapping.
+% Ignorare tale problematica può portare a risultati fuorvianti, 
+% come l'identificazione errata di SVGs o la sovrastima 
+% dell'espressione genica in regioni specifiche del tessuto.
 
-Nonostante ci siano strumenti specializzati per la 
-risoluzione delle problematiche sopracitate, come 
-SpotClean\cite{SpotClean} per rimuovere lo spot swapping, 
-e iSCALE\cite{iSCALE} per poter utilizzare tessuti di grosse dimensioni,
-non esiste ad oggi un algoritmo unico che possa 
-risolvere tutti i problemi della trascrittomica spaziale.
-Vari benchmark e review scientifiche hanno portato alla 
-stessa conclusione: occorre una pipeline modulare, 
-che si possa adattare alle esigenze specifiche di ciascun tessuto.
+% Nonostante ci siano strumenti specializzati per la 
+% risoluzione delle problematiche sopracitate, come 
+% SpotClean\cite{SpotClean} per rimuovere lo spot swapping, 
+% e iSCALE\cite{iSCALE} per poter utilizzare tessuti di grosse dimensioni,
+% non esiste ad oggi un algoritmo unico che possa 
+% risolvere tutti i problemi della trascrittomica spaziale.
+% Vari benchmark e review scientifiche hanno portato alla 
+% stessa conclusione: occorre una pipeline modulare, 
+% che si possa adattare alle esigenze specifiche di ciascun tessuto.
+Nonostante l'elevato numero di algoritmi sviluppati 
+per l'analisi della trascrittomica spaziale, 
+la maggior parte di essi tende a individuare pattern di espressione simili tra loro\cite{limitiTS}.
+Questa omogeneità nei risultati dimostra un grande limite: 
+manca un algoritmo in grado di riconoscere dei cluster alternativi, 
+potenzialmente presenti ma invisibili dai modelli attualmente presenti.
+La presente tesi nasce proprio con l'obiettivo di proporre 
+una metodologia in grado di superare tale vincolo, 
+individuando relazioni spaziali e domini di espressione non 
+evidenti attraverso le tecniche convenzionali.
 
 \medskip
-La trascrittomica spaziale resta un campo molto recente, e nuove analisi, 
+La trascrittomica spaziale resta comunque un campo molto recente, e nuove analisi, 
 metodi e software, vengono pubblicati ogni mese, 
 perciò non sono da escludere eventuali sviluppi futuri 
-che miglioreranno tale problematica\cite{limitiTS}.
+che miglioreranno tale problematica.
