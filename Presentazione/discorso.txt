@@ -1,0 +1,87 @@
+Introduzione:
+
+Cos'è la trascrittomica spaziale.
+    Un gene è un tratto di DNA che contiene le istruzioni per produrre una proteina: 
+    la sua espressione genica indica quanto RNA viene trascritto, 
+    e da questo RNA verrà poi sintetizzata la proteina corrispondente.
+
+    La trascrittomica spaziale è una tecnologia che ci permette di studiare e analizzare l'espressione genica direttamente su un tessuto.
+
+    I campioni sono forniti da l'azienda 10x Genomics che ci fornisce i vari dati, come i nomi dei geni nel tessuto, le loro coordinate, e la loro espressione, che hanno 
+    preso attraverlo la loro tecnologia visium.
+
+
+    I dati forniti possono essere rappresentati in una griglia in cui ogni cella, con le sue coordinate, è detta Spot e ogni spot ha al suo interno più geni.
+    Non tutti i geni però hanno una espressione genica su quello spot 
+
+Motivazioni
+    nonostante esistano già diversi algoritmi di TS e che essi siano gli algoritmi migliori in circlo,
+    rilevano però tutti quanti pattern simili tra loro.
+    Manca perciò una metologia in grado di trovare dei cluster alternativi.
+    Lo studio di questa tesi si è posta proprio questa ricerca come scopo.
+
+Preprocessing
+    Prima di partire con l'analisi vera è propria è stato svolto un lavoro di preprocessing sui dati, in modo da poter utilizzare i vari geni oppurtuni, 
+    ovvero quellli con una espressione genica alta, puliti dal rumore e sapendo già se in un determinato spot quel gene ha una espressione genica alta o meno.
+
+    partendo dai dati forniti da 10x genomics, è stato applicato un filtro di media per ridurre il rumore locale, 
+    e poi attraverso La gaussian mixture model, 
+    si è creta la maschera binaria per ogni gene, dove 1 indica che il gene è attivo in quello spot, e 0 invece che non è presente.
+
+Pipeline Generale
+    L'analisi di questa tesi è stata suddivisa nei seguenti step (elencarli).
+
+Lista dei vicini
+    Per prima cosa si è creata quella che ho chiamato la lista dei vicini. Questa lista, che è rappresentata tramite un array a due dimensioni 
+    in cui ogni elemento è un gene e i valori sono i geni ad esso vicini, è stata creata attraverso l'algoritmo di K-NearestNeighbors della librearia python sklearn, 
+    dove k indica il numero di vicini per ogni cella. Avendo gli spot una forma esagonale, questo significa che ogni cella avrà al massimo 6 vicini.
+    al massimo 6 perchè se in prossimità del bordo o di buchi nel tessuto essi saranno di meno.
+
+    è stato inoltre applicato un filtro sul raggio perchè la distanza tra ogni spot è di circa 100 micrometri, e senza questo filtro venivano assegnati vicini non prossimi.
+
+Divisione in sottogeni
+    Un ulteriore step, prima di poter utilizzare la lista dei vicini, è stata quella di suddividere ogni gene in sottogeni.
+    Questo è stato necessario perchè gni sottogene può infatti
+    essere in prossimità o in relazione con un altro sottogene appartenente a un
+    gene diverso, anche se i due geni nel loro complesso non mostrano un pattern
+    di co-espressione globale.
+    Questa suddivisione permette di cogliere fenomeni locali che andrebbero persi in un’analisi unica.
+
+    Per farlo si è usata una ricerca delle componenti connesse attraverso l'algoritmo BSF, tenendo conto di una soglia per evitare cluster troppo piccoli 
+    e quindi non rilevanti.
+    Spiegare dictionary.
+
+Calcolo dei rapporti
+    Una volta ottenuti i vari sottogeni, essi, vengono catalogati, tra di loro in 5 possibili etichette.
+    per fare ciò si utilizza un algoritmo che calcola quanti spot di un primo sottogene sono rapportati, e come, rispetto agli spot del secondo gene in esame.
+    Ad esempio se nessuno (o comunque sotto una certa soglia) dei geni si interseca sono DIGIUNTI,
+    Se uno è completamnete o quasi dentro l'altro sono CONTENUTI
+    se c'è poca intersezione e poco overlap  e i geni di uno sono nella lista dei vicini dell'altro allora sono VICINI.
+
+    Spiegare dictionary.
+
+Analisi grafica
+    Una volta calcolato il rapporto si crea un file CSV compatibile col software Gephi, utilizzato per poterne creare il grafo, e studiarne la struttura graficamente.
+    questo consente di individuare pattenn che sarebbero altrimenti difficili da osservare in diversa forma.
+    In questo grafo i nodi sono i vari sottegni, e gli archi il rapporto che li unisce.
+
+    In particolare ci focalizziamo sui geni classificati come VICINI, visibilmente in quantità ben minore rispetto agli altri.
+    Questo perchè ci aspettiamo che dei geni vicini coprano una zona di tessuto più ampia rispetto agli altri rapporti.
+
+    Dal grafo ottenuto osserviamo due cliuster principali, uno più grosso e interconnesso, e uno più piccolo con un nodo che funge da hub centrale.
+    Tenendo conto di quei sottogeni andiamo a fare il clustering con Mclust.
+
+clustering
+    Purtroppo però attraverso il clustering con Mclust non sono risultati particolari pattern di espressione convincenti.
+    Ci si aspettava una struttura simile a quella dei geni raw,  ma purtroppo ciò non è accaduto, 
+    questo significa che questa metodologia su questo particolare dataset, non ha evidenziato la presenza di cluster alternativi all'interno del tessuto.
+
+    Si potrebbe tuttavia, in futuro testare questa metodologia anche su dataset differenti.
+
+Grazie per l'attenzione
+
+
+
+
+
+
