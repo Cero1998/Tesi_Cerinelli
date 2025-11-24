@@ -1,11 +1,21 @@
 Introduzione:
 
 Cos'è la trascrittomica spaziale.
-    Un gene è un tratto di DNA che contiene le istruzioni per produrre una proteina: 
-    la sua espressione genica indica quanto RNA viene trascritto, 
-    e da questo RNA verrà poi sintetizzata la proteina corrispondente.
+    in biologia i geni sono una sequenza di dna e sono l'unità fondamentale del codice genetico.
+    
+    Essi conteengono le istruzioni per produrre una proteina o rna: 
+    la sua espressione genica indica quanto RNA messaggero (o mRNA) viene prodotto e più è alta più il gene è attivo, 
+    Dall'mMRNA verrà poi sintetizzata la proteina corrispondente.
 
-    La trascrittomica spaziale è una tecnologia che ci permette di studiare e analizzare l'espressione genica direttamente su un tessuto.
+    i geni sono classificati in due macrocategoria HVg e SVG, i primi sono geni con una espressione genica molto superiore rispetto ad altri, nei secondi la loro espressione
+    varia in base alla posizione nel tessuto e analizzandole lo spazio è possibile scovare cluster.
+    
+
+    La trascrittomica spaziale è una tecnologia che ci permette di studiare e analizzare l'espressione genica direttamente su un tessuto, e l'analisi degli svg è fondamentale
+    in quanto permette di scovare informaziomi quali regioni di transizione tra diversi tipi di cellule.
+
+    Questo può servire ad esempio nello studio di malattie come il cancro dove, i tumori, essendo masse non uniformi, sono composti da diverse famiglie cellulari, e comprendere
+    dove ogni cellula si trova e si rapporta con le altre è fondamentale per rivelare i meccanismi di crescita, progressione e resistenza al trattamento terapeutico. 
 
     I campioni sono forniti da l'azienda 10x Genomics che ci fornisce i vari dati, come i nomi dei geni nel tessuto, le loro coordinate, e la loro espressione, che hanno 
     preso attraverlo la loro tecnologia visium.
